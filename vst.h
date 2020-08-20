@@ -1,0 +1,465 @@
+// This was created from released VST2.x plugins, and is technically under the 2-clause BSD license.
+// Depending on which country you are in, Steinberg can do fuck all about this. Notable countries for
+// this are most members of the United States of America, the entirety of Europe, Japan, and Russia.
+// Consult a lawyer if you don't know if clean room reverse engineering is allowed in your country.
+
+// See README.md for all information.
+
+// Known additional information:
+// - Function call standard seems to be stdcall.
+// - Everything is aligned to 8 bytes.
+
+#define VST_FUNCTION_INTERFACE __stdcall
+#define VST_ALIGNMENT 8
+#define VST_MAGICNUMBER (('P' << 24) | ('t' << 16) | ('s' << 8) | 'V')
+
+#pragma pack(push, VST_ALIGNMENT)
+
+#ifdef cplusplus
+extern "C" {
+#endif
+
+/*******************************************************************************
+|* Enumeration
+|*/
+enum VST_VERSION {
+	VST_VERSION_1_0_0_0 = 1000, // Inferred from 1.1 existing.
+	VST_VERSION_1_1_0_0 = 1100, // ReaComp, ReaXComp
+	VST_VERSION_2_0_0_0 = 2000, // It's literally called VST2.x, so yeah guess how this value exists.
+	VST_VERSION_2_1_0_0 = 2100, // Never seen yet, guessing here from the age.
+	VST_VERSION_2_2_0_0 = 2200, // Never seen yet, guessing here from the age.
+	VST_VERSION_2_3_0_0 = 2300, // Never seen yet, guessing here from the age.
+	VST_VERSION_2_4_0_0 = 2400, // Never seen yet, guessing here from the age.
+}
+
+enum VST_EFFECT_OPCODE {
+	/* Create the effect (if it has not been created already).
+	 *
+	 * @return Always 0.
+	 */
+	VST_EFFECT_OPCODE_CREATE = 0x00,
+	
+	/* Destroy the effect (if there is any) and free its memory.
+	 * 
+	 * @return Always 0.
+	 */
+	VST_EFFECT_OPCODE_DESTROY = 0x01,
+
+	VST_EFFECT_OPCODE_02 = 0x02,
+
+	VST_EFFECT_OPCODE_03 = 0x03,
+
+	VST_EFFECT_OPCODE_04 = 0x04,
+
+	VST_EFFECT_OPCODE_05 = 0x05, // Returns 0. If ptr is valid, sets the first byte of ptr to 0 then returns 0.
+
+	/* Get the value? label for the parameter.
+	 * 
+	 * @param p_int1 Parameter index.
+	 * @param p_ptr 'char[8]'
+	 * @return 0 on success, 1 on failure.
+	 */
+	VST_EFFECT_OPCODE_PARAM_GETLABEL = 0x06,
+
+	/* Get the string value for the parameter.
+	 * 
+	 * @param p_int1 Parameter index.
+	 * @param p_ptr 'char[8]'
+	 * @return 0 on success, 1 on failure.
+	 */
+	VST_EFFECT_OPCODE_PARAM_GETVALUE = 0x07,
+
+	/* Get the name for the parameter.
+	 * 
+	 * @param p_int1 Parameter index.
+	 * @param p_ptr 'char[8]'
+	 * @return 0 on success, 1 on failure.
+	 */
+	VST_EFFECT_OPCODE_PARAM_GETNAME = 0x08,
+
+	VST_EFFECT_OPCODE_09 = 0x09,
+
+	/* Set the new sample rate for the plugin to use.
+	 * 
+	 * @param p_float New sample rate as a float (double on 64-bit because register upgrades).
+	 */
+	VST_EFFECT_OPCODE_SETSAMPLERATE = 0x0A,
+
+	VST_EFFECT_OPCODE_0B = 0x0B,
+	
+	VST_EFFECT_OPCODE_0C = 0x0C, // Calls something in the plugin itself, fails if the plugin is not initialized, or if the 4th argument is set.
+
+	/* Retrieve the client rect size of the plugins window.
+	 * If no window has been created, returns the default rect.
+	 *
+	 * @param p_ptr Pointer of type 'struct vst_rect*'.
+	 * @return On success, returns 1 and updates p_ptr to the rect. On failure, returns 0.
+	 */
+	VST_EFFECT_OPCODE_WINDOW_GETRECT = 0x0D,
+
+	/* Create the window for the plugin.
+	 * 
+	 * @param p_ptr HWND of the parent window.
+	 * @return 0 on failure, or HWND on success.
+	 */
+	DISPATCHER_OPCDOE_WINDOW_DESTROY = 0x0E,
+
+	/* Destroy the plugins window.
+	 * 
+	 * @return Always 0.
+	 */
+	VST_EFFECT_OPCODE_WINDOW_DESTROY = 0x0F,
+
+	VST_EFFECT_OPCODE_10 = 0x10,
+
+	VST_EFFECT_OPCODE_11 = 0x11,
+
+	VST_EFFECT_OPCODE_12 = 0x12,
+
+	VST_EFFECT_OPCODE_13 = 0x13,
+
+	VST_EFFECT_OPCODE_14 = 0x14,
+
+	VST_EFFECT_OPCODE_15 = 0x15,
+	
+	VST_EFFECT_OPCODE_16 = 0x16, // Returns 0x4E764566, 'NvEf' doesn't ring a bell at all. Could be a "unique" effect id?
+
+	VST_EFFECT_OPCODE_17 = 0x17, // Returns either 0 or the result of an internal call.
+
+	VST_EFFECT_OPCODE_18 = 0x18, // Returns 0, but does something if the effect exists.
+
+	// VST2.x starts here.
+
+	VST_EFFECT_OPCODE_19 = 0x19,
+
+	/* Can the parameter be automated?
+	 *
+	 * @param p_int1 Index of the parameter.
+	 * @return 1 if the parameter can be automated, otherwise 0.
+	 */
+	VST_EFFECT_OPCODE_PARAM_ISAUTOMATABLE = 0x1A,
+
+	VST_EFFECT_OPCODE_1B = 0x1B,
+
+	VST_EFFECT_OPCODE_1C = 0x1C,
+
+	VST_EFFECT_OPCODE_1D = 0x1D, // See VST_EFFECT_OPCODE_05
+
+	VST_EFFECT_OPCODE_1E = 0x1E,
+
+	VST_EFFECT_OPCODE_1F = 0x1F,
+
+	VST_EFFECT_OPCODE_20 = 0x20,
+	
+	/* Retrieve the name of the input channel at the given index.
+	 *
+	 * @param p_int1 Index of the input to get the name for.
+	 * @param p_ptr Pointer to a char* buffer able to hold at minimum 20 characters. Might need to be 32 even.
+	 * @return 0 on failure, 1 on success.
+	 */
+	VST_EFFECT_OPCODE_INPUT_GETCHANNELNAME = 0x21,
+	
+	/* Retrieve the name of the output channel at the given index.
+	 *
+	 * @param p_int1 Index of the output to get the name for.
+	 * @param p_ptr Pointer to a char* buffer able to hold at minimum 20 characters. Might need to be 32 even.
+	 * @return 0 on failure, 1 on success.
+	 */
+	VST_EFFECT_OPCODE_OUTPUT_GETCHANNELNAME = 0x22,
+
+	/* 
+	 *
+	 * @return Always 1
+	 */
+	VST_EFFECT_OPCODE_23 = 0x23, 
+
+	VST_EFFECT_OPCODE_24 = 0x24,
+
+	VST_EFFECT_OPCODE_25 = 0x25,
+
+	VST_EFFECT_OPCODE_26 = 0x26,
+
+	VST_EFFECT_OPCODE_27 = 0x27,
+
+	VST_EFFECT_OPCODE_28 = 0x28,
+
+	VST_EFFECT_OPCODE_29 = 0x29,
+
+	VST_EFFECT_OPCODE_2A = 0x2A,
+
+	VST_EFFECT_OPCODE_2B = 0x2B,
+
+	VST_EFFECT_OPCODE_2C = 0x2C,
+	
+	/* Retrieve the effect name into the ptr buffer.
+	 *
+	 * History:
+	 * - ReaComp, ReaXComp: Seems to be char[32]
+	 * - ReaFir: Must be more than char[32], plugin is writing 47 bytes. char[48]?
+	 * 
+	 * @param p_ptr char[48]
+	 * @return Always 0, even on failure.
+	 */
+	VST_EFFECT_OPCODE_GETNAME = 0x2D,
+
+	VST_EFFECT_OPCODE_2E = 0x2E,
+
+	/* Retrieve the vendor name into the ptr buffer.
+	 *
+	 * @param p_ptr char[32] 
+	 * @return Always 0, even on failure.
+	 */
+	VST_EFFECT_OPCODE_GETVENDOR = 0x2F,
+	
+	/* See VST_EFFECT_OPCODE_GETNAME
+	 */
+	VST_EFFECT_OPCODE_GETNAME2 = 0x30,
+
+	/* Retrieve the vendor version in return value.
+	 *
+	 * @return Version.
+	 */
+	VST_EFFECT_OPCODE_GETVENDORVERSION = 0x31,
+		
+	/* User defined OP Code, for custom interaction.
+	 * 
+	 */
+	VST_EFFECT_OPCODE_CUSTOM = 0x32,
+
+	/* Seems to be different for each plugin.
+	 * - ReaComp-Standalone.dll compares p_ptr against "hasCockosExtensions" and "hasCockosViewAsConfig" and return 0 or 0xBEEF.
+	 */
+	VST_EFFECT_OPCODE_33 = 0x33,
+
+	/* Number of samples that are at the tail at the end of playback.
+	 * 
+	 * @return 0 or 1 for no tail, > 1 for number of samples to tail.
+	 */
+	VST_EFFECT_OPCODE_GETTAILSAMPLES = 0x34,
+
+	VST_EFFECT_OPCODE_35 = 0x35,
+	VST_EFFECT_OPCODE_36 = 0x36,
+	VST_EFFECT_OPCODE_37 = 0x37,
+
+	VST_EFFECT_OPCODE_38 = 0x38,
+
+	VST_EFFECT_OPCODE_39 = 0x39,
+
+	VST_EFFECT_OPCODE_3A = 0x3A, // Sometimes returns a number?
+
+	VST_EFFECT_OPCODE_3B = 0x3B,
+	VST_EFFECT_OPCODE_3C = 0x3C,
+	VST_EFFECT_OPCODE_3D = 0x3D,
+	VST_EFFECT_OPCODE_3E = 0x3E,
+	VST_EFFECT_OPCODE_3F = 0x3F,
+};
+
+enum VST_HOST_OPCODE {
+	/*
+	 * @param int1 -1 or Parameter Index
+	 * @return Expected to return... something.
+	 */
+	VST_HOST_OPCODE_00 = 0x00, // cb(vst, 0x00, ?, 0, 0);
+	VST_HOST_OPCODE_01 = 0x01,
+	VST_HOST_OPCODE_02 = 0x02, // bool cb(0, 0x02, 0, 0, 0);
+	VST_HOST_OPCODE_03 = 0x03,
+	VST_HOST_OPCODE_04 = 0x04,
+	VST_HOST_OPCODE_05 = 0x05,
+	VST_HOST_OPCODE_06 = 0x06,
+	VST_HOST_OPCODE_07 = 0x07,
+	VST_HOST_OPCODE_08 = 0x08,
+	VST_HOST_OPCODE_09 = 0x09,
+	VST_HOST_OPCODE_0A = 0x0A,
+	VST_HOST_OPCODE_0B = 0x0B,
+	VST_HOST_OPCODE_0C = 0x0C,
+	VST_HOST_OPCODE_0D = 0x0D,
+	VST_HOST_OPCODE_0E = 0x0E,
+	VST_HOST_OPCODE_0F = 0x0F,
+	VST_HOST_OPCODE_10 = 0x10,
+	VST_HOST_OPCODE_11 = 0x11,
+	VST_HOST_OPCODE_12 = 0x12,
+	VST_HOST_OPCODE_13 = 0x13,
+	VST_HOST_OPCODE_14 = 0x14,
+	VST_HOST_OPCODE_15 = 0x15,
+	VST_HOST_OPCODE_16 = 0x16,
+	VST_HOST_OPCODE_17 = 0x17,
+	VST_HOST_OPCODE_18 = 0x18,
+	VST_HOST_OPCODE_19 = 0x19,
+	VST_HOST_OPCODE_1A = 0x1A,
+	VST_HOST_OPCODE_1B = 0x1B,
+	VST_HOST_OPCODE_1C = 0x1C,
+	VST_HOST_OPCODE_1D = 0x1D,
+	VST_HOST_OPCODE_1E = 0x1E,
+	VST_HOST_OPCODE_1F = 0x1F,
+	VST_HOST_OPCODE_20 = 0x20,
+	VST_HOST_OPCODE_21 = 0x21,
+	VST_HOST_OPCODE_22 = 0x22,
+	VST_HOST_OPCODE_23 = 0x23,
+	VST_HOST_OPCODE_24 = 0x24,
+	VST_HOST_OPCODE_25 = 0x25,
+	VST_HOST_OPCODE_26 = 0x26,
+	VST_HOST_OPCODE_27 = 0x27,
+	VST_HOST_OPCODE_28 = 0x28,
+	VST_HOST_OPCODE_29 = 0x29,
+	VST_HOST_OPCODE_2A = 0x2A,
+
+	/* Parameter gained focus.
+	 *
+	 * @param int1 Parameter index.
+	 */
+	VST_HOST_OPCODE_2B = 0x2B,
+
+	/* Parameter lost focus.
+	 * 
+	 * @param int1 Parameter index.
+	 */	
+	VST_HOST_OPCODE_2C = 0x2C,
+
+	VST_HOST_OPCODE_2D = 0x2D,
+	VST_HOST_OPCODE_2E = 0x2E,
+	VST_HOST_OPCODE_2F = 0x2F,
+};
+
+/*******************************************************************************
+|* Structures
+|*/
+
+struct vst_rect {
+	int16_t left;
+	int16_t top;
+	int16_t right;
+	int16_t bottom;
+};
+
+struct vst_effect {
+	int8_t magic_number[4]; // Should always be 'VstP'
+	// 64-bit adds 4-byte padding here to align pointers.
+
+	/* Control the VST through an opcode and up to four parameters.
+	 * 
+	 * @param this Pointer to the effect itself.
+	 * @param opcode The opcode to run, see VST_EFFECT_OPCODES.
+	 * @param p_int1 Parameter, see VST_EFFECT_OPCODES.
+	 * @param p_int2 Parameter, see VST_EFFECT_OPCODES.
+	 * @param p_ptr Parameter, see VST_EFFECT_OPCODES.
+	 * @param p_float Parameter, see VST_EFFECT_OPCODES.
+	 */
+	intptr_t (VST_FUNCTION_INTERFACE *control)(vst_effect *this, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
+
+	/* Seems to call processFloat internally in any plugin I can find.
+	 * Possibly deprecated?
+	 */
+	void (VST_FUNCTION_INTERFACE *process)(vst_effect *this, const float* const* inputs, float ** outputs, int32_t samples);
+
+	/* Updates the value for the parameter at the given index, or does nothing if out of bounds.
+	 * 
+	 * @param this Pointer to the effect itself.
+	 * @param index Parameter index.
+	 * @param value New value for the parameter.
+	 */
+	void (VST_FUNCTION_INTERFACE *set_parameter)(vst_effect *this, uint32_t index, float value);
+
+	/* Returns the value stored for the parameter at index, or 0 if out of bounds.
+	 * 
+	 * @param this Pointer to the effect itself.
+	 * @param index Parameter index.
+	 * @return float Value of the parameter.
+	 */
+	float (VST_FUNCTION_INTERFACE *get_parameter)(vst_effect *this, uint32_t index);
+
+	int32_t num_programs; // Number of possible programs.
+	int32_t num_params; // Number of possible parameters.
+	int32_t num_inputs; // Number of inputs.
+	int32_t num_outputs; // Number of outputs.
+
+	/* Bitflags
+	 * 
+	 * Bit		Description
+	 * 1		Unknown (Found in: ReaDelay, ReaComp, ReaControlMIDI, ReaStream, ReaFir)
+	 * 2		Unknown (Found in: ReaDelay)
+	 * 3		Unknown (Found in: ReaDelay)
+	 * 4		Unknown (Found in: ReaDelay)
+	 * 5		Unknown (Found in: ReaDelay, ReaComp, ReaControlMIDI, ReaStream, ReaFir)
+	 * 6		Unknown (Found in: ReaControlMIDI, ReaStream, ReaFir)
+	 * 10		Unknown (Found in: ReaFir)
+	 * 13		Has process_double (Found in: ReaControlMIDI)
+	 */
+	int32_t flags;
+
+	// 64-bit adds 4-byte padding here to align pointers.
+
+	void* _unknown_ptr_00[2];
+
+	int32_t _unknown_int32_00[3]; // Unknown int32_t values.
+	float _unknown_float_00; // Seems to always be 1.0
+
+	void* internal; // Pointer to internal data.
+	void* user; // Pointer to user data.
+
+	/* Id of the plugin.
+	 *
+	 * Due to this not being enough for uniqueness, it should not be used alone 
+	 * for indexing. Ideally you want to index like this:
+	 *     [unique_id][module_name][version][flags]
+	 * If any of the checks after unique_id fail, you default to the first 
+	 * possible choice.
+	 */
+	int32_t unique_id;
+
+	/* Minimum(?) VST API supported.
+	 * 
+	 * See: VST_VERSION
+	 */
+	VST_VERSION version; // Plugin version.
+
+	// There is no padding here if everything went right.
+
+	/* Process the given number of samples in inputs and outputs.
+	 * 
+	 * @param this Pointer to the effect itself.
+	 * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
+	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
+	 * @param samples Number of samples per channel in inputs.
+	 */
+	void (VST_FUNCTION_INTERFACE *process_float)(vst_effect *this, const float * const* inputs, float ** outputs, int32_t samples);
+
+	/* Process the given number of samples in inputs and outputs.
+	 * 
+	 * History:
+	 * - ReaControlMIDI: Found additional function after processFloat, which accessed things in 8-wide steps. 
+	 * 
+	 * @param this Pointer to the effect itself.
+	 * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
+	 * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
+	 * @param samples Number of samples per channel in inputs.
+	 */
+	void (VST_FUNCTION_INTERFACE *process_double)(vst_effect *this, const double * const* inputs, double ** outputs, int32_t samples);
+
+	// Everything after this is unknown and was present in reacomp-standalone.dll.
+	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
+};
+
+/* Callback used by the plugin to interface with the host.
+ * 
+ * @param opcode See VST_HOST_OPCODE
+ * @param p_str Zero terminated string or null on call.
+ * @return ?
+ */
+typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, int32_t p_int3);
+
+const char* vst_host_string[] = {
+	"GetResourcePath", // ReaControlMIDI
+	"get_ini_file", // ReaControlMIDI
+	"resolve_fn", // ReaControlMIDI
+};
+
+// Entry point to the VST.
+#define VST_ENTRYPOINT vst_effect* VSTPluginMain(vst_host_callback callback)
+#define VST_ENTRYPOINT_WINDOWS vst_effect* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
+#define VST_ENTRYPOINT_MACOS vst_effect* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
+
+#ifdef cplusplus
+}
+#endif
+
+#pragma pack(pop)
