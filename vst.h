@@ -9,15 +9,19 @@
 // - Function call standard seems to be stdcall.
 // - Everything is aligned to 8 bytes.
 
+#pragma once
+#ifndef VST2SDK_VST_H
+#define VST2SDK_VST_H
+
 #define VST_FUNCTION_INTERFACE __stdcall
 #define VST_ALIGNMENT 8
 #define VST_MAGICNUMBER (('P' << 24) | ('t' << 16) | ('s' << 8) | 'V')
 
 #pragma pack(push, VST_ALIGNMENT)
 
-#ifdef cplusplus
-extern "C" {
+#ifdef __cplusplus
 #include <cinttypes>
+extern "C" {
 #else
 #include <inttypes.h>
 #endif
@@ -400,8 +404,8 @@ struct vst_effect {
 	int32_t _unknown_int32_00[3]; // Unknown int32_t values.
 	float   _unknown_float_00;    // Seems to always be 1.0
 
-	void* internal; // Pointer to internal data.
-	void* user;     // Pointer to user data.
+	void* internal; // Pointer to Plugin internal data
+	void* user;     // Pointer to Host internal data.
 
 	/* Id of the plugin.
 	 *
@@ -457,7 +461,7 @@ struct vst_effect {
 typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2,
 									  const char* p_str, int32_t p_int3);
 
-const char* vst_host_string[] = {
+static const char* vst_host_string[] = {
 	"GetResourcePath", // ReaControlMIDI
 	"get_ini_file",    // ReaControlMIDI
 	"resolve_fn",      // ReaControlMIDI
@@ -476,8 +480,10 @@ const char* vst_host_string[] = {
 		return VSTPluginMain(callback);                \
 	}
 
-#ifdef cplusplus
+#ifdef __cplusplus
 }
 #endif
 
 #pragma pack(pop)
+
+#endif
