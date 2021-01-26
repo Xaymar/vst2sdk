@@ -17,6 +17,9 @@
 
 #ifdef cplusplus
 extern "C" {
+#include <cinttypes>
+#else
+#include <inttypes.h>
 #endif
 
 /*******************************************************************************
@@ -30,7 +33,7 @@ enum VST_VERSION {
 	VST_VERSION_2_2_0_0 = 2200, // Never seen yet, guessing here from the age.
 	VST_VERSION_2_3_0_0 = 2300, // Never seen yet, guessing here from the age.
 	VST_VERSION_2_4_0_0 = 2400, // Never seen yet, guessing here from the age.
-}
+};
 
 enum VST_EFFECT_OPCODE {
 	/* Create the effect (if it has not been created already).
@@ -38,7 +41,7 @@ enum VST_EFFECT_OPCODE {
 	 * @return Always 0.
 	 */
 	VST_EFFECT_OPCODE_CREATE = 0x00,
-	
+
 	/* Destroy the effect (if there is any) and free its memory.
 	 * 
 	 * @return Always 0.
@@ -86,8 +89,9 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_SETSAMPLERATE = 0x0A,
 
 	VST_EFFECT_OPCODE_0B = 0x0B,
-	
-	VST_EFFECT_OPCODE_0C = 0x0C, // Calls something in the plugin itself, fails if the plugin is not initialized, or if the 4th argument is set.
+
+	VST_EFFECT_OPCODE_0C =
+		0x0C, // Calls something in the plugin itself, fails if the plugin is not initialized, or if the 4th argument is set.
 
 	/* Retrieve the client rect size of the plugins window.
 	 * If no window has been created, returns the default rect.
@@ -121,8 +125,9 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_14 = 0x14,
 
 	VST_EFFECT_OPCODE_15 = 0x15,
-	
-	VST_EFFECT_OPCODE_16 = 0x16, // Returns 0x4E764566, 'NvEf' doesn't ring a bell at all. Could be a "unique" effect id?
+
+	VST_EFFECT_OPCODE_16 =
+		0x16, // Returns 0x4E764566, 'NvEf' doesn't ring a bell at all. Could be a "unique" effect id?
 
 	VST_EFFECT_OPCODE_17 = 0x17, // Returns either 0 or the result of an internal call.
 
@@ -150,7 +155,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_1F = 0x1F,
 
 	VST_EFFECT_OPCODE_20 = 0x20,
-	
+
 	/* Retrieve the name of the input channel at the given index.
 	 *
 	 * @param p_int1 Index of the input to get the name for.
@@ -158,7 +163,7 @@ enum VST_EFFECT_OPCODE {
 	 * @return 0 on failure, 1 on success.
 	 */
 	VST_EFFECT_OPCODE_INPUT_GETCHANNELNAME = 0x21,
-	
+
 	/* Retrieve the name of the output channel at the given index.
 	 *
 	 * @param p_int1 Index of the output to get the name for.
@@ -171,7 +176,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @return Always 1
 	 */
-	VST_EFFECT_OPCODE_23 = 0x23, 
+	VST_EFFECT_OPCODE_23 = 0x23,
 
 	VST_EFFECT_OPCODE_24 = 0x24,
 
@@ -190,7 +195,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_2B = 0x2B,
 
 	VST_EFFECT_OPCODE_2C = 0x2C,
-	
+
 	/* Retrieve the effect name into the ptr buffer.
 	 *
 	 * History:
@@ -210,7 +215,7 @@ enum VST_EFFECT_OPCODE {
 	 * @return Always 0, even on failure.
 	 */
 	VST_EFFECT_OPCODE_GETVENDOR = 0x2F,
-	
+
 	/* See VST_EFFECT_OPCODE_GETNAME
 	 */
 	VST_EFFECT_OPCODE_GETNAME2 = 0x30,
@@ -220,7 +225,7 @@ enum VST_EFFECT_OPCODE {
 	 * @return Version.
 	 */
 	VST_EFFECT_OPCODE_GETVENDORVERSION = 0x31,
-		
+
 	/* User defined OP Code, for custom interaction.
 	 * 
 	 */
@@ -312,7 +317,7 @@ enum VST_HOST_OPCODE {
 	/* Parameter lost focus.
 	 * 
 	 * @param int1 Parameter index.
-	 */	
+	 */
 	VST_HOST_OPCODE_2C = 0x2C,
 
 	VST_HOST_OPCODE_2D = 0x2D,
@@ -344,33 +349,35 @@ struct vst_effect {
 	 * @param p_ptr Parameter, see VST_EFFECT_OPCODES.
 	 * @param p_float Parameter, see VST_EFFECT_OPCODES.
 	 */
-	intptr_t (VST_FUNCTION_INTERFACE *control)(vst_effect *this, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
+	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1,
+											  intptr_t p_int2, void* p_ptr, float p_float);
 
 	/* Seems to call processFloat internally in any plugin I can find.
 	 * Possibly deprecated?
 	 */
-	void (VST_FUNCTION_INTERFACE *process)(vst_effect *this, const float* const* inputs, float ** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process)(vst_effect* pthis, const float* const* inputs, float** outputs,
+										  int32_t samples);
 
 	/* Updates the value for the parameter at the given index, or does nothing if out of bounds.
 	 * 
-	 * @param this Pointer to the effect itself.
+	 * @param pthis Pointer to the effect itself.
 	 * @param index Parameter index.
 	 * @param value New value for the parameter.
 	 */
-	void (VST_FUNCTION_INTERFACE *set_parameter)(vst_effect *this, uint32_t index, float value);
+	void(VST_FUNCTION_INTERFACE* set_parameter)(vst_effect* pthis, uint32_t index, float value);
 
 	/* Returns the value stored for the parameter at index, or 0 if out of bounds.
 	 * 
-	 * @param this Pointer to the effect itself.
+	 * @param pthis Pointer to the effect itself.
 	 * @param index Parameter index.
 	 * @return float Value of the parameter.
 	 */
-	float (VST_FUNCTION_INTERFACE *get_parameter)(vst_effect *this, uint32_t index);
+	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect* pthis, uint32_t index);
 
 	int32_t num_programs; // Number of possible programs.
-	int32_t num_params; // Number of possible parameters.
-	int32_t num_inputs; // Number of inputs.
-	int32_t num_outputs; // Number of outputs.
+	int32_t num_params;   // Number of possible parameters.
+	int32_t num_inputs;   // Number of inputs.
+	int32_t num_outputs;  // Number of outputs.
 
 	/* Bitflags
 	 * 
@@ -391,10 +398,10 @@ struct vst_effect {
 	void* _unknown_ptr_00[2];
 
 	int32_t _unknown_int32_00[3]; // Unknown int32_t values.
-	float _unknown_float_00; // Seems to always be 1.0
+	float   _unknown_float_00;    // Seems to always be 1.0
 
 	void* internal; // Pointer to internal data.
-	void* user; // Pointer to user data.
+	void* user;     // Pointer to user data.
 
 	/* Id of the plugin.
 	 *
@@ -416,24 +423,26 @@ struct vst_effect {
 
 	/* Process the given number of samples in inputs and outputs.
 	 * 
-	 * @param this Pointer to the effect itself.
+	 * @param pthis Pointer to the effect itself.
 	 * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void (VST_FUNCTION_INTERFACE *process_float)(vst_effect *this, const float * const* inputs, float ** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect* pthis, const float* const* inputs, float** outputs,
+												int32_t samples);
 
 	/* Process the given number of samples in inputs and outputs.
 	 * 
 	 * History:
 	 * - ReaControlMIDI: Found additional function after processFloat, which accessed things in 8-wide steps. 
 	 * 
-	 * @param this Pointer to the effect itself.
+	 * @param pthis Pointer to the effect itself.
 	 * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
 	 * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void (VST_FUNCTION_INTERFACE *process_double)(vst_effect *this, const double * const* inputs, double ** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect* pthis, const double* const* inputs, double** outputs,
+												 int32_t samples);
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
@@ -445,18 +454,27 @@ struct vst_effect {
  * @param p_str Zero terminated string or null on call.
  * @return ?
  */
-typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, int32_t p_int3);
+typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2,
+									  const char* p_str, int32_t p_int3);
 
 const char* vst_host_string[] = {
 	"GetResourcePath", // ReaControlMIDI
-	"get_ini_file", // ReaControlMIDI
-	"resolve_fn", // ReaControlMIDI
+	"get_ini_file",    // ReaControlMIDI
+	"resolve_fn",      // ReaControlMIDI
 };
 
 // Entry point to the VST.
 #define VST_ENTRYPOINT vst_effect* VSTPluginMain(vst_host_callback callback)
-#define VST_ENTRYPOINT_WINDOWS vst_effect* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
-#define VST_ENTRYPOINT_MACOS vst_effect* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
+#define VST_ENTRYPOINT_WINDOWS                   \
+	vst_effect* MAIN(vst_host_callback callback) \
+	{                                            \
+		return VSTPluginMain(callback);          \
+	}
+#define VST_ENTRYPOINT_MACOS                           \
+	vst_effect* main_macho(vst_host_callback callback) \
+	{                                                  \
+		return VSTPluginMain(callback);                \
+	}
 
 #ifdef cplusplus
 }
