@@ -17,6 +17,8 @@
 #define VST_ALIGNMENT 8
 #define VST_MAGICNUMBER 'VstP'
 
+#define VST_NAME_BUFFER_SIZE 64
+
 #pragma pack(push, VST_ALIGNMENT)
 
 #ifdef __cplusplus
@@ -202,11 +204,7 @@ enum VST_EFFECT_OPCODE {
 
 	/* Retrieve the effect name into the ptr buffer.
 	 *
-	 * History:
-	 * - ReaComp, ReaXComp: Seems to be char[32]
-	 * - ReaFir: Must be more than char[32], plugin is writing 47 bytes. char[48]?
-	 * 
-	 * @param p_ptr char[48]
+	 * @param p_ptr char[64] VST2.4 host, might be lower with earlier hosts?
 	 * @return Always 0, even on failure.
 	 */
 	VST_EFFECT_OPCODE_GETNAME = 0x2D,
