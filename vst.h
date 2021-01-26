@@ -15,7 +15,7 @@
 
 #define VST_FUNCTION_INTERFACE __stdcall
 #define VST_ALIGNMENT 8
-#define VST_MAGICNUMBER (('P' << 24) | ('t' << 16) | ('s' << 8) | 'V')
+#define VST_MAGICNUMBER 'VstP'
 
 #pragma pack(push, VST_ALIGNMENT)
 
@@ -110,7 +110,7 @@ enum VST_EFFECT_OPCODE {
 	 * @param p_ptr HWND of the parent window.
 	 * @return 0 on failure, or HWND on success.
 	 */
-	DISPATCHER_OPCDOE_WINDOW_DESTROY = 0x0E,
+	VST_EFFECT_OPCODE_WINDOW_CREATE = 0x0E,
 
 	/* Destroy the plugins window.
 	 * 
@@ -341,7 +341,8 @@ struct vst_rect {
 };
 
 struct vst_effect {
-	int8_t magic_number[4]; // Should always be 'VstP'
+	int32_t magic_number; // Should always be VST_MAGICNUMBER
+
 	// 64-bit adds 4-byte padding here to align pointers.
 
 	/* Control the VST through an opcode and up to four parameters.
