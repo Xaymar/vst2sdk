@@ -18,6 +18,7 @@
 #define VST_MAGICNUMBER 'VstP'
 
 #define VST_NAME_BUFFER_SIZE 64
+#define VST_VENDOR_BUFFER_SIZE 64
 
 #pragma pack(push, VST_ALIGNMENT)
 
@@ -204,7 +205,7 @@ enum VST_EFFECT_OPCODE {
 
 	/* Retrieve the effect name into the ptr buffer.
 	 *
-	 * @param p_ptr char[64] VST2.4 host, might be lower with earlier hosts?
+	 * @param p_ptr char[64] Buffer containing a zero-terminated effect information string. May be shorter than 64 bytes on older hosts.
 	 * @return Always 0, even on failure.
 	 */
 	VST_EFFECT_OPCODE_GETNAME = 0x2D,
@@ -213,7 +214,7 @@ enum VST_EFFECT_OPCODE {
 
 	/* Retrieve the vendor name into the ptr buffer.
 	 *
-	 * @param p_ptr char[32] 
+	 * @param p_ptr char[64] Buffer containing a zero-terminated vendor information string. May be shorter than 64 bytes on older hosts.
 	 * @return Always 0, even on failure.
 	 */
 	VST_EFFECT_OPCODE_GETVENDOR = 0x2F,
