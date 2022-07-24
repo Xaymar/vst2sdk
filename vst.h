@@ -22,10 +22,23 @@
 #define VST_ALIGNMENT 8
 #define VST_MAGICNUMBER 'VstP'
 
-#define VST_VENDOR_BUFFER_SIZE 64  // Vendor
-#define VST_PRODUCT_BUFFER_SIZE 64 // Product
-#define VST_EFFECT_BUFFER_SIZE 32  // Effect
-#define VST_NAME_BUFFER_SIZE 64    // Names
+// Common VST buffer lengths:
+// 8: OpCodes(GetLabel, GetName, GetValue)
+#define VST_BUFFER_8 8
+// 16:
+#define VST_BUFFER_16 16
+// 24: OpCodes?
+#define VST_BUFFER_24 24
+// 32: OpCodes(EffectName)
+#define VST_BUFFER_32 32
+#define VST_EFFECT_BUFFER_SIZE 32
+// 64: OpCodes(ProductName, VendorName)
+#define VST_BUFFER_64 64
+#define VST_VENDOR_BUFFER_SIZE VST_BUFFER_64
+#define VST_PRODUCT_BUFFER_SIZE VST_BUFFER_64
+#define VST_NAME_BUFFER_SIZE VST_BUFFER_64
+// 100:
+#define VST_BUFFER_100 100
 
 #define VST_MAX_CHANNELS 32 // Couldn't find any audio editing software which would attempt to add more channels.
 
@@ -474,11 +487,13 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_38 = 0x38,
 
-	/*
+	/* Parameter Properties
 	 *
-	 *
+	 * @param p_ptr vst_parameter_properties*
+	 * @return 1 if supported, otherwise 0.
 	 */
-	VST_EFFECT_OPCODE_39 = 0x39,
+	VST_EFFECT_OPCODE_39                       = 0x39,
+	VST_EFFECT_OPCODE_GET_PARAMETER_PROPERTIES = VST_EFFECT_OPCODE_39,
 
 	/* Retrieve the VST Version supported.
 	 *
@@ -743,6 +758,35 @@ enum VST_SPEAKER_TYPE {
 	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
 };
 
+enum VST_PARAMETER_FLAGS {
+	/**
+	 * Parameter is an on/off switch.
+	 */
+	VST_PARAMETER_FLAGS_SWITCH = 1,
+	/**
+	 * Limits defined by integers.
+	 */
+	VST_PARAMETER_FLAGS_INTEGER_LIMITS = 1 << 1,
+	/**
+	 * Uses float steps.
+	 */
+	VST_PARAMETER_FLAGS_STEP_FLOAT = 1 << 2,
+	/**
+	 * Uses integer steps.
+	 */
+	VST_PARAMETER_FLAGS_STEP_INT = 1 << 3,
+	/**
+	 * Respect index variable for display ordering.
+	 */
+	VST_PARAMETER_FLAGS_INDEX = 1 << 4,
+	/**
+	 * Respect category value and names.
+	 */
+	VST_PARAMETER_FLAGS_CATEGORY = 1 << 5,
+	VST_PARAMETER_FLAGS_UNKNOWN6 = 1 << 6,
+	_VST_PARAMETER_FLAGS_PAD     = 0xFFFFFFFFul,
+};
+
 /*******************************************************************************
 |* Structures
 |*/
@@ -878,12 +922,37 @@ struct vst_effect {
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
 };
 
+struct vst_parameter_properties {
+	float step_f32;
+	float step_small_f32;
+	float step_large_f32;
+
+	char name[VST_BUFFER_64];
+
+	uint32_t flags;
+	int32_t  min_value_i32;
+	int32_t  max_value_i32;
+	int32_t  step_i32;
+
+	char label[VST_BUFFER_8];
+
+	uint16_t index;
+
+	uint16_t category;
+	uint16_t num_parameters_in_category;
+	uint16_t _unknown_00;
+
+	char category_label[VST_BUFFER_24];
+
+	char _unknown_01[VST_BUFFER_16];
+};
+
 struct vst_speaker_properties {
 	float            _unknown_00; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
 	float            _unknown_04; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
 	float            _unknown_08; // 0.0 if LFE, otherwise 1.0.
 	float            _unknown_0C;
-	char             name[VST_NAME_BUFFER_SIZE];
+	char             name[VST_BUFFER_64];
 	VST_SPEAKER_TYPE type;
 
 	uint8_t _unknown[28]; // Padding detected from testing.
