@@ -32,7 +32,7 @@ class AudioEffectX : public AudioEffect {
 
 	public:
 	// AEffect/AEffectX
-	virtual bool canDoubleReplacing(bool value);
+	virtual void canDoubleReplacing(bool value);
 	virtual void noTail(bool value);
 
 	virtual void processDoubleReplacing(double** inputs, double** outputs, VstInt32 sampleFrames){};

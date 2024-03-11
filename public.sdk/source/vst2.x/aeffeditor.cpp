@@ -15,22 +15,51 @@
 
 #include "aeffeditor.hpp"
 
-AEffEditor::AEffEditor(AudioEffect* effect) : _effect(effect), _handle() {}
+AEffEditor::AEffEditor(AudioEffect* effect) : effect(effect), _handle() {}
 
 AEffEditor::~AEffEditor() {}
 
-bool AEffEditor::getRect(ERect** rect) {}
+bool AEffEditor::getRect(ERect** rect)
+{
+	return false;
+}
 
-bool AEffEditor::open(void* ptr) {}
+bool AEffEditor::open(void* ptr)
+{
+	if (!_handle) {
+		_handle = ptr;
+		return ptr;
+	}
+	return false;
+}
 
-void AEffEditor::close() {}
+void AEffEditor::close()
+{
+	_handle = nullptr;
+	return;
+}
 
-void AEffEditor::do_nothing() {}
+void AEffEditor::do_nothing()
+{
+	return;
+}
 
-bool AEffEditor::setKnobMode(VstInt32 val) {}
+bool AEffEditor::setKnobMode(VstInt32 val)
+{
+	return false;
+}
 
-bool AEffEditor::onKeyDown(VstKeyCode& keyCode) {}
+bool AEffEditor::onKeyDown(VstKeyCode& keyCode)
+{
+	return false;
+}
 
-bool AEffEditor::onKeyUp(VstKeyCode& keyCode) {}
+bool AEffEditor::onKeyUp(VstKeyCode& keyCode)
+{
+	return false;
+}
 
-bool AEffEditor::onWheel(float distance) {}
+bool AEffEditor::onWheel(float distance)
+{
+	return false;
+}

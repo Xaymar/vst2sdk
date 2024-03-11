@@ -64,9 +64,12 @@ class AudioEffect {
 	virtual void     open(){};
 	virtual void     close(){};
 	virtual void     setProgram(VstInt32 program){};
-	virtual VstInt32 getProgram(){};
-	virtual void     setProgramName(char* name){};
-	virtual void     getProgramName(char* name)
+	virtual VstInt32 getProgram()
+	{
+		return 0;
+	}
+	virtual void setProgramName(char* name){};
+	virtual void getProgramName(char* name)
 	{
 		*name = 0;
 	}

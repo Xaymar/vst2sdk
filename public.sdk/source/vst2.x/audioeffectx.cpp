@@ -41,9 +41,7 @@ VstIntPtr AudioEffectX::control(VstInt32 opcode, VstInt32 param1, VstIntPtr para
 	case audioEffectGetPlugCategory:
 		return (VstIntPtr)getPlugCategory();
 	case audioEffectSetSpeakerArrangement:
-		// MSVC: No you can't convert float to VstSpeakerArrangement*!!
-		// Also MSVC: Perfectly happy with this mess...
-		return setSpeakerArrangement(*(VstSpeakerArrangement**)(&value), (VstSpeakerArrangement*)ptr);
+		return setSpeakerArrangement((VstSpeakerArrangement*)param2, (VstSpeakerArrangement*)ptr);
 	case audioEffectBypass:
 		return setBypass(!!param2) ? 1 : 0;
 	case audioEffectGetEffectName:
@@ -97,7 +95,7 @@ VstIntPtr AudioEffectX::control(VstInt32 opcode, VstInt32 param1, VstIntPtr para
 
 #if (!defined VST_VERSION_SUPPORT) || (VST_VERSION_SUPPORT >= kVstVersion_2300)
 	case audioEffectGetSpeakerArrangement:
-		return getSpeakerArrangement(*(VstSpeakerArrangement***)(&value), (VstSpeakerArrangement**)ptr);
+		return getSpeakerArrangement((VstSpeakerArrangement**)param2, (VstSpeakerArrangement**)ptr);
 	case audioEffectStartProcessing:
 		return startProcess();
 	case audioEffectStopProcessing:
@@ -121,7 +119,7 @@ VstIntPtr AudioEffectX::control(VstInt32 opcode, VstInt32 param1, VstIntPtr para
 VstInt32 AudioEffectX::canHostDo(char* text)
 {
 	if (audioMaster)
-		return !!audioMaster(getAeffect(), audioMasterBeginEdit, 0, 0, text, 0);
+		return !!audioMaster(getAeffect(), audioMasterCanDo, 0, 0, text, 0);
 	return false;
 }
 
@@ -188,7 +186,7 @@ VstInt32 AudioEffectX::getHostVendorVersion()
 	return 0;
 }
 
-bool AudioEffectX::canDoubleReplacing(bool value)
+void AudioEffectX::canDoubleReplacing(bool value)
 {
 	if (value)
 		cEffect.flags |= AEffectFlagCanDoubleReplacing;

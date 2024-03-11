@@ -131,8 +131,8 @@ enum AEffectXMasterOpCodes {
 	audioMasterGetVendorString, // Get Vendor Name
 	audioMasterGetProductString, // Get Product Name
 	audioMasterGetVendorVersion, // Get Vendor Version
-	AEffectXMasterOpCode_23, // Counterpart to AEffectXOpCode_32
-	AEffectXMasterOpCode_24,
+	audioMasterVendorSpecific, // Counterpart to AEffectXOpCode_32
+	audioMasterCanDo,
 	AEffectXMasterOpCode_25,
 	AEffectXMasterOpCode_26,
 	AEffectXMasterOpCode_27,

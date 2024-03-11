@@ -20,6 +20,8 @@
 #include <inttypes.h>
 #endif
 
+#define VstFunctionAPI __cdecl
+
 enum VstMaxLengths { // Anything with k is an enum?
 	kVstMaxNameLen        = 64,
 	kVstMaxLabelLen       = 64,

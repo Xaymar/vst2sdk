@@ -74,17 +74,17 @@ enum AEffectFlags { // Guessed name based on struct+field combination.
 struct AEffect {
 	VstInt32 magic; // Must be FOURCC('V', 's', 't', 'P')
 
-	VstIntPtr(__cdecl* control)(AEffect* self, VstInt32 opcode, VstInt32 param1, VstIntPtr param2, void* ptr, float value);
+	VstIntPtr(VstFunctionAPI* control)(AEffect* self, VstInt32 opcode, VstInt32 param1, VstIntPtr param2, void* ptr, float value);
 
 #if (!defined VST_VERSION_SUPPORT) || (VST_VERSION_SUPPORT >= kVstVersion_2400)
 	// No 2.4 host ever calls this, processReplacing and processDoubleReplacing seem to be required.
 	[[deprecated]]
 #endif
-	void(__cdecl* process)(AEffect* self, float** inputs, float** outputs, VstInt32 sampleFrames);
+	void(VstFunctionAPI* process)(AEffect* self, float** inputs, float** outputs, VstInt32 sampleFrames);
 
-	void(__cdecl* setParameter)(AEffect* self, VstInt32 index, float value);
+	void(VstFunctionAPI* setParameter)(AEffect* self, VstInt32 index, float value);
 
-	float(__cdecl* getParameter)(AEffect* self, VstInt32 index);
+	float(VstFunctionAPI* getParameter)(AEffect* self, VstInt32 index);
 
 	VstInt32 numPrograms;
 	VstInt32 numParams;
@@ -115,7 +115,7 @@ struct AEffect {
 	 * \param outputs Output buffers. Can have pointers used in inputs.
 	 * \param sampleFrames Number of samples in all buffers.
 	 */
-	void(__cdecl* processReplacing)(AEffect* self, float** inputs, float** outputs, VstInt32 sampleFrames);
+	void(VstFunctionAPI* processReplacing)(AEffect* self, float** inputs, float** outputs, VstInt32 sampleFrames);
 
 #if (!defined VST_VERSION_SUPPORT) || (VST_VERSION_SUPPORT >= kVstVersion_2400)
 	// These only appear in version >= 2.4
@@ -126,7 +126,7 @@ struct AEffect {
 	 * \param outputs Output buffers. Can have pointers used in inputs.
 	 * \param sampleFrames Number of samples in all buffers.
 	 */
-	void(__cdecl* processDoubleReplacing)(AEffect* self, double** inputs, double** outputs, VstInt32 sampleFrames);
+	void(VstFunctionAPI* processDoubleReplacing)(AEffect* self, double** inputs, double** outputs, VstInt32 sampleFrames);
 
 	char __unk12[56];
 #else
@@ -135,6 +135,6 @@ struct AEffect {
 };
 
 // Master callback.
-typedef VstIntPtr (*audioMasterCallback)(AEffect*, VstInt32 opcode, VstInt32, VstInt32, void* ptr, float);
+typedef VstIntPtr(VstFunctionAPI* audioMasterCallback)(AEffect*, VstInt32 opcode, VstInt32, VstInt32, void* ptr, float);
 
 #pragma pack(pop)
