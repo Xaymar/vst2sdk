@@ -28,7 +28,7 @@ class AEffEditor {
 
 	virtual bool getRect(ERect** rect)
 	{
-		*rect = nullptr;
+		//*rect = nullptr;
 		return false;
 	}
 	virtual bool open(void* ptr);
