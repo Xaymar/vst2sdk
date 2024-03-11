@@ -1,9 +1,22 @@
-// This was created from released VST2.x plugins, and is technically under the 2-clause BSD license.
-// Depending on which country you are in, Steinberg can do fuck all about this. Notable countries for
-// this are most members of the United States of America, the entirety of Europe, Japan, and Russia.
-// Consult a lawyer if you don't know if clean room reverse engineering is allowed in your country.
+/*
+ * Copyright 2020 Michael Fabian 'Xaymar' Dirks <info@xaymar.com>
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-// See README.md for all information.
+/*
+ * This was created from released VST2.x plugins, and is technically under the 2-clause BSD license. Depending on which country you are in, Steinberg can do fuck all about this. Notable countries for this are most members of the United States of America, the entirety of Europe, Japan, and Russia.
+ *
+ * Consult a lawyer if you don't know if clean room reverse engineering is allowed in your country.
+ *
+ * See README.md for all information.
+ */
 
 // Known additional information:
 // - Function call standard seems to be stdcall.
@@ -18,7 +31,7 @@
 #ifndef VST2SDK_VST_H
 #define VST2SDK_VST_H
 
-#define VST_FUNCTION_INTERFACE __stdcall
+#define VST_FUNCTION_INTERFACE __cdecl
 #define VST_ALIGNMENT 8
 #define VST_MAGICNUMBER 'VstP'
 
@@ -55,10 +68,10 @@ extern "C" {
 |* Enumeration
 |*/
 enum VST_VERSION {
-	VST_VERSION_1       = 0,    // Anything before 2.0, used by official plug-ins.
+	VST_VERSION_1       = 0, // Anything before 2.0, used by official plug-ins.
 	VST_VERSION_1_0_0_0 = 1000, // 1.0, used by some third-party plug-ins.
 	VST_VERSION_1_1_0_0 = 1100, // 1.1, used by some third-party plug-ins.
-	VST_VERSION_2       = 2,    // 2.0, used by official plug-ins.
+	VST_VERSION_2       = 2, // 2.0, used by official plug-ins.
 	VST_VERSION_2_0_0_0 = 2000, // 2.0, used by some third-party plug-ins.
 	VST_VERSION_2_1_0_0 = 2100, // 2.1
 	VST_VERSION_2_2_0_0 = 2200, // 2.2
@@ -812,8 +825,7 @@ struct vst_effect {
 	 * @param p_ptr Parameter, see VST_EFFECT_OPCODES.
 	 * @param p_float Parameter, see VST_EFFECT_OPCODES.
 	 */
-	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1,
-											  intptr_t p_int2, void* p_ptr, float p_float);
+	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
 
 	/* Process the given number of samples in inputs and outputs.
 	 *
@@ -824,8 +836,7 @@ struct vst_effect {
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process)(vst_effect* pthis, const float* const* inputs, float** outputs,
-										  int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process)(vst_effect* pthis, const float* const* inputs, float** outputs, int32_t samples);
 
 	/* Updates the value for the parameter at the given index, or does nothing if out of bounds.
 	 * 
@@ -844,9 +855,9 @@ struct vst_effect {
 	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect* pthis, uint32_t index);
 
 	int32_t num_programs; // Number of possible programs.
-	int32_t num_params;   // Number of possible parameters.
-	int32_t num_inputs;   // Number of inputs.
-	int32_t num_outputs;  // Number of outputs.
+	int32_t num_params; // Number of possible parameters.
+	int32_t num_inputs; // Number of inputs.
+	int32_t num_outputs; // Number of outputs.
 
 	/* Bitflags
 	 * 
@@ -873,10 +884,10 @@ struct vst_effect {
 	int32_t delay;
 
 	int32_t _unknown_int32_00[2]; // Unknown int32_t values.
-	float   _unknown_float_00;    // Seems to always be 1.0
+	float   _unknown_float_00; // Seems to always be 1.0
 
 	void* effect_internal; // Pointer to Plugin internal data
-	void* host_internal;   // Pointer to Host internal data.
+	void* host_internal; // Pointer to Host internal data.
 
 	/* Id of the plugin.
 	 *
@@ -903,8 +914,7 @@ struct vst_effect {
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect* pthis, const float* const* inputs, float** outputs,
-												int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect* pthis, const float* const* inputs, float** outputs, int32_t samples);
 
 	/* Process the given number of double samples in inputs and outputs.
 	 *
@@ -915,8 +925,7 @@ struct vst_effect {
 	 * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect* pthis, const double* const* inputs, double** outputs,
-												 int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect* pthis, const double* const* inputs, double** outputs, int32_t samples);
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
@@ -959,8 +968,8 @@ struct vst_speaker_properties {
 };
 
 struct vst_speaker_arrangement {
-	VST_ARRANGEMENT_TYPE   type;                       // See VST_SPEAKER_ARRANGEMENT_TYPE
-	int32_t                channels;                   // Number of channels in speakers.
+	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
+	int32_t                channels; // Number of channels in speakers.
 	vst_speaker_properties speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
 };
 
@@ -970,13 +979,12 @@ struct vst_speaker_arrangement {
  * @param p_str Zero terminated string or null on call.
  * @return ?
  */
-typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2,
-									  const char* p_str, int32_t p_int3);
+typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
 
 static const char* vst_host_string[] = {
 	"GetResourcePath", // ReaControlMIDI
-	"get_ini_file",    // ReaControlMIDI
-	"resolve_fn",      // ReaControlMIDI
+	"get_ini_file", // ReaControlMIDI
+	"resolve_fn", // ReaControlMIDI
 };
 
 /* Entry point for VST2.x plugins.
@@ -1003,8 +1011,8 @@ static const char* vst_host_string[] = {
 #ifdef __cplusplus
 template<size_t T>
 struct vst_speaker_arrangement_t {
-	VST_ARRANGEMENT_TYPE   type;        // See VST_SPEAKER_ARRANGEMENT_TYPE
-	int32_t                channels;    // Number of channels in speakers.
+	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
+	int32_t                channels; // Number of channels in speakers.
 	vst_speaker_properties speakers[T]; // Array of speaker properties, actual size defined by channels.
 };
 #endif
