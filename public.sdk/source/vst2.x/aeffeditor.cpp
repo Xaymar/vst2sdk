@@ -19,11 +19,6 @@ AEffEditor::AEffEditor(AudioEffect* effect) : effect(effect), _handle() {}
 
 AEffEditor::~AEffEditor() {}
 
-bool AEffEditor::getRect(ERect** rect)
-{
-	return false;
-}
-
 bool AEffEditor::open(void* ptr)
 {
 	if (!_handle) {
@@ -37,29 +32,4 @@ void AEffEditor::close()
 {
 	_handle = nullptr;
 	return;
-}
-
-void AEffEditor::do_nothing()
-{
-	return;
-}
-
-bool AEffEditor::setKnobMode(VstInt32 val)
-{
-	return false;
-}
-
-bool AEffEditor::onKeyDown(VstKeyCode& keyCode)
-{
-	return false;
-}
-
-bool AEffEditor::onKeyUp(VstKeyCode& keyCode)
-{
-	return false;
-}
-
-bool AEffEditor::onWheel(float distance)
-{
-	return false;
 }

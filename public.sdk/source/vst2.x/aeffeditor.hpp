@@ -26,16 +26,35 @@ class AEffEditor {
 	AEffEditor(AudioEffect* effect);
 	virtual ~AEffEditor();
 
-	virtual bool getRect(ERect** rect);
+	virtual bool getRect(ERect** rect)
+	{
+		*rect = nullptr;
+		return false;
+	}
 	virtual bool open(void* ptr);
 	virtual void close();
-	virtual void do_nothing();
+	virtual void do_nothing()
+	{
+		return;
+	}
 
 #if (!defined VST_VERSION_SUPPORT) || (VST_VERSION_SUPPORT >= kVstVersion_2100)
-	virtual bool setKnobMode(VstInt32 val);
-	virtual bool onKeyDown(VstKeyCode& keyCode);
-	virtual bool onKeyUp(VstKeyCode& keyCode);
-	virtual bool onWheel(float distance);
+	virtual bool setKnobMode(VstInt32 val)
+	{
+		return false;
+	}
+	virtual bool onKeyDown(VstKeyCode& keyCode)
+	{
+		return false;
+	}
+	virtual bool onKeyUp(VstKeyCode& keyCode)
+	{
+		return false;
+	}
+	virtual bool onWheel(float distance)
+	{
+		return false;
+	}
 #endif
 
 	protected:
