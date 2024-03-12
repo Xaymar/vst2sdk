@@ -113,7 +113,6 @@ VstIntPtr AudioEffectX::control(VstInt32 opcode, VstInt32 param1, VstIntPtr para
 	default:
 		return AudioEffect::control(opcode, param1, param2, ptr, value);
 	}
-	return 0;
 }
 
 VstInt32 AudioEffectX::canHostDo(char* text)
