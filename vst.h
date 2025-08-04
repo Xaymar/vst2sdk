@@ -31,7 +31,7 @@
 #ifndef VST2SDK_VST_H
 #define VST2SDK_VST_H
 
-#define VST_FUNCTION_INTERFACE __cdecl
+#define VST_FUNCTION_INTERFACE __cdecl // Incorrect for older Windows platforms. Is it actually stdcall sometimes? That would be stupid.
 #define VST_ALIGNMENT 8 // This appears to be wrong for 32-bit. But it's not 4 byte either? What.
 #define VST_MAGICNUMBER 'VstP'
 
