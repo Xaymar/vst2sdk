@@ -32,7 +32,7 @@
 #define VST2SDK_VST_H
 
 #define VST_FUNCTION_INTERFACE __cdecl
-#define VST_ALIGNMENT 8
+#define VST_ALIGNMENT 8 // This appears to be wrong for 32-bit. But it's not 4 byte either? What.
 #define VST_MAGICNUMBER 'VstP'
 
 // Common VST buffer lengths:
@@ -131,27 +131,32 @@ enum VST_EFFECT_OPCODE {
 
 	/* Set Program
 	 *
-	 *
+	 * Seems to be for presets?
 	 */
 	VST_EFFECT_OPCODE_02 = 0x02,
+	VST_EFFECT_OPCODE_SET_PROGRAM = 0x02,
 
 	/* Get Program
 	 *
-	 *
+	 * Seems to be for presets?
+	 * @return The currently set program number.
 	 */
 	VST_EFFECT_OPCODE_03 = 0x03,
+	VST_EFFECT_OPCODE_GET_PROGRAM = 0x03,
 
 	/* Set Program Name
 	 *
-	 *
+	 * @param 
 	 */
 	VST_EFFECT_OPCODE_04 = 0x04,
+	VST_EFFECT_OPCODE_SET_PROGRAM_NAME = 0x04,
 
 	/* Get Program Name
 	 *
-	 * "Returns 0. If ptr is valid, sets the first byte of ptr to 0 then returns 0."
+	 * @param p_ptr `char[]
 	 */
 	VST_EFFECT_OPCODE_05 = 0x05,
+	VST_EFFECT_OPCODE_GET_PROGRAM_NAME = 0x05,
 
 	/* Get the value? label for the parameter.
 	 * 
