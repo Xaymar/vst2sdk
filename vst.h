@@ -85,16 +85,26 @@ enum VST_VERSION {
 enum VST_CATEGORY {
 	VST_CATEGORY_UNCATEGORIZED = 0x00,
 	VST_CATEGORY_01            = 0x01,
+	VST_CATEGORY_EFFECT        = 0x01, // Generic Effects, Distortion, ...
 	VST_CATEGORY_02            = 0x02,
+	VST_CATEGORY_INSTRUMENT    = 0x02, // Instruments, Synthesizers, Samplers, ...
 	VST_CATEGORY_03            = 0x03,
+	VST_CATEGORY_METERING      = 0x03, // Loudness Meters, Volume Analysis, etc.
 	VST_CATEGORY_04            = 0x04,
+	VST_CATEGORY_MASTERING     = 0x04, // Compressors, Limiters, ...
 	VST_CATEGORY_05            = 0x05,
+	VST_CATEGORY_SPATIAL       = 0x05, // Stereo and Multi-Channel Panning
 	VST_CATEGORY_06            = 0x06,
-	VST_CATEGORY_07            = 0x07,
+	VST_CATEGORY_DELAY_OR_ECHO = 0x06, // Echo, Reverb, Room Simulator, ...
+	VST_CATEGORY_07            = 0x07, 
+	VST_CATEGORY_08            = 0x08,
 	VST_CATEGORY_RESTORATION   = 0x08, // Denoising and similar effects.
 	VST_CATEGORY_09            = 0x09,
+	VST_CATEGORY_OFFLINE       = 0x09, // Offline Processing VST? Seems to receive all audio data prior to playback.
+	VST_CATEGORY_0A            = 0x0A, 
 	VST_CATEGORY_CONTAINER     = 0x0A, // Plugin contains more than one Plugin.
 	VST_CATEGORY_0B            = 0x0B,
+	VST_CATEGORY_WAVEGENERATOR = 0x0B, // Only found one released VST plugin with this, and it creates a perfect 400 hz sine wave?
 	VST_CATEGORY_MAX, // Not part of specification, marks maximum category.
 
 	// Pad to force 32-bit number.
