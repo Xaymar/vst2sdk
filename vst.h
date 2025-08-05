@@ -63,15 +63,17 @@ enum VST_STATUS {
  */
 enum VST_BUFFER_SIZE {
 	VST_BUFFER_SIZE_PARAM_LABEL = 8,
-	VST_BUFFER_SIZE_PARAM_LONG_NAME = 64,
 	VST_BUFFER_SIZE_PARAM_NAME = 8,
 	VST_BUFFER_SIZE_PARAM_VALUE = 8,
-	VST_BUFFER_SIZE_PROGRAM_NAME = 24,
+	VST_BUFFER_SIZE_STREAM_LABEL = 8,
 	VST_BUFFER_SIZE_CATEGORY_LABEL = 24,
+	VST_BUFFER_SIZE_PROGRAM_NAME = 24,
 	VST_BUFFER_SIZE_EFFECT_NAME = 32,
-	VST_BUFFER_SIZE_VENDOR_NAME = 64,
+	VST_BUFFER_SIZE_PARAM_LONG_NAME = 64,
 	VST_BUFFER_SIZE_PRODUCT_NAME = 64,
 	VST_BUFFER_SIZE_SPEAKER_NAME = 64,
+	VST_BUFFER_SIZE_STREAM_NAME = 64,
+	VST_BUFFER_SIZE_VENDOR_NAME = 64,
 }; // This is an enum because I started to dislike macros.
 
 /** VST Version Enumeration
@@ -106,38 +108,46 @@ enum VST_PARAMETER_FLAG {
 	/** Parameter is an on/off switch.
 	 *
 	 */
+	VST_PARAMETER_FLAG_1ls0 = 1 << 0,
 	VST_PARAMETER_FLAG_SWITCH = 1,
 
 	/** Parameter limits are set as integers.
 	 *
 	 */
+	VST_PARAMETER_FLAG_1ls1 = 1 << 1,
 	VST_PARAMETER_FLAG_INTEGER_LIMITS = 1 << 1,
 
 	/** Parameter uses float steps.
 	 *
 	 */
+	VST_PARAMETER_FLAG_1ls2 = 1 << 2,
 	VST_PARAMETER_FLAG_STEP_FLOAT = 1 << 2,
 
 	/** Parameter uses integer steps.
 	 *
 	 */
+	VST_PARAMETER_FLAG_1ls3 = 1 << 3,
 	VST_PARAMETER_FLAG_STEP_INT = 1 << 3,
 
 	/** Parameter has an display order index for the default editor.
 	 *
 	 * Only applies to the default editor.
 	 */
+	VST_PARAMETER_FLAG_1ls4 = 1 << 4,
 	VST_PARAMETER_FLAG_INDEX = 1 << 4,
 
 	/** Parameter has a category for the default editor.
 	 *
 	 * Only applies to the default editor.
 	 */
+	VST_PARAMETER_FLAG_1ls5 = 1 << 5,
 	VST_PARAMETER_FLAG_CATEGORY = 1 << 5,
 
 	/** Parameter can be gradually increased/decreased.
 	 * 
+	 * Used for automation only? How?
 	 */
+	VST_PARAMETER_FLAG_1ls6 = 1 << 6,
 	VST_PARAMETER_FLAG_RAMPING = 1 << 6,
 
 	_VST_PARAMETER_FLAG_PAD     = 0xFFFFFFFFul,
@@ -358,6 +368,48 @@ struct vst_speaker_arrangement_t {
 	int32_t type; // See VST_SPEAKER_ARRANGEMENT_TYPE
 	int32_t channels; // Number of channels in this arrangement.
 	vst_speaker_properties_t speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
+};
+
+enum VST_STREAM_FLAG {
+	/** Ignored?
+	 */
+	VST_STREAM_FLAG_1ls0 = 1 << 0,
+
+	/** Stream is in Stereo
+	 * 
+	 * Can't be used with VST_STREAM_FLAG_USE_TYPE.
+	 */
+	VST_STREAM_FLAG_1ls1 = 1 << 1,
+	VST_STREAM_FLAG_STEREO = 1 << 1,
+
+	/** Stream is defined by VST_SPEAKER_ARRANGEMENT_TYPE
+	 * 
+	 * Can't be used with VST_STREAM_FLAG_STEREO.
+	 */
+	VST_STREAM_FLAG_1ls2 = 1 << 2,
+	VST_STREAM_FLAG_USE_TYPE = 1 << 2,
+};
+
+struct vst_stream_properties_t {
+	/** Human-readable name for this stream.
+	 */
+	char name[VST_BUFFER_SIZE_STREAM_NAME];
+
+	/** Stream flags
+	 * Any combination of VST_STREAM_FLAG
+	 */
+	int32_t flags;
+
+	/** Stream arrangement (optional)
+	 * See VST_SPEAKER_ARRANGEMENT_TYPE
+	 */
+	int32_t type;
+
+	/** Human-readable label for this stream.
+	 */
+	char label[VST_BUFFER_SIZE_STREAM_LABEL];
+
+	uint8_t _reserved[48]; // 48 bytes of uninitialized data, always.
 };
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -705,22 +757,54 @@ enum VST_EFFECT_CATEGORY {
 /** Effect Flags
  */
 enum VST_EFFECT_FLAG {
+	/** Effect provides a custom editor.
+	 * The host will not provide a generic editor interface and expects VST_EFFECT_OPCODE_EDITOR_OPEN/_CLOSE to work as
+	 * expected. We are in charge of notifying the host about various things like which parameter is in focus and stuff.
+	 */
 	VST_EFFECT_FLAG_EDITOR = 1 << 0, // The plug-in provides a custom editor instead of the generic host interface.
+
 	//1 << 1,
 	//1 << 2, // Only seen when the plug-in responds to VST_EFFECT_OPCODE_09. Seems to be ignored by hosts entirely.
 	//1 << 3, // Only seen when the plug-in behaves differently in mono mode. Seems to be ignored by hosts entirely.
-	VST_EFFECT_FLAG_SUPPORTS_FLOAT = 1 << 4, // Plug-in supports process_float. Must be set if VST version is 2.4.
-	VST_EFFECT_FLAG_CHUNKS = 1 << 5, // Plug-in uses unformatted chunk data. I call this unformatted because without this set some format is expected.
+
+	/** Effect uses process_float.
+	 * 
+	 * This is the default behavior for VST 2.4 and must always be set if making a VST 2.4 plug-in.
+	 */
+	VST_EFFECT_FLAG_SUPPORTS_FLOAT = 1 << 4,
+
+	/** Effect supports saving/loading programs/banks from unformatted chunk data.
+	 * When not set some sort of format is expected that I've yet to decipher.
+	 * 
+	 */
+	VST_EFFECT_FLAG_CHUNKS = 1 << 5,
+
 	//1 << 6,
 	//1 << 7,
 	//1 << 8,
-	VST_EFFECT_FLAG_INSTRUMENT = 1 << 8, // Plug-in is an instrument/generator of some kind.
+
+	/** Effect is an Instrument/Generator
+	 */
+	VST_EFFECT_FLAG_INSTRUMENT = 1 << 8, 
+
 	//1 << 9,
-	VST_EFFECT_FLAG_NO_TAIL = 1 << 9, // Plug-in does not produce a tail. This is not the same as returning 1 in the tail samples op-code for some reason.
+	
+	/** Effect does not produce tail samples when the input is silent.
+	 * 
+	 * Not to be confused with choosing to tell the host there is no tail.
+	 */
+	VST_EFFECT_FLAG_SILENT_TAIL = 1 << 9,
+
 	//1 << 10,
 	//1 << 11,
 	//1 << 12,
-	VST_EFFECT_FLAG_SUPPORTS_DOUBLE = 1 << 12, // Plug-in supports process_double. Optional mode for VST version 2.4, host can freely select.
+	
+	/** Effect supports process_double.
+	 * The host can freely choose between process_float and process_double as required.
+	 * 
+	 * Only available for VST 2.4 compatible plug-ins and hosts.
+	 */
+	VST_EFFECT_FLAG_SUPPORTS_DOUBLE = 1 << 12,
 };
 
 /** Host to Plug-in Op-Codes
@@ -1029,25 +1113,27 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_20 = 0x20,
 
-	/** Retrieve the name of the input channel at the given index.
+	/** Retrieve properties for the given input index.
 	 *
-	 * @param p_int1 Index of the input to get the name for.
-	 * @param p_ptr Pointer to a char* buffer able to hold at minimum 20 characters. Might need to be 32 even.
-	 * @return 0 on failure, 1 on success.
+	 * @param p_int1 Index of the input to get the properties for.
+	 * @param p_ptr `vst_stream_properties_t*` Pointer to the properties structure for the selected input provided by the host.
+	 * @return VST_STATUS_TRUE if p_ptr is updated, VST_STATUS_FALSE otherwise.
 	 */
 	VST_EFFECT_OPCODE_21                   = 0x21,
-	VST_EFFECT_OPCODE_INPUT_GETCHANNELNAME = 0x21,
-	VST_EFFECT_OPCODE_INPUT_CHANNEL_NAME   = 0x21,
+	VST_EFFECT_OPCODE_INPUT_GET_PROPERTIES = 0x21,
+	//VST_EFFECT_OPCODE_INPUT_GETCHANNELNAME = 0x21,
+	//VST_EFFECT_OPCODE_INPUT_CHANNEL_NAME   = 0x21,
 
-	/** Retrieve the name of the output channel at the given index.
+	/** Retrieve properties for the given output index.
 	 *
-	 * @param p_int1 Index of the output to get the name for.
-	 * @param p_ptr Pointer to a char* buffer able to hold at minimum 20 characters. Might need to be 32 even.
-	 * @return 0 on failure, 1 on success.
+	 * @param p_int1 Index of the output to get the properties for.
+	 * @param p_ptr `vst_stream_properties_t*` Pointer to the properties structure for the selected output provided by the host.
+	 * @return VST_STATUS_TRUE if p_ptr is updated, VST_STATUS_FALSE otherwise.
 	 */
 	VST_EFFECT_OPCODE_22                    = 0x22,
-	VST_EFFECT_OPCODE_OUTPUT_GETCHANNELNAME = 0x22,
-	VST_EFFECT_OPCODE_OUTPUT_CHANNEL_NAME   = 0x22,
+	VST_EFFECT_OPCODE_OUTPUT_GET_PROPERTIES = 0x22,
+	//VST_EFFECT_OPCODE_OUTPUT_GETCHANNELNAME = 0x22,
+	//VST_EFFECT_OPCODE_OUTPUT_CHANNEL_NAME   = 0x22,
 
 	/** Retrieve category of this effect.
 	 *
