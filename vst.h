@@ -153,8 +153,14 @@ enum VST_PARAMETER_FLAG {
 	_VST_PARAMETER_FLAG_PAD     = 0xFFFFFFFFul,
 };
 
+/** Information about a parameter
+ * 
+ * Note: Some hosts and plug-ins expect float parameters to be normalized within 0.0 and 1.0.
+ */
 struct vst_parameter_properties_t {
 	/** Float Step value
+	 * 
+	 * Some hosts and plug-ins expect this to be within 0 and 1.0.
 	 * 
 	 * Only valid with VST_PARAMETER_FLAG_STEP_FLOAT
 	 */
@@ -163,12 +169,16 @@ struct vst_parameter_properties_t {
 	/** Float small step value
 	 * This is used for "tiny" changes.
 	 * 
+	 * Some hosts and plug-ins expect this to be within 0 and 1.0.
+	 * 
 	 * Only valid with VST_PARAMETER_FLAG_STEP_FLOAT
 	 */
 	float step_small_f32;
 
 	/** Float large step value
 	 * This is used for "huge" changes.
+	 * 
+	 * Some hosts and plug-ins expect this to be within 0 and 1.0.
 	 * 
 	 * Only valid with VST_PARAMETER_FLAG_STEP_FLOAT
 	 */
