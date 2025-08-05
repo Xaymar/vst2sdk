@@ -564,7 +564,7 @@ enum VST_EFFECT_FLAG {
 	//1 << 2, // Only seen when the plug-in responds to VST_EFFECT_OPCODE_09. Seems to be ignored by hosts entirely.
 	//1 << 3, // Only seen when the plug-in behaves differently in mono mode. Seems to be ignored by hosts entirely.
 	VST_EFFECT_FLAG_SUPPORTS_FLOAT = 1 << 4, // Plug-in supports process_float. Must be set if VST version is 2.4.
-	VST_EFFECT_FLAG_CHUNKS = 1 << 5, // Plug-in uses unformatted chunk data. 
+	VST_EFFECT_FLAG_CHUNKS = 1 << 5, // Plug-in uses unformatted chunk data. I call this unformatted because without this set some format is expected.
 	//1 << 6,
 	//1 << 7,
 	//1 << 8,
