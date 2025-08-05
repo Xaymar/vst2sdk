@@ -205,7 +205,7 @@ struct vst_parameter_properties_t {
 	 */
 	uint16_t num_parameters_in_category;
 
-	uint16_t _unknown_00 = 0; // Must be set to 0.
+	uint16_t _unknown_00; // Must be set to 0.
 
 	/** Human-readable name for the category this parameter is in.
 	 * 
@@ -298,7 +298,7 @@ struct vst_speaker_properties_t {
 	 */
 	float distance;
 
-	float _unknown_00 = 0;
+	float _unknown_00; // Must be set to 0
 
 	/** Human readable name for this speaker.
 	 * 
@@ -367,7 +367,7 @@ enum VST_SPEAKER_ARRANGEMENT_TYPE {
 struct vst_speaker_arrangement_t {
 	int32_t type; // See VST_SPEAKER_ARRANGEMENT_TYPE
 	int32_t channels; // Number of channels in this arrangement.
-	vst_speaker_properties_t speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
+	struct vst_speaker_properties_t speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
 };
 
 enum VST_STREAM_FLAG {
@@ -602,13 +602,14 @@ enum VST_HOST_OPCODE {
 	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
+#ifdef __cplusplus
 /** Plug-in to Hostn support checks
  * 
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
  * 
  * Harvested via strings command and just checking what plug-ins actually responded to. * 
  */
-struct {
+namespace vst_host_supports {
 	/** Does the host support modifying input/output/params/delay when programs, banks or parameters are changed?
 	 * This only means that the host supports this inside of VST_EFFECT_OPCODE_IDLE (VST 2.3 or earlier) or outside of
 	 * a VST_EFFECT_OPCODE_PROCESS_BEGIN and VST_EFFECT_OPCODE_PROCESS_END group.
@@ -653,7 +654,8 @@ struct {
 
 	const char* openFileSelector = "openFileSelector";
 	const char* closeFileSelector = "closeFileSelector";
-} vst_host_supports;
+};
+#endif
 
 /** Plug-in to Host callback
  *
@@ -663,7 +665,7 @@ struct {
  * @param p_str Zero terminated string or null on call.
  * @return ?
  */
-typedef intptr_t (*vst_host_callback_t)(vst_effect_t* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
+typedef intptr_t (*vst_host_callback_t)(struct vst_effect_t* plugin, int32_t opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
 
 //------------------------------------------------------------------------------------------------------------------------
 // VST Plug-in/Effect related Things
@@ -701,7 +703,7 @@ enum VST_EFFECT_CATEGORY {
 	 * 
 	 * Host handling:
 	 * ```
-	 * uint32_t current_select_id = 0;
+	 * uint32_t current_select_id;
 	 * 
 	 * // ... in intptr_t vst_host_callback(vst_effect_t* plugin, VST_HOST_OPCODE opcode, ...)
 	 *     case VST_HOST_OPCODE_SUPPORTS: {
@@ -716,7 +718,7 @@ enum VST_EFFECT_CATEGORY {
 	 * // ...
 	 * 
 	 * // ... in whatever you use to load plug-ins ...
-	 *   current_select_id = 0;
+	 *   current_select_id;
 	 *   vst_effect_t* plugin = plugin_main(&vst_host_callback);
 	 *   int32_t plugin_category = plugin->control(plugin, VST_EFFECT_OPCODE_CATEGORY, 0, 0, 0, 0)
 	 *   if (plugin_category == VST_EFFECT_CATEGORY_CONTAINER) {
@@ -739,7 +741,7 @@ enum VST_EFFECT_CATEGORY {
 	 * ```
 	 * 
 	 * // ... in vst_effect for the container
-	 *   size_t current_effect_idx = 0;
+	 *   size_t current_effect_idx;
 	 *   int32_t effect_list[] = {
 	 *     // ... list of effect ids.
 	 *   }
@@ -747,7 +749,7 @@ enum VST_EFFECT_CATEGORY {
 	 *     case VST_EFFECT_OPCODE_CONTAINER_NEXT_EFFECT_ID:
 	 *       // Make sure current_effect_idx doesn't exceed the maximum.
 	 *       if (current_effect_idx > ARRAYSIZEOF(effect_list)) {
-	 *         current_effect_idx = 0;
+	 *         current_effect_idx;
 	 *         return 0;
 	 *       }
 	 *       // Some code that turns effect indices into names to store into p_ptr.
@@ -1450,7 +1452,7 @@ enum VST_EFFECT_OPCODE {
 	 * 
 	 *
 	 */
-	VST_EFFECT_OPCODE_47 = 0x48,
+	VST_EFFECT_OPCODE_48 = 0x48,
 	VST_EFFECT_OPCODE_PROCESS_END = 0x48,
 
 	/**
@@ -1506,13 +1508,14 @@ enum VST_EFFECT_OPCODE {
 	_VST_EFFECT_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
+#ifdef __cplusplus
 /** Host to Plug-in support checks
  * 
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
  * 
  * Harvested via strings command and just checking what plug-ins actually responded to. * 
  */
-struct {
+namespace vst_effect_supports {
 	/** Effect supports alternative bypass.
 	 * The alternative bypass still has the host call process/process_float/process_double and expects us to compensate
 	 * for our delay/latency, copy inputs to outputs, and do minimal work. If we don't support it the host will not call
@@ -1557,12 +1560,13 @@ struct {
 	const char* _4in8out = "4in8out";
 	const char* _8in4out = "8in4out";
 	const char* _8in8out = "8in8out";
-} vst_effect_supports;
+};
+#endif
 
 /** Plug-in Effect definition
  */
 struct vst_effect_t {
-	int32_t magic_number = (int32_t)'VstP'; // Should always be VST_MAGICNUMBER
+	int32_t magic_number; // Should always be VST_MAGICNUMBER ('VstP')
 
 	// 64-bit adds 4-byte padding here to align pointers.
 
@@ -1575,7 +1579,7 @@ struct vst_effect_t {
 	 * @param p_ptr Parameter, see VST_EFFECT_OPCODES.
 	 * @param p_float Parameter, see VST_EFFECT_OPCODES.
 	 */
-	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect_t* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float) = 0;
+	intptr_t(VST_FUNCTION_INTERFACE* control)(struct vst_effect_t* pthis, int32_t opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
 
 	/** Process the given number of samples in inputs and outputs.
 	 *
@@ -1586,7 +1590,7 @@ struct vst_effect_t {
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples) = 0;
+	void(VST_FUNCTION_INTERFACE* process)(struct vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
 
 	/** Updates the value for the parameter at the given index, or does nothing if out of bounds.
 	 * 
@@ -1594,7 +1598,7 @@ struct vst_effect_t {
 	 * @param index Parameter index.
 	 * @param value New value for the parameter.
 	 */
-	void(VST_FUNCTION_INTERFACE* set_parameter)(vst_effect_t* pthis, uint32_t index, float value) = 0;
+	void(VST_FUNCTION_INTERFACE* set_parameter)(struct vst_effect_t* pthis, uint32_t index, float value);
 
 	/** Returns the value stored for the parameter at index, or 0 if out of bounds.
 	 * 
@@ -1602,56 +1606,57 @@ struct vst_effect_t {
 	 * @param index Parameter index.
 	 * @return float Value of the parameter.
 	 */
-	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect_t* pthis, uint32_t index) = 0;
+	float(VST_FUNCTION_INTERFACE* get_parameter)(struct vst_effect_t* pthis, uint32_t index);
 
-	int32_t num_programs = 0; // Number of available programs.
-	int32_t num_params = 0; // Number of parameters. All programs must have at least this many parameters.
-	int32_t num_inputs = 0; // Number of inputs.
-	int32_t num_outputs = 0; // Number of outputs.
+	int32_t num_programs; // Number of available programs.
+	int32_t num_params; // Number of parameters. All programs must have at least this many parameters.
+	int32_t num_inputs; // Number of inputs.
+	int32_t num_outputs; // Number of outputs.
 
 	/** Effect Flags
 	 *
 	 * See: VST_EFFECT_FLAGS
 	 */
-	int32_t flags = 0;
+	int32_t flags;
 
 	// 64-bit adds 4-byte padding here to align pointers.
 
-	void* _unknown_00 = 0;
-	void* _unknown_01 = 0;
+	void* _unknown_00; // Must be zero. Reserved for host?
+	void* _unknown_01; // Must be zero. Reserved for host?
 
 	/** Initial delay before processing of samples can actually begin in Samples.
 	 *
 	 * Note: The host can modify this at runtime so it is not safe. 
 	 * Note: Should be reinitialized when the effect is resumed.
 	 */
-	int32_t delay = 0;
+	int32_t delay;
 
-	int32_t _unknown_02 = 0; // Unknown int32_t values.
-	int32_t _unknown_03 = 0;
+	int32_t _unknown_02; // Unknown int32_t values.
+	int32_t _unknown_03;
 
 	/** Ratio of Input to Output production
 	 * Defines how much output data is produced relative to input data when using 'process' instead of 'processFloat'.
 	 * Example: A ratio of 2.0 means we produce twice as much output as we receive input.
 	 * 
 	 * Range: >0.0 to Infinity
+	 * Default: 1.0
 	 * Note: Ignored in VST 2.4 or with VST_EFFECT_FLAG_SUPPORTS_FLOAT.
 	 */
-	float input_output_ratio = 1.0;
+	float input_output_ratio;
 
 	/** Effect Internal Pointer
 	 * 
 	 * You can freely set this to point at some sort of class or similar for use in your own effect. The host must
 	 * never modify this or the data available through this.
 	 */
-	void* effect_internal = 0;
+	void* effect_internal;
 
 	/** Host Internal Pointer
 	 * 
 	 * The host may set this to point at data related to your effect instance that the host needs. The effect must
 	 * never modify this or the data available through this.
 	 */
-	void* host_internal = 0; // Pointer to Host internal data.
+	void* host_internal; // Pointer to Host internal data.
 
 	/** Id of the plugin.
 	 *
@@ -1664,13 +1669,13 @@ struct vst_effect_t {
 	 *
 	 * BUG: Some broken hosts rely on this alone to save information about VST plug-ins.
 	 */
-	int32_t unique_id = 0;
+	int32_t unique_id;
 
 	/** Plugin version
 	 * 
 	 * Unrelated to the minimum VST Version, but often the same.
 	 */
-	int32_t version = 0;
+	int32_t version;
 
 	// There is no padding here if everything went right.
 
@@ -1689,7 +1694,7 @@ struct vst_effect_t {
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples) = 0;
+	void(VST_FUNCTION_INTERFACE* process_float)(struct vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
 
 	//--------------------------------------------------------------------------------
 	// VST 2.4 starts here.
@@ -1706,7 +1711,7 @@ struct vst_effect_t {
 	 * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect_t* pthis, const double* const* inputs, double** outputs, int32_t samples) = 0;
+	void(VST_FUNCTION_INTERFACE* process_double)(struct vst_effect_t* pthis, const double* const* inputs, double** outputs, int32_t samples);
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
