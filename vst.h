@@ -1,26 +1,25 @@
-/*
- * Copyright 2020 Michael Fabian 'Xaymar' Dirks <info@xaymar.com>
+/* An attempt at an untained clean room reimplementation of the widely popular VST 2.x SDK.
+ * Copyright (c) 2020 Xaymar Dirks <info@xaymar.com> (previously known as Michael Fabian Dirks)
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ * following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+ *    disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *    following disclaimer in the documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- * This was created from released VST2.x plugins, and is technically under the 2-clause BSD license. Depending on which country you are in, Steinberg can do fuck all about this. Notable countries for this are most members of the United States of America, the entirety of Europe, Japan, and Russia.
- *
- * Consult a lawyer if you don't know if clean room reverse engineering is allowed in your country.
- *
- * See README.md for all information.
- */
-
-// Known additional information:
-// - Function call standard seems to be stdcall.
-// - Everything is aligned to 8 bytes.
+// Please refer to README.md and LICENSE for further information.
 
 #pragma once
 #ifndef VST2SDK_VST_H
@@ -92,50 +91,332 @@ enum VST_VERSION {
 	_VST_VERSION_PAD = 0xFFFFFFFFul,
 };
 
-/** Plug-in Categories
- * All plug-ins must be in one of these categories and their behavior differs depending on which category
- *  they are in. This adds on to the "flags" each plug-in can specify.
- */
-enum VST_CATEGORY {
-	VST_CATEGORY_UNCATEGORIZED = 0x00,
-	VST_CATEGORY_01            = 0x01,
-	VST_CATEGORY_EFFECT        = 0x01, // Generic Effects, Distortion, ...
-	VST_CATEGORY_02            = 0x02,
-	VST_CATEGORY_INSTRUMENT    = 0x02, // Instruments, Synthesizers, Samplers, ...
-	VST_CATEGORY_03            = 0x03,
-	VST_CATEGORY_METERING      = 0x03, // Loudness Meters, Volume Analysis, etc.
-	VST_CATEGORY_04            = 0x04,
-	VST_CATEGORY_MASTERING     = 0x04, // Compressors, Limiters, ...
-	VST_CATEGORY_05            = 0x05,
-	VST_CATEGORY_SPATIAL       = 0x05, // Stereo and Multi-Channel Panning
-	VST_CATEGORY_06            = 0x06,
-	VST_CATEGORY_DELAY_OR_ECHO = 0x06, // Echo, Reverb, Room Simulator, ...
-	VST_CATEGORY_07            = 0x07, 
-	VST_CATEGORY_08            = 0x08,
-	VST_CATEGORY_RESTORATION   = 0x08, // Denoising and similar effects.
-	VST_CATEGORY_09            = 0x09,
-	VST_CATEGORY_OFFLINE       = 0x09, // Offline Processing VST? Seems to receive all audio data prior to playback.
-	VST_CATEGORY_0A            = 0x0A, 
-	VST_CATEGORY_CONTAINER     = 0x0A, // Plugin contains more than one Plugin.
-	VST_CATEGORY_0B            = 0x0B,
-	VST_CATEGORY_WAVEGENERATOR = 0x0B, // Only found one released VST plugin with this, and it creates a perfect 400 hz sine wave?
-	VST_CATEGORY_MAX, // Not part of specification, marks maximum category.
+enum VST_ARRANGEMENT_TYPE {
+	/* Custom speaker arrangement.
+	 *
+	 * Accidentally discovered through random testing.
+	 */
+	VST_ARRANGEMENT_TYPE_CUSTOM = -2,
+
+	/* Unknown/Empty speaker layout.
+	 *
+	 */
+	VST_ARRANGEMENT_TYPE_UNKNOWN = -1,
+
+	/* Mono
+	 */
+	VST_ARRANGEMENT_TYPE_MONO = 0,
+
+	/* Stereo
+	 */
+	VST_ARRANGEMENT_TYPE_STEREO = 1,
+
+	/* 5.1
+	 */
+	VST_ARRANGEMENT_TYPE_5_1 = 0x0F,
 
 	// Pad to force 32-bit number.
-	_VST_CATEGORY_PAD = 0xFFFFFFFFul,
+	_VST_ARRANGEMENT_TYPE_PAD = 0xFFFFFFFFul,
+};
+
+enum VST_SPEAKER_TYPE {
+	VST_SPEAKER_TYPE_MONO       = 0,
+	VST_SPEAKER_TYPE_LEFT       = 1,
+	VST_SPEAKER_TYPE_RIGHT      = 2,
+	VST_SPEAKER_TYPE_CENTER     = 3,
+	VST_SPEAKER_TYPE_LFE        = 4,
+	VST_SPEAKER_TYPE_LEFT_SIDE  = 5,
+	VST_SPEAKER_TYPE_RIGHT_SIDE = 6,
+
+	// Pad to force 32-bit number.
+	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
+};
+
+enum VST_PARAMETER_FLAGS {
+	/**
+	 * Parameter is an on/off switch.
+	 */
+	VST_PARAMETER_FLAGS_SWITCH = 1,
+	/**
+	 * Limits defined by integers.
+	 */
+	VST_PARAMETER_FLAGS_INTEGER_LIMITS = 1 << 1,
+	/**
+	 * Uses float steps.
+	 */
+	VST_PARAMETER_FLAGS_STEP_FLOAT = 1 << 2,
+	/**
+	 * Uses integer steps.
+	 */
+	VST_PARAMETER_FLAGS_STEP_INT = 1 << 3,
+	/**
+	 * Respect index variable for display ordering.
+	 */
+	VST_PARAMETER_FLAGS_INDEX = 1 << 4,
+	/**
+	 * Respect category value and names.
+	 */
+	VST_PARAMETER_FLAGS_CATEGORY = 1 << 5,
+	VST_PARAMETER_FLAGS_UNKNOWN6 = 1 << 6,
+	_VST_PARAMETER_FLAGS_PAD     = 0xFFFFFFFFul,
+};
+
+/** Window/Editor Rectangle
+ */
+struct vst_rect {
+	int16_t top;
+	int16_t left;
+	int16_t bottom;
+	int16_t right;
+} vst_rect_t;
+
+struct vst_parameter_properties {
+	float step_f32;
+	float step_small_f32;
+	float step_large_f32;
+
+	char name[VST_BUFFER_64];
+
+	uint32_t flags;
+	int32_t  min_value_i32;
+	int32_t  max_value_i32;
+	int32_t  step_i32;
+
+	char label[VST_BUFFER_8];
+
+	uint16_t index;
+
+	uint16_t category;
+	uint16_t num_parameters_in_category;
+	uint16_t _unknown_00;
+
+	char category_label[VST_BUFFER_24];
+
+	char _unknown_01[VST_BUFFER_16];
+} vst_parameter_properties_t;
+
+struct vst_speaker_properties {
+	float            _unknown_00; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
+	float            _unknown_04; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
+	float            _unknown_08; // 0.0 if LFE, otherwise 1.0.
+	float            _unknown_0C;
+	char             name[VST_BUFFER_64];
+	VST_SPEAKER_TYPE type;
+
+	uint8_t _unknown[28]; // Padding detected from testing.
+} vst_speaker_properties_t;
+
+struct vst_speaker_arrangement {
+	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
+	int32_t                channels; // Number of channels in speakers.
+	vst_speaker_properties speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
+} vst_speaker_arrangement_t;
+
+// Variable size variant of vst_speaker_arrangement.
+#ifdef __cplusplus
+template<size_t T>
+struct vst_speaker_arrangement_dynamic_t {
+	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
+	int32_t                channels; // Number of channels in speakers.
+	vst_speaker_properties speakers[T]; // Array of speaker properties, actual size defined by channels.
+};
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------
+// VST Host related Things
+//------------------------------------------------------------------------------------------------------------------------
+
+/** Plug-in to Host Op-Codes
+ * These Op-Codes are emitted by the plug-in and the host _may_ handle them or return 0 (false).
+ * We have no guarantees about anything actually happening.
+ */
+enum VST_HOST_OPCODE {
+	/** Update automation for a given Parameter
+	 * 
+	 * Must be used to notify the host that the parameter was changed by the user if a custom editor is used.
+	 * 
+	 * @param p_int1 Parameter Index
+	 * @param p_float Parameter Value
+	 * @return Expected to return... something.
+	 */
+	VST_HOST_OPCODE_00 = 0x00, // cb(vst, 0x00, ?, 0, 0);
+	VST_HOST_OPCODE_AUTOMATE = 0x00,
+	
+	/** Retrieve the Hosts VST Version.
+	 * 
+	 * @return See VST_VERSION enumeration.
+	 */
+	VST_HOST_OPCODE_01 = 0x01,
+	VST_HOST_OPCODE_VST_VERSION = 0x01,
+
+	VST_HOST_OPCODE_02 = 0x02, // bool cb(0, 0x02, 0, 0, 0);
+
+	/** Some sort of idle keep-alive?
+	 * 
+	 * Seems to be called only in editor windows when a modal popup is present.
+	 */
+	VST_HOST_OPCODE_03 = 0x03,
+	VST_HOST_OPCODE_KEEPALIVE_OR_IDLE = 0x03,
+
+	VST_HOST_OPCODE_04 = 0x04,
+
+	//--------------------------------------------------------------------------------
+	// VST 2.x starts here.
+	//--------------------------------------------------------------------------------
+
+	VST_HOST_OPCODE_05 = 0x05,
+
+	VST_HOST_OPCODE_06 = 0x06,	
+
+	VST_HOST_OPCODE_07 = 0x07,
+
+	VST_HOST_OPCODE_08 = 0x08,
+
+	VST_HOST_OPCODE_09 = 0x09,
+
+	VST_HOST_OPCODE_0A = 0x0A,
+
+	VST_HOST_OPCODE_0B = 0x0B,
+
+	VST_HOST_OPCODE_0C = 0x0C,
+
+	VST_HOST_OPCODE_0D = 0x0D,
+
+	VST_HOST_OPCODE_0E = 0x0E,
+
+	VST_HOST_OPCODE_0F = 0x0F,
+
+	VST_HOST_OPCODE_10 = 0x10,
+
+	VST_HOST_OPCODE_11 = 0x11,
+
+	VST_HOST_OPCODE_12 = 0x12,
+
+	VST_HOST_OPCODE_13 = 0x13,
+
+	VST_HOST_OPCODE_14 = 0x14,
+
+	VST_HOST_OPCODE_15 = 0x15,
+
+	VST_HOST_OPCODE_16 = 0x16,
+
+	VST_HOST_OPCODE_17 = 0x17,
+
+	VST_HOST_OPCODE_18 = 0x18,
+
+	VST_HOST_OPCODE_19 = 0x19,
+
+	VST_HOST_OPCODE_1A = 0x1A,
+
+	VST_HOST_OPCODE_1B = 0x1B,
+
+	VST_HOST_OPCODE_1C = 0x1C,
+
+	VST_HOST_OPCODE_1D = 0x1D,
+
+	VST_HOST_OPCODE_1E = 0x1E,
+
+	VST_HOST_OPCODE_1F = 0x1F,
+
+	VST_HOST_OPCODE_20 = 0x20,
+
+	VST_HOST_OPCODE_21 = 0x21,
+
+	VST_HOST_OPCODE_22 = 0x22,
+
+	VST_HOST_OPCODE_23 = 0x23,
+
+	VST_HOST_OPCODE_24 = 0x24,
+
+	VST_HOST_OPCODE_25 = 0x25,
+
+	VST_HOST_OPCODE_26 = 0x26,
+
+	VST_HOST_OPCODE_27 = 0x27,
+
+	VST_HOST_OPCODE_28 = 0x28,
+
+	VST_HOST_OPCODE_29 = 0x29,
+
+	/** Request an update of the editor window.
+	 * 
+	 */
+	VST_HOST_OPCODE_2A = 0x2A,
+	VST_HOST_OPCODE_EDITOR_UPDATE = 0x2A,
+
+	/** Notify host that a parameter is being edited.
+	 *
+	 * @param p_int1 Parameter index.
+	 */
+	VST_HOST_OPCODE_2B = 0x2B,
+	VST_HOST_OPCODE_PARAM_START_EDIT = 0x2B,
+
+	/** Notify host that parameter is no longer being edited.
+	 * 
+	 * @param p_int1 Parameter index.
+	 */
+	VST_HOST_OPCODE_2C = 0x2C,
+	VST_HOST_OPCODE_PARAM_STOP_EDIT = 0x2C,
+
+	VST_HOST_OPCODE_2D = 0x2D,
+	VST_HOST_OPCODE_2E = 0x2E,
+	VST_HOST_OPCODE_2F = 0x2F,
+
+	// Highest number of known OPCODE.
+	VST_HOST_OPCODE_MAX,
+
+	// Pad to force 32-bit number.
+	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
+};
+
+/** Plug-in to Host callback
+ *
+ * The plug-in may call this to attempt to change things on the host side. The host side is free to ignore all requests, annoyingly enough.
+ * 
+ * @param opcode See VST_HOST_OPCODE
+ * @param p_str Zero terminated string or null on call.
+ * @return ?
+ */
+typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
+
+//------------------------------------------------------------------------------------------------------------------------
+// VST Plug-in/Effect related Things
+//------------------------------------------------------------------------------------------------------------------------
+
+/** Plug-in Categories
+ * All plug-ins must be in one of these categories and their behavior differs depending on which category they are in. 
+ * This adds on to the "flags" each plug-in can specify.
+ */
+enum VST_EFFECT_CATEGORY {
+	VST_EFFECT_CATEGORY_UNCATEGORIZED = 0x00,
+	VST_EFFECT_CATEGORY_01            = 0x01,
+	VST_EFFECT_CATEGORY_EFFECT        = 0x01, // Generic Effects, Distortion, ...
+	VST_EFFECT_CATEGORY_02            = 0x02,
+	VST_EFFECT_CATEGORY_INSTRUMENT    = 0x02, // Instruments, Synthesizers, Samplers, ...
+	VST_EFFECT_CATEGORY_03            = 0x03,
+	VST_EFFECT_CATEGORY_METERING      = 0x03, // Loudness Meters, Volume Analysis, etc.
+	VST_EFFECT_CATEGORY_04            = 0x04,
+	VST_EFFECT_CATEGORY_MASTERING     = 0x04, // Compressors, Limiters, ...
+	VST_EFFECT_CATEGORY_05            = 0x05,
+	VST_EFFECT_CATEGORY_SPATIAL       = 0x05, // Stereo and Multi-Channel Panning
+	VST_EFFECT_CATEGORY_06            = 0x06,
+	VST_EFFECT_CATEGORY_DELAY_OR_ECHO = 0x06, // Echo, Reverb, Room Simulator, ...
+	VST_EFFECT_CATEGORY_07            = 0x07, 
+	VST_EFFECT_CATEGORY_08            = 0x08,
+	VST_EFFECT_CATEGORY_RESTORATION   = 0x08, // Denoising and similar effects.
+	VST_EFFECT_CATEGORY_09            = 0x09,
+	VST_EFFECT_CATEGORY_OFFLINE       = 0x09, // Offline Processing VST? Seems to receive all audio data prior to playback.
+	VST_EFFECT_CATEGORY_0A            = 0x0A, 
+	VST_EFFECT_CATEGORY_CONTAINER     = 0x0A, // Plugin contains more than one Plugin.
+	VST_EFFECT_CATEGORY_0B            = 0x0B,
+	VST_EFFECT_CATEGORY_WAVEGENERATOR = 0x0B, // Only found one released VST plugin with this, and it creates a perfect 400 hz sine wave?
+	VST_EFFECT_CATEGORY_MAX, // Not part of specification, marks maximum category.
+
+	// Pad to force 32-bit number.
+	_VST_EFFECT_CATEGORY_PAD = 0xFFFFFFFFul,
 };
 
 /** Effect Flags
- * 
- * Bit		Description
- * 1		Effect has "Editor"
- * 2		Unknown
- * 3		Unknown (Found in: ReaDelay)
- * 4		Unknown (Found in: ReaDelay)
- * 5		Has process_float
- * 6		Unknown (Found in: ReaControlMIDI, ReaStream, ReaFir)
- * 10		Unknown (Found in: ReaFir)
- * 13		Has process_double
  */
 enum VST_EFFECT_FLAG {
 	VST_EFFECT_FLAG_EDITOR = 1 << 0, // The plug-in provides a custom editor instead of the generic host interface.
@@ -276,6 +557,7 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_0D             = 0x0D,
 	VST_EFFECT_OPCODE_WINDOW_GETRECT = 0x0D,
+	VST_EFFECT_OPCODE_EDITOR_RECT = 0x0D,
 
 	/* Create the window for the plugin.
 	 * 
@@ -284,6 +566,7 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_0E            = 0x0E,
 	VST_EFFECT_OPCODE_WINDOW_CREATE = 0x0E,
+	VST_EFFECT_OPCODE_EDITOR_OPEN = 0x0E,
 
 	/* Destroy the plugins window.
 	 * 
@@ -291,6 +574,7 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_0F             = 0x0F,
 	VST_EFFECT_OPCODE_WINDOW_DESTROY = 0x0F,
+	VST_EFFECT_OPCODE_EDITOR_CLOSE = 0x0F,
 
 	/* Window Draw Event?
 	 *
@@ -383,7 +667,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_SET_CHUNK_DATA = 0x18,
 
 	//--------------------------------------------------------------------------------
-	// VST2.x starts here.
+	// VST 2.x starts here.
 	//--------------------------------------------------------------------------------
 
 	/*
@@ -774,163 +1058,8 @@ enum VST_EFFECT_OPCODE {
 	_VST_EFFECT_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
-/** Plug-in to Host Op-Codes
- * These Op-Codes are emitted by the plug-in and the host _may_ handle them or return 0 (false).
- * We have no guarantees about anything actually happening.
+/** Plug-in Effect definition
  */
-enum VST_HOST_OPCODE {
-	/*
-	 * @param int1 -1 or Parameter Index
-	 * @return Expected to return... something.
-	 */
-	VST_HOST_OPCODE_00 = 0x00, // cb(vst, 0x00, ?, 0, 0);
-	VST_HOST_OPCODE_01 = 0x01,
-	VST_HOST_OPCODE_02 = 0x02, // bool cb(0, 0x02, 0, 0, 0);
-	VST_HOST_OPCODE_03 = 0x03,
-	VST_HOST_OPCODE_04 = 0x04,
-	VST_HOST_OPCODE_05 = 0x05,
-	VST_HOST_OPCODE_06 = 0x06,
-	VST_HOST_OPCODE_07 = 0x07,
-	VST_HOST_OPCODE_08 = 0x08,
-	VST_HOST_OPCODE_09 = 0x09,
-	VST_HOST_OPCODE_0A = 0x0A,
-	VST_HOST_OPCODE_0B = 0x0B,
-	VST_HOST_OPCODE_0C = 0x0C,
-	VST_HOST_OPCODE_0D = 0x0D,
-	VST_HOST_OPCODE_0E = 0x0E,
-	VST_HOST_OPCODE_0F = 0x0F,
-	VST_HOST_OPCODE_10 = 0x10,
-	VST_HOST_OPCODE_11 = 0x11,
-	VST_HOST_OPCODE_12 = 0x12,
-	VST_HOST_OPCODE_13 = 0x13,
-	VST_HOST_OPCODE_14 = 0x14,
-	VST_HOST_OPCODE_15 = 0x15,
-	VST_HOST_OPCODE_16 = 0x16,
-	VST_HOST_OPCODE_17 = 0x17,
-	VST_HOST_OPCODE_18 = 0x18,
-	VST_HOST_OPCODE_19 = 0x19,
-	VST_HOST_OPCODE_1A = 0x1A,
-	VST_HOST_OPCODE_1B = 0x1B,
-	VST_HOST_OPCODE_1C = 0x1C,
-	VST_HOST_OPCODE_1D = 0x1D,
-	VST_HOST_OPCODE_1E = 0x1E,
-	VST_HOST_OPCODE_1F = 0x1F,
-	VST_HOST_OPCODE_20 = 0x20,
-	VST_HOST_OPCODE_21 = 0x21,
-	VST_HOST_OPCODE_22 = 0x22,
-	VST_HOST_OPCODE_23 = 0x23,
-	VST_HOST_OPCODE_24 = 0x24,
-	VST_HOST_OPCODE_25 = 0x25,
-	VST_HOST_OPCODE_26 = 0x26,
-	VST_HOST_OPCODE_27 = 0x27,
-	VST_HOST_OPCODE_28 = 0x28,
-	VST_HOST_OPCODE_29 = 0x29,
-	VST_HOST_OPCODE_2A = 0x2A,
-
-	/* Parameter gained focus.
-	 *
-	 * @param int1 Parameter index.
-	 */
-	VST_HOST_OPCODE_2B = 0x2B,
-
-	/* Parameter lost focus.
-	 * 
-	 * @param int1 Parameter index.
-	 */
-	VST_HOST_OPCODE_2C = 0x2C,
-
-	VST_HOST_OPCODE_2D = 0x2D,
-	VST_HOST_OPCODE_2E = 0x2E,
-	VST_HOST_OPCODE_2F = 0x2F,
-
-	// Highest number of known OPCODE.
-	VST_HOST_OPCODE_MAX,
-
-	// Pad to force 32-bit number.
-	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
-};
-
-enum VST_ARRANGEMENT_TYPE {
-	/* Custom speaker arrangement.
-	 *
-	 * Accidentally discovered through random testing.
-	 */
-	VST_ARRANGEMENT_TYPE_CUSTOM = -2,
-
-	/* Unknown/Empty speaker layout.
-	 *
-	 */
-	VST_ARRANGEMENT_TYPE_UNKNOWN = -1,
-
-	/* Mono
-	 */
-	VST_ARRANGEMENT_TYPE_MONO = 0,
-
-	/* Stereo
-	 */
-	VST_ARRANGEMENT_TYPE_STEREO = 1,
-
-	/* 5.1
-	 */
-	VST_ARRANGEMENT_TYPE_5_1 = 0x0F,
-
-	// Pad to force 32-bit number.
-	_VST_ARRANGEMENT_TYPE_PAD = 0xFFFFFFFFul,
-};
-
-enum VST_SPEAKER_TYPE {
-	VST_SPEAKER_TYPE_MONO       = 0,
-	VST_SPEAKER_TYPE_LEFT       = 1,
-	VST_SPEAKER_TYPE_RIGHT      = 2,
-	VST_SPEAKER_TYPE_CENTER     = 3,
-	VST_SPEAKER_TYPE_LFE        = 4,
-	VST_SPEAKER_TYPE_LEFT_SIDE  = 5,
-	VST_SPEAKER_TYPE_RIGHT_SIDE = 6,
-
-	// Pad to force 32-bit number.
-	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
-};
-
-enum VST_PARAMETER_FLAGS {
-	/**
-	 * Parameter is an on/off switch.
-	 */
-	VST_PARAMETER_FLAGS_SWITCH = 1,
-	/**
-	 * Limits defined by integers.
-	 */
-	VST_PARAMETER_FLAGS_INTEGER_LIMITS = 1 << 1,
-	/**
-	 * Uses float steps.
-	 */
-	VST_PARAMETER_FLAGS_STEP_FLOAT = 1 << 2,
-	/**
-	 * Uses integer steps.
-	 */
-	VST_PARAMETER_FLAGS_STEP_INT = 1 << 3,
-	/**
-	 * Respect index variable for display ordering.
-	 */
-	VST_PARAMETER_FLAGS_INDEX = 1 << 4,
-	/**
-	 * Respect category value and names.
-	 */
-	VST_PARAMETER_FLAGS_CATEGORY = 1 << 5,
-	VST_PARAMETER_FLAGS_UNKNOWN6 = 1 << 6,
-	_VST_PARAMETER_FLAGS_PAD     = 0xFFFFFFFFul,
-};
-
-/*******************************************************************************
-|* Structures
-|*/
-
-struct vst_rect {
-	int16_t left;
-	int16_t top;
-	int16_t right;
-	int16_t bottom;
-};
-
 struct vst_effect {
 	int32_t magic_number; // Should always be VST_MAGICNUMBER
 
@@ -1043,69 +1172,7 @@ struct vst_effect {
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
-};
-
-struct vst_parameter_properties {
-	float step_f32;
-	float step_small_f32;
-	float step_large_f32;
-
-	char name[VST_BUFFER_64];
-
-	uint32_t flags;
-	int32_t  min_value_i32;
-	int32_t  max_value_i32;
-	int32_t  step_i32;
-
-	char label[VST_BUFFER_8];
-
-	uint16_t index;
-
-	uint16_t category;
-	uint16_t num_parameters_in_category;
-	uint16_t _unknown_00;
-
-	char category_label[VST_BUFFER_24];
-
-	char _unknown_01[VST_BUFFER_16];
-};
-
-struct vst_speaker_properties {
-	float            _unknown_00; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
-	float            _unknown_04; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
-	float            _unknown_08; // 0.0 if LFE, otherwise 1.0.
-	float            _unknown_0C;
-	char             name[VST_BUFFER_64];
-	VST_SPEAKER_TYPE type;
-
-	uint8_t _unknown[28]; // Padding detected from testing.
-};
-
-struct vst_speaker_arrangement {
-	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
-	int32_t                channels; // Number of channels in speakers.
-	vst_speaker_properties speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
-};
-
-// Variable size variant of vst_speaker_arrangement.
-#ifdef __cplusplus
-template<size_t T>
-struct vst_speaker_arrangement_t {
-	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
-	int32_t                channels; // Number of channels in speakers.
-	vst_speaker_properties speakers[T]; // Array of speaker properties, actual size defined by channels.
-};
-#endif
-
-/** Plug-in to Host callback
- *
- * The plug-in may call this to attempt to change things on the host side. The host side is free to ignore all requests, annoyingly enough.
- * 
- * @param opcode See VST_HOST_OPCODE
- * @param p_str Zero terminated string or null on call.
- * @return ?
- */
-typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
+} vst_effect_t;
 
 /** VST 2.x Entry Point for all platforms
  *
@@ -1113,7 +1180,8 @@ typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode
  *
  * @return A new instance of the VST 2.x effect.
  */
-#define VST_ENTRYPOINT vst_effect* VSTPluginMain(vst_host_callback callback)
+#define VST_ENTRYPOINT \
+	vst_effect* VSTPluginMain(vst_host_callback callback)
 
 /** [DEPRECATED] VST 1.x Entry Point for Windows
  *
@@ -1121,7 +1189,8 @@ typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode
  * 
  * @return A new instance of the VST 1.x effect.
  */
-#define VST_ENTRYPOINT_WINDOWS vst_effect* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
+#define VST_ENTRYPOINT_WINDOWS \
+	vst_effect* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
 
 /** [DEPRECATED] VST 1.x Entry Point for MacOS
  *
@@ -1129,7 +1198,8 @@ typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode
  * 
  * @return A new instance of the VST 1.x effect.
  */
-#define VST_ENTRYPOINT_MACOS vst_effect* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
+#define VST_ENTRYPOINT_MACOS \
+	vst_effect* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
 
 #ifdef __cplusplus
 }
