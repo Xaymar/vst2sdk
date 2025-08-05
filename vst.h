@@ -1244,7 +1244,7 @@ struct vst_effect {
 	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect* pthis, uint32_t index);
 
 	int32_t num_programs; // Number of available programs.
-	int32_t num_params; // Number of parameters. All programs must have at least this many inputs.
+	int32_t num_params; // Number of parameters. All programs must have at least this many parameters.
 	int32_t num_inputs; // Number of inputs.
 	int32_t num_outputs; // Number of outputs.
 
