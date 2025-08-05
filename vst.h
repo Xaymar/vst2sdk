@@ -29,6 +29,7 @@
 #define VST_FUNCTION_INTERFACE __cdecl // Incorrect for older Windows platforms. Is it actually stdcall sometimes? That would be stupid.
 #define VST_ALIGNMENT 8 // This appears to be wrong for 32-bit. But it's not 4 byte either? What.
 #define VST_MAX_CHANNELS 32 // Couldn't find any audio editing software which would attempt to add more channels.
+#define VST_FOURCC(a,b,c,d) ((((uint32_t)a) << 24) | (((uint32_t)b) << 16) | (((uint32_t)c) << 8) | (((uint32_t)d) << 0))
 
 #pragma pack(push, VST_ALIGNMENT)
 
@@ -642,14 +643,13 @@ enum VST_HOST_OPCODE {
 	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
-
-/** Plug-in to Hostn support checks
+/** Plug-in to Host support checks
  * 
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
  * 
  * Harvested via strings command and just checking what plug-ins actually responded to. * 
  */
-struct vst_host_supports {
+struct vst_host_supports_t {
 	/** Does the host support modifying input/output/params/delay when programs, banks or parameters are changed?
 	 * This only means that the host supports this inside of VST_EFFECT_OPCODE_IDLE (VST 2.3 or earlier) or outside of
 	 * a VST_EFFECT_OPCODE_PROCESS_BEGIN and VST_EFFECT_OPCODE_PROCESS_END group.
@@ -1569,7 +1569,7 @@ enum VST_EFFECT_OPCODE {
  * 
  * Harvested via strings command and just checking what plug-ins actually responded to. * 
  */
-struct {
+struct vst_effect_supports_t {
 	/** Effect supports alternative bypass.
 	 * The alternative bypass still has the host call process/process_float/process_double and expects us to compensate
 	 * for our delay/latency, copy inputs to outputs, and do minimal work. If we don't support it the host will not call
@@ -1633,71 +1633,145 @@ struct {
 	._8in8out = "8in8out",
 };
 
+/** Control the VST through an opcode and up to four parameters.
+ * 
+ * @sa VST_EFFECT_OPCODE
+ * 
+ * @param self Pointer to the effect itself.
+ * @param opcode The opcode to run, see @ref VST_EFFECT_OPCODE.
+ * @param p_int1 Parameter, see @ref VST_EFFECT_OPCODE.
+ * @param p_int2 Parameter, see @ref VST_EFFECT_OPCODE.
+ * @param p_ptr Parameter, see @ref VST_EFFECT_OPCODE.
+ * @param p_float Parameter, see @ref VST_EFFECT_OPCODE.
+ */
+typedef intptr_t (VST_FUNCTION_INTERFACE* vst_effect_control_t)(struct vst_effect_t* self, int32_t opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
+
+/** Process the given number of samples in inputs and outputs.
+ *
+ * Used to handle input data and provides output data. We seem to be the ones that provide the output buffer?
+ * 
+ * @param self Pointer to the effect itself.
+ * @param inputs Pointer to an array of 'const float[samples]' with size @ref vst_effect_t.num_inputs.
+ * @param outputs Pointer to an array of 'float[samples]' with size @ref vst_effect_t.num_outputs.
+ * @param samples Number of samples per channel in inputs and outputs.
+ */
+typedef void (VST_FUNCTION_INTERFACE* vst_effect_process_t) (struct vst_effect_t* self, const float* const* inputs, float** outputs, int32_t samples);
+
+/** Updates the value for the parameter at the given index, or does nothing if out of bounds.
+ * 
+ * @param self Pointer to the effect itself.
+ * @param index Parameter index.
+ * @param value New value for the parameter.
+ */
+typedef void(VST_FUNCTION_INTERFACE* vst_effect_set_parameter_t)(struct vst_effect_t* self, uint32_t index, float value); 
+
+/** Updates the value for the parameter at the given index, or does nothing if out of bounds.
+ * 
+ * @param self Pointer to the effect itself.
+ * @param index Parameter index.
+ * @param value New value for the parameter.
+ */
+typedef float(VST_FUNCTION_INTERFACE* vst_effect_get_parameter_t)(struct vst_effect_t* self, uint32_t index);
+
+/** Process the given number of single samples in inputs and outputs.
+ *
+ * Process input and overwrite the output in place. Host provides output buffers.
+ * 
+ * Note: Not thread-safe on MacOS for some reason or another.
+ * 
+ * @param self Pointer to the effect itself.
+ * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
+ * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
+ * @param samples Number of samples per channel in inputs.
+ */
+typedef void(VST_FUNCTION_INTERFACE* vst_effect_process_float_t)(struct vst_effect_t* self, const float* const* inputs, float** outputs, int32_t samples);
+
+/** Process the given number of double samples in inputs and outputs.
+ *
+ * Process input and overwrite the output in place. Host provides output buffers.
+ *
+ * Note: Not present and not called prior to VST 2.4. 
+ * 
+ * @param self Pointer to the effect itself.
+ * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
+ * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
+ * @param samples Number of samples per channel in inputs.
+ */
+typedef void (VST_FUNCTION_INTERFACE* vst_effect_process_double_t)(struct vst_effect_t* self, const double* const* inputs, double** outputs, int32_t samples);
+
 /** Plug-in Effect definition
  */
 struct vst_effect_t {
-	int32_t magic_number; // Should always be VST_MAGICNUMBER ('VstP')
-
-	// 64-bit adds 4-byte padding here to align pointers.
-
-	/** Control the VST through an opcode and up to four parameters.
+	/** VST Magic Number
 	 * 
-	 * @param this Pointer to the effect itself.
-	 * @param opcode The opcode to run, see VST_EFFECT_OPCODES.
-	 * @param p_int1 Parameter, see VST_EFFECT_OPCODES.
-	 * @param p_int2 Parameter, see VST_EFFECT_OPCODES.
-	 * @param p_ptr Parameter, see VST_EFFECT_OPCODES.
-	 * @param p_float Parameter, see VST_EFFECT_OPCODES.
-	 */
-	intptr_t(VST_FUNCTION_INTERFACE* control)(struct vst_effect_t* pthis, int32_t opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
-
-	/** Process the given number of samples in inputs and outputs.
-	 *
-	 * Used to handle input data and provides output data. We seem to be the ones that provide the output buffer?
+	 * Should always be VST_FOURCC('VstP')
 	 * 
-	 * @param pthis Pointer to the effect itself.
-	 * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
-	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
-	 * @param samples Number of samples per channel in inputs.
+	 * @sa VST_MAGICNUMBER
 	 */
-	void(VST_FUNCTION_INTERFACE* process)(struct vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
+	int32_t magic_number;
 
-	/** Updates the value for the parameter at the given index, or does nothing if out of bounds.
+	vst_effect_control_t control;
+
+	vst_effect_process_t process;
+
+	vst_effect_set_parameter_t set_parameter;
+
+	vst_effect_get_parameter_t get_parameter;
+
+	/** Number of available pre-defined programs.
 	 * 
-	 * @param pthis Pointer to the effect itself.
-	 * @param index Parameter index.
-	 * @param value New value for the parameter.
+	 * @sa VST_EFFECT_OPCODE_PROGRAM_LOAD
+	 * @sa VST_EFFECT_OPCODE_PROGRAM_SET_BEGIN
+	 * @sa VST_EFFECT_OPCODE_PROGRAM_SET
+	 * @sa VST_EFFECT_OPCODE_PROGRAM_SET_NAME
+	 * @sa VST_EFFECT_OPCODE_PROGRAM_SET_END
+	 * @sa VST_EFFECT_OPCODE_PROGRAM_GET
+	 * @sa VST_EFFECT_OPCODE_PROGRAM_GET_NAME
+	 * @sa VST_EFFECT_FLAG_CHUNKS
+	 * @sa VST_EFFECT_OPCODE_SET_CHUNK_DATA
+	 * @sa VST_EFFECT_OPCODE_GET_CHUNK_DATA
 	 */
-	void(VST_FUNCTION_INTERFACE* set_parameter)(struct vst_effect_t* pthis, uint32_t index, float value);
+	int32_t num_programs;
 
-	/** Returns the value stored for the parameter at index, or 0 if out of bounds.
+	/** Number of available parameters.
+	 * All programs must have at least this many parameters.
 	 * 
-	 * @param pthis Pointer to the effect itself.
-	 * @param index Parameter index.
-	 * @return float Value of the parameter.
+	 * @sa VST_HOST_OPCODE_IO_MODIFIED
 	 */
-	float(VST_FUNCTION_INTERFACE* get_parameter)(struct vst_effect_t* pthis, uint32_t index);
+	int32_t num_params;
 
-	int32_t num_programs; // Number of available programs.
-	int32_t num_params; // Number of parameters. All programs must have at least this many parameters.
-	int32_t num_inputs; // Number of inputs.
-	int32_t num_outputs; // Number of outputs.
+	/** Number of available input streams.
+	 * 
+	 * 
+	 * @sa VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
+	 * @sa VST_EFFECT_OPCODE_INPUT_GET_PROPERTIES
+	 * @sa VST_HOST_OPCODE_IO_MODIFIED
+	 */
+	int32_t num_inputs;
+
+	/** Number of available output streams.
+	 * 
+	 * @sa VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
+	 * @sa VST_EFFECT_OPCODE_OUTPUT_GET_PROPERTIES
+	 * @sa VST_HOST_OPCODE_IO_MODIFIED
+	 */
+	int32_t num_outputs;
 
 	/** Effect Flags
 	 *
-	 * See: VST_EFFECT_FLAGS
+	 * @sa VST_EFFECT_FLAGS
 	 */
 	int32_t flags;
 
-	// 64-bit adds 4-byte padding here to align pointers.
-
-	void* _unknown_00; // Must be zero. Reserved for host?
-	void* _unknown_01; // Must be zero. Reserved for host?
+	void* _unknown_00; // Must be zero when created. Reserved for host?
+	void* _unknown_01; // Must be zero when created. Reserved for host?
 
 	/** Initial delay before processing of samples can actually begin in Samples.
 	 *
 	 * Note: The host can modify this at runtime so it is not safe. 
 	 * Note: Should be reinitialized when the effect is resumed.
+	 * 
+	 * @sa VST_HOST_OPCODE_IO_MODIFIED
 	 */
 	int32_t delay;
 
@@ -1753,35 +1827,19 @@ struct vst_effect_t {
 	// VST 2.x starts here.
 	//--------------------------------------------------------------------------------
 
-	/** Process the given number of single samples in inputs and outputs.
-	 *
-	 * Process input and overwrite the output in place. Host provides output buffers.
-	 * 
-	 * Note: Not thread-safe on MacOS for some reason or another.
-	 * 
-	 * @param pthis Pointer to the effect itself.
-	 * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
-	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
-	 * @param samples Number of samples per channel in inputs.
+	/** Process function for in-place single (32-bit float) processiong.
+	 * @sa vst_effect_process_single_t
 	 */
-	void(VST_FUNCTION_INTERFACE* process_float)(struct vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
+	vst_effect_process_float_t process_float;
 
 	//--------------------------------------------------------------------------------
 	// VST 2.4 starts here.
 	//--------------------------------------------------------------------------------
 
-	/** Process the given number of double samples in inputs and outputs.
-	 *
-	 * Process input and overwrite the output in place. Host provides output buffers.
-	 *
-	 * Note: Not present and not called prior to VST 2.4. 
-	 * 
-	 * @param pthis Pointer to the effect itself.
-	 * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
-	 * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
-	 * @param samples Number of samples per channel in inputs.
+	/** Process function for in-place double (64-bit float) processiong.
+	 * @sa vst_effect_process_double_t
 	 */
-	void(VST_FUNCTION_INTERFACE* process_double)(struct vst_effect_t* pthis, const double* const* inputs, double** outputs, int32_t samples);
+	vst_effect_process_double_t process_double;
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
@@ -1813,6 +1871,15 @@ struct vst_effect_t {
  */
 #define VST_ENTRYPOINT_MACOS \
 	vst_effect_t* main_macho(vst_host_callback_t callback) { return VSTPluginMain(callback); }
+
+/** [DEPRECATED] VST 2.3 Entry Point for PowerPC
+ * 
+ * Present in some VST 2.3 and earlier compatible plug-ins that support MacOS. 
+ *  
+ * @return A new instance of the VST 2.x effect.
+ */
+#define VST_ENTRYPOINT_MACOS_POWERPC \
+	vst_effect_t* main(vst_host_callback_t callback) { return VSTPluginMain(callback); }
 
 #ifdef __cplusplus
 }
