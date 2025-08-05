@@ -154,8 +154,24 @@ enum VST_PARAMETER_FLAG {
 };
 
 struct vst_parameter_properties_t {
+	/** Float Step value
+	 * 
+	 * Only valid with VST_PARAMETER_FLAG_STEP_FLOAT
+	 */
 	float step_f32;
+
+	/** Float small step value
+	 * This is used for "tiny" changes.
+	 * 
+	 * Only valid with VST_PARAMETER_FLAG_STEP_FLOAT
+	 */
 	float step_small_f32;
+
+	/** Float large step value
+	 * This is used for "huge" changes.
+	 * 
+	 * Only valid with VST_PARAMETER_FLAG_STEP_FLOAT
+	 */
 	float step_large_f32;
 
 	/** Human-readable name for this parameter.
@@ -170,8 +186,22 @@ struct vst_parameter_properties_t {
 	 */
 	uint32_t flags;
 
+	/** Minimum Integer value
+	 * 
+	 * Only valid with VST_PARAMETER_FLAG_INTEGER_LIMITS
+	 */
 	int32_t  min_value_i32;
+
+	/** Maximum Integer value
+	 * 
+	 * Only valid with VST_PARAMETER_FLAG_INTEGER_LIMITS
+	 */
 	int32_t  max_value_i32;
+
+	/** Integer Step value
+	 * 
+	 * Only valid with VST_PARAMETER_FLAG_STEP_INT
+	 */
 	int32_t  step_i32;
 
 	/** Short Human-readable label for this parameter.
