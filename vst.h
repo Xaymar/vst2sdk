@@ -318,14 +318,14 @@ enum VST_SPEAKER_TYPE {
 
 struct vst_speaker_properties_t {
 	/** Azimuth in Radians
-	 * Range: -PI to PI
+	 * Range: -PI (Left) through 0.0 (Right) to PI (Left)
 	 * 
 	 * Note: Must be 10.0 if this is a LFE.
 	 */
 	float azimuth;
 
 	/** Altitude in Radians
-	 * Range: -PI/2 to PI/2
+	 * Range: -PI/2 (Bottom) to PI/2 (Top)
 	 * 
 	 * Note: Must be 10.0 if this is a LFE.
 	 */
@@ -522,7 +522,7 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_0D = 0x0D,
 
 	/** Notify the host that numInputs/numOutputs/delay/numParams has changed.
-	 * Only supported if the host replies VST_STATUS_TRUE to VST_HOST_OPCODE_SUPPORTS("ioChanged")
+	 * Only supported if the host replies VST_STATUS_TRUE to VST_HOST_OPCODE_SUPPORTS("acceptIOChanges")
 	 * 
 	 * Note: In VST 2.3 and earlier calling this outside of VST_EFFECT_OPCODE_IDLE may result in a crash.
 	 * Note: In VST 2.3 and later this may only be called while between VST_EFFECT_OPCODE_PROCESS_END and VST_EFFECT_OPCODE_BEGIN.
@@ -1395,7 +1395,8 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve the VST Version supported.
 	 *
-	 * @return Return 0 for <2.0, 2 for 2.0, 2100 for 2.1, 2200 for 2.2, 2300 for 2.3, etc.
+	 * @sa VST_VERSION
+	 * @return One of the valid enums in \ref VST_VERSION
 	 */
 	VST_EFFECT_OPCODE_3A          = 0x3A,
 	VST_EFFECT_OPCODE_VST_VERSION = 0x3A,
@@ -1406,9 +1407,9 @@ enum VST_EFFECT_OPCODE {
 
 	/** Editor Virtual Key Down Input
 	 *
-	 * @param p_int1 ASCII Character
+	 * @param p_int1 ASCII character that represents the virtual key code.
 	 * @param p_int2 Virtual Key Code
-	 * @param p_float Modifiers
+	 * @param p_float Modifiers being held down (bitfield)
 	 * @return VST_STATUS_TRUE if we used the input, otherwise VST_STATUS_FALSE
 	 */
 	VST_EFFECT_OPCODE_3B = 0x3B,
@@ -1416,9 +1417,9 @@ enum VST_EFFECT_OPCODE {
 
 	/** Editor Virtual Key Up Event
 	 *
-	 * @param p_int1 ASCII Character
+	 * @param p_int1 ASCII character that represents the virtual key code.
 	 * @param p_int2 Virtual Key Code
-	 * @param p_float Modifiers
+	 * @param p_float Modifiers being held down (bitfield)
 	 * @return VST_STATUS_TRUE if we used the input, otherwise VST_STATUS_FALSE
 	 */
 	VST_EFFECT_OPCODE_3C = 0x3C,
