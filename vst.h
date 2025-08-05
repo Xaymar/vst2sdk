@@ -65,7 +65,7 @@ enum VST_STATUS {
  */
 enum VST_BUFFER_SIZE {
 	VST_BUFFER_SIZE_PARAM_LABEL = 8,
-	VST_BUFFER_SIZE_PARAM_LONG_LABEL = 64,
+	VST_BUFFER_SIZE_PARAM_LONG_NAME = 64,
 	VST_BUFFER_SIZE_PARAM_NAME = 8,
 	VST_BUFFER_SIZE_PARAM_VALUE = 8,
 	VST_BUFFER_SIZE_PROGRAM_NAME = 24,
@@ -104,33 +104,45 @@ struct vst_rect {
 	int16_t right;
 };
 
-enum VST_PARAMETER_FLAGS {
-	/**
-	 * Parameter is an on/off switch.
+enum VST_PARAMETER_FLAG {
+	/** Parameter is an on/off switch.
+	 *
 	 */
-	VST_PARAMETER_FLAGS_SWITCH = 1,
-	/**
-	 * Limits defined by integers.
+	VST_PARAMETER_FLAG_SWITCH = 1,
+
+	/** Parameter limits are set as integers.
+	 *
 	 */
-	VST_PARAMETER_FLAGS_INTEGER_LIMITS = 1 << 1,
-	/**
-	 * Uses float steps.
+	VST_PARAMETER_FLAG_INTEGER_LIMITS = 1 << 1,
+
+	/** Parameter uses float steps.
+	 *
 	 */
-	VST_PARAMETER_FLAGS_STEP_FLOAT = 1 << 2,
-	/**
-	 * Uses integer steps.
+	VST_PARAMETER_FLAG_STEP_FLOAT = 1 << 2,
+
+	/** Parameter uses integer steps.
+	 *
 	 */
-	VST_PARAMETER_FLAGS_STEP_INT = 1 << 3,
-	/**
-	 * Respect index variable for display ordering.
+	VST_PARAMETER_FLAG_STEP_INT = 1 << 3,
+
+	/** Parameter has an display order index for the default editor.
+	 *
+	 * Only applies to the default editor.
 	 */
-	VST_PARAMETER_FLAGS_INDEX = 1 << 4,
-	/**
-	 * Respect category value and names.
+	VST_PARAMETER_FLAG_INDEX = 1 << 4,
+
+	/** Parameter has a category for the default editor.
+	 *
+	 * Only applies to the default editor.
 	 */
-	VST_PARAMETER_FLAGS_CATEGORY = 1 << 5,
-	VST_PARAMETER_FLAGS_UNKNOWN6 = 1 << 6,
-	_VST_PARAMETER_FLAGS_PAD     = 0xFFFFFFFFul,
+	VST_PARAMETER_FLAG_CATEGORY = 1 << 5,
+
+	/** Parameter can be gradually increased/decreased.
+	 * 
+	 */
+	VST_PARAMETER_FLAG_RAMPING = 1 << 6,
+
+	_VST_PARAMETER_FLAG_PAD     = 0xFFFFFFFFul,
 };
 
 struct vst_parameter_properties_t {
@@ -138,21 +150,60 @@ struct vst_parameter_properties_t {
 	float step_small_f32;
 	float step_large_f32;
 
-	char name[VST_BUFFER_SIZE_PARAM_LONG_LABEL];
+	/** Human-readable name for this parameter.
+	 * 
+	 * Note: Only applies to the default editor.
+	 */
+	char name[VST_BUFFER_SIZE_PARAM_LONG_NAME];
 
+	/** Parameter Flags
+	 * 
+	 * Any combination of VST_PARAMETER_FLAGS.
+	 */
 	uint32_t flags;
+
 	int32_t  min_value_i32;
 	int32_t  max_value_i32;
 	int32_t  step_i32;
 
+	/** Short Human-readable label for this parameter.
+	 * 
+	 * I have no idea why this exists?
+	 * Note: Only applies to the default editor.
+	 */
 	char label[VST_BUFFER_SIZE_PARAM_LABEL];
 
+	/**
+	 * 
+	 * Note: Only applies to the default editor.
+	 * Note: Valid if VST_PARAMETER_FLAG_INDEX is set.
+	 */
 	uint16_t index;
 
+	/** Category index
+	 * 
+	 * Must either be 0 for no category, or any number increasing from 1 onwards.
+	 * 
+	 * Note: Only applies to the default editor.
+	 * Note: Valid if VST_PARAMETER_FLAG_CATEGORY is set.
+	 */
 	uint16_t category;
+
+	/** How many parameters are in this category?
+	 * 
+	 * Question: Can't the host just figure this out by itself?!
+	 * Note: Only applies to the default editor.
+	 * Note: Valid if VST_PARAMETER_FLAG_CATEGORY is set.
+	 */
 	uint16_t num_parameters_in_category;
+
 	uint16_t _unknown_00 = 0; // Must be set to 0.
 
+	/** Human-readable name for the category this parameter is in.
+	 * 
+	 * Note: Only applies to the default editor.
+	 * Note: Valid if VST_PARAMETER_FLAG_CATEGORY is set.
+	 */
 	char category_label[VST_BUFFER_SIZE_CATEGORY_LABEL];
 
 	char _reserved[16]; // Reserved for future expansions?
