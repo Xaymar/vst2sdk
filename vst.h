@@ -97,7 +97,7 @@ enum VST_VERSION {
 
 /** Window/Editor Rectangle
  */
-struct vst_rect {
+struct vst_rect_t {
 	int16_t top;
 	int16_t left;
 	int16_t bottom;
@@ -980,7 +980,7 @@ enum VST_EFFECT_OPCODE {
 	/** Retrieve the client rect size of the plugins window.
 	 * If no window has been created, returns the default rect.
 	 *
-	 * @param p_ptr Pointer of type 'struct vst_rect*'.
+	 * @param p_ptr Pointer of type 'struct vst_rect_t*'.
 	 * @return On success, returns 1 and updates p_ptr to the rect. On failure, returns 0.
 	 */
 	VST_EFFECT_OPCODE_0D             = 0x0D,
