@@ -22,11 +22,6 @@
 // - Function call standard seems to be stdcall.
 // - Everything is aligned to 8 bytes.
 
-// VST Versioning:
-// - Base-10, thus can't store many version numbers.
-// - Always four components, with the major one being able to store the most numbers.
-// - Format is A...ABCD, so 1.2.3.4 would turn into 1234.
-
 #pragma once
 #ifndef VST2SDK_VST_H
 #define VST2SDK_VST_H
@@ -69,6 +64,28 @@ extern "C" {
 /*******************************************************************************
 |* Enumeration
 |*/
+
+enum VST_STATUS {
+	VST_STATUS_0 = 0,
+	VST_STATUS_FALSE = 0,
+	VST_STATUS_ERROR = 0,
+
+	VST_STATUS_1 = 1,
+	VST_STATUS_TRUE = 1,
+	VST_STATUS_SUCCESS = 1,
+
+	// Does not appear to be official, seen in some Reaper-style VST plug-ins.
+	VST_STATUS_m1 = -1,
+	VST_STATUS_NOT_IMPLEMENTED = -1
+
+	_VST_STATUS_PAD = 0xFFFFFFFFul,
+}
+
+
+/** VST Version Enumeration
+ * - The VST version format is in Base10.
+ * - It is very weird, either as a single number (A -> A.0.0.0), or as a group of 4 numbers (ABCD -> A.B.C.D).
+ */
 enum VST_VERSION {
 	VST_VERSION_1       = 0, // Anything before 2.0, used by official plug-ins.
 	VST_VERSION_1_0_0_0 = 1000, // 1.0, used by some third-party plug-ins.
@@ -84,6 +101,10 @@ enum VST_VERSION {
 	_VST_VERSION_PAD = 0xFFFFFFFFul,
 };
 
+/** Plug-in Categories
+ * All plug-ins must be in one of these categories and their behavior differs depending on which category
+ *  they are in. This adds on to the "flags" each plug-in can specify.
+ */
 enum VST_CATEGORY {
 	VST_CATEGORY_UNCATEGORIZED = 0x00,
 	VST_CATEGORY_01            = 0x01,
@@ -113,6 +134,9 @@ enum VST_CATEGORY {
 	_VST_CATEGORY_PAD = 0xFFFFFFFFul,
 };
 
+/** Host to Plug-in Op-Codes
+ * These Op-Codes are emitted by the host and we must either handle them or return 0 (false).
+ */
 enum VST_EFFECT_OPCODE {
 	/* Create/Initialize the effect (if it has not been created already).
 	 * 
@@ -720,6 +744,10 @@ enum VST_EFFECT_OPCODE {
 	_VST_EFFECT_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
+/** Plug-in to Host Op-Codes
+ * These Op-Codes are emitted by the plug-in and the host _may_ handle them or return 0 (false).
+ * We have no guarantees about anything actually happening.
+ */
 enum VST_HOST_OPCODE {
 	/*
 	 * @param int1 -1 or Parameter Index
@@ -1035,40 +1063,6 @@ struct vst_speaker_arrangement {
 	vst_speaker_properties speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
 };
 
-/* Callback used by the plugin to interface with the host.
- * 
- * @param opcode See VST_HOST_OPCODE
- * @param p_str Zero terminated string or null on call.
- * @return ?
- */
-typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
-
-static const char* vst_host_string[] = {
-	"GetResourcePath", // ReaControlMIDI
-	"get_ini_file", // ReaControlMIDI
-	"resolve_fn", // ReaControlMIDI
-};
-
-/* Entry point for VST2.x plugins.
- *
- * @return A new instance of the VST2.x effect.
- */
-#define VST_ENTRYPOINT vst_effect* VSTPluginMain(vst_host_callback callback)
-#define VST_ENTRYPOINT_WINDOWS                   \
-	vst_effect* MAIN(vst_host_callback callback) \
-	{                                            \
-		return VSTPluginMain(callback);          \
-	}
-#define VST_ENTRYPOINT_MACOS                           \
-	vst_effect* main_macho(vst_host_callback callback) \
-	{                                                  \
-		return VSTPluginMain(callback);                \
-	}
-
-#ifdef __cplusplus
-}
-#endif
-
 // Variable size variant of vst_speaker_arrangement.
 #ifdef __cplusplus
 template<size_t T>
@@ -1079,6 +1073,42 @@ struct vst_speaker_arrangement_t {
 };
 #endif
 
-#pragma pack(pop)
+/** Plug-in to Host callback
+ *
+ * The plug-in may call this to attempt to change things on the host side. The host side is free to ignore all requests, annoyingly enough.
+ * 
+ * @param opcode See VST_HOST_OPCODE
+ * @param p_str Zero terminated string or null on call.
+ * @return ?
+ */
+typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
 
+/** VST 2.x Entry Point for all platforms
+ *
+ * Must be present in VST 2.x plug-ins but must not be present in VST 1.x plug-ins.
+ *
+ * @return A new instance of the VST 2.x effect.
+ */
+#define VST_ENTRYPOINT vst_effect* VSTPluginMain(vst_host_callback callback)
+
+/** [DEPRECATED] VST 1.x Entry Point for Windows
+ *
+ * Do not implement in VST 2.1 or later plug-ins!
+ * 
+ * @return A new instance of the VST 1.x effect.
+ */
+#define VST_ENTRYPOINT_WINDOWS vst_effect* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
+
+/** [DEPRECATED] VST 1.x Entry Point for MacOS
+ *
+ * Do not implement in VST 2.1 or later plug-ins!
+ * 
+ * @return A new instance of the VST 1.x effect.
+ */
+#define VST_ENTRYPOINT_MACOS vst_effect* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
+
+#ifdef __cplusplus
+}
+#endif
+#pragma pack(pop)
 #endif
