@@ -54,7 +54,6 @@ enum VST_STATUS {
 
 	// Only seen in one single op-code.
 	VST_STATUS_m1 = -1,
-	VST_STATUS_NOT_IMPLEMENTED = -1, // Not an official status, but seen in some Reaper-style VSTs.
 	VST_STATUS_NO = -1,
 
 	_VST_STATUS_PAD = 0xFFFFFFFFul,
@@ -423,7 +422,16 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_0D = 0x0D,
 
+	/** Notify the host that numInputs/numOutputs/delay/numParams has changed.
+	 * Only supported if the host replies VST_STATUS_TRUE to VST_HOST_OPCODE_SUPPORTS("ioChanged")
+	 * 
+	 * Note: In VST 2.3 and earlier calling this outside of VST_EFFECT_OPCODE_IDLE may result in a crash.
+	 * Note: In VST 2.3 and later this may only be called while between VST_EFFECT_OPCODE_PROCESS_END and VST_EFFECT_OPCODE_BEGIN.
+	 * 
+	 * @return VST_STATUS_TRUE if supported and handled otherwise VST_STATUS_FALSE.
+	 */
 	VST_HOST_OPCODE_0E = 0x0E,
+	VST_HOST_OPCODE_IO_MODIFIED = 0x0E,
 
 	VST_HOST_OPCODE_0F = 0x0F,
 
@@ -461,17 +469,42 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_20 = 0x20,
 
+	/** Retrieve the vendor name into the ptr buffer.
+	 *
+	 * @param p_ptr `char[VST_BUFFER_SIZE_VENDOR]` Zero terminated string.
+	 */
 	VST_HOST_OPCODE_21 = 0x21,
+	VST_HOST_OPCODE_VENDOR_NAME = 0x21,
 
+	/** Retrieve the product name into the ptr buffer.
+	 *
+	 * @param p_ptr `char[VST_BUFFER_SIZE_PRODUCT]` Zero terminated string.
+	 */
 	VST_HOST_OPCODE_22 = 0x22,
+	VST_HOST_OPCODE_PRODUCT_NAME = 0x22,
 
+	/** Retrieve the vendor version in return value.
+	 *
+	 * @return Version.
+	 */
 	VST_HOST_OPCODE_23 = 0x23,
+	VST_HOST_OPCODE_VENDOR_VERSION = 0x23,
 
+	/** User defined OP Code, for custom interaction.
+	 * 
+	 */
 	VST_HOST_OPCODE_24 = 0x24,
+	VST_HOST_OPCODE_CUSTOM = 0x24,
 
-	VST_HOST_OPCODE_25 = 0x25,
+	VST_HOST_OPCODE_25 = 0x25,	
 
+	/** Check if the host supports a certain feature.
+	 * 
+	 * @param p_ptr `char[...]` Zero terminated string for which feature we want to support.
+	 * @return VST_STATUS_TRUE if the feature is supported otherwise VST_STATUS_FALSE.
+	 */
 	VST_HOST_OPCODE_26 = 0x26,
+	VST_HOST_OPCODE_SUPPORTS = 0x26,
 
 	VST_HOST_OPCODE_27 = 0x27,
 
@@ -509,6 +542,32 @@ enum VST_HOST_OPCODE {
 	// Pad to force 32-bit number.
 	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
 };
+
+/** Plug-in to Hostn support checks
+ * 
+ * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
+ * 
+ * Harvested via strings command and just checking what plug-ins actually responded to. * 
+ */
+struct {
+	const char* sendVstEvents = "sendVstEvents";
+	const char* receiveVstEvents = "receiveVstEvents";
+
+	const char* sendVstMidiEvent = "sendVstMidiEvent";
+	const char* receiveVstMidiEvent = "receiveVstMidiEvent";
+	const char* sendVstMidiEventFlagIsRealtime = "sendVstMidiEventFlagIsRealtime";
+
+	const char* sendVstTimeInfo = "sendVstTimeInfo";
+	const char* reportConnectionChanges = "reportConnectionChanges";
+	const char* acceptIOChanges = "acceptIOChanges";
+	const char* sizeWindow = "sizeWindow";
+	const char* offline = "offline";
+	const char* startStopProcess = "startStopProcess";
+	const char* shellCategory = "shellCategory";
+
+	const char* openFileSelector = "openFileSelector";
+	const char* closeFileSelector = "closeFileSelector";
+} vst_host_supports;
 
 /** Plug-in to Host callback
  *
@@ -984,7 +1043,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve the vendor name into the ptr buffer.
 	 *
-	 * @param p_ptr `char[VST_BUFFER_SIZE_PRODUCT]` Zero terminated string.
+	 * @param p_ptr `char[VST_BUFFER_SIZE_VENDOR]` Zero terminated string.
 	 */
 	VST_EFFECT_OPCODE_2F          = 0x2F,
 	VST_EFFECT_OPCODE_GETVENDOR   = 0x2F,
@@ -1028,11 +1087,12 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_GETTAILSAMPLES = 0x34,
 	VST_EFFECT_OPCODE_TAIL_SAMPLES   = 0x34,
 
-	/**
+	/** Notify effect that it is idle?
 	 *
-	 *
+	 * Note: Invalid in VST 2.4 as it uses VST_EFFECT_OPCODE_PROCESS_BEGIN and VST_EFFECT_OPCODE_PROCESS_END.
 	 */
 	VST_EFFECT_OPCODE_35 = 0x35,
+	VST_EFFECT_OPCODE_IDLE = 0x35,
 
 	/**
 	 *
@@ -1067,19 +1127,29 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_3A          = 0x3A,
 	VST_EFFECT_OPCODE_VST_VERSION = 0x3A,
 
-	// VST 2.1 or later
+	//--------------------------------------------------------------------------------
+	// VST 2.1
+	//--------------------------------------------------------------------------------
 
-	/**
+	/** Editor Virtual Key Down Input
 	 *
-	 *
+	 * @param p_int1 ASCII Character
+	 * @param p_int2 Virtual Key Code
+	 * @param p_float Modifiers
+	 * @return VST_STATUS_TRUE if we used the input, otherwise VST_STATUS_FALSE
 	 */
 	VST_EFFECT_OPCODE_3B = 0x3B,
+	VST_EFFECT_OPCODE_EDITOR_VKEY_DOWN = 0x3B,
 
-	/**
+	/** Editor Virtual Key Up Event
 	 *
-	 *
+	 * @param p_int1 ASCII Character
+	 * @param p_int2 Virtual Key Code
+	 * @param p_float Modifiers
+	 * @return VST_STATUS_TRUE if we used the input, otherwise VST_STATUS_FALSE
 	 */
 	VST_EFFECT_OPCODE_3C = 0x3C,
+	VST_EFFECT_OPCODE_EDITOR_VKEY_UP = 0x3C,
 
 	/**
 	 *
@@ -1089,45 +1159,45 @@ enum VST_EFFECT_OPCODE {
 
 	/**
 	 *
-	 *
+	 * Midi related
 	 */
 	VST_EFFECT_OPCODE_3E = 0x3E,
 
 	/**
 	 *
-	 *
+	 * Midi related
 	 */
 	VST_EFFECT_OPCODE_3F = 0x3F,
 
 	/**
 	 *
-	 *
+	 * Midi related
 	 */
 	VST_EFFECT_OPCODE_40 = 0x40,
 
 	/**
 	 *
-	 *
+	 * Midi related
 	 */
 	VST_EFFECT_OPCODE_41 = 0x41,
 
 	/**
 	 *
-	 *
+	 * Midi related
 	 */
 	VST_EFFECT_OPCODE_42 = 0x42,
 
-	/**
+	/** Emitted prior to the host loading a program.
 	 *
-	 *
+	 * @return VST_STATUS_TRUE if we understood the notification, or VST_STATUS_FALSE if not.
 	 */
-	VST_EFFECT_OPCODE_43 = 0x43,
+	VST_EFFECT_OPCODE_PROGRAM_SET_BEGIN = 0x43,
 
-	/**
+	/** Emitted after the host finished loading a program.
 	 *
-	 *
+	 * @return VST_STATUS_TRUE if we understood the notification, or VST_STATUS_FALSE if not.
 	 */
-	VST_EFFECT_OPCODE_44 = 0x44,
+	VST_EFFECT_OPCODE_PROGRAM_SET_END = 0x44,
 
 	// VST 2.3 or later
 
@@ -1139,17 +1209,20 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_45                      = 0x45,
 	VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT = 0x45,
 
-	/**
+	/** Get the next effect contained in this effect.
 	 *
-	 *
+	 * @param p_ptr `char[64]` Buffer for next effect name.
+	 * @return Next effects unique_id
 	 */
 	VST_EFFECT_OPCODE_46 = 0x46,
+	VST_EFFECT_OPCODE_GET_NEXT_CONTAINED_EFFECT = 0x46,
 
 	/** Begin processing of audio.
 	 *
 	 * 
 	 * 
 	 */
+	VST_EFFECT_OPCODE_47 = 0x47,
 	VST_EFFECT_OPCODE_PROCESS_BEGIN = 0x47,
 
 	/** End processing of audio.
@@ -1157,6 +1230,7 @@ enum VST_EFFECT_OPCODE {
 	 * 
 	 *
 	 */
+	VST_EFFECT_OPCODE_47 = 0x48,
 	VST_EFFECT_OPCODE_PROCESS_END = 0x48,
 
 	/**
@@ -1177,11 +1251,13 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_4B = 0x4B,
 
-	/**
+	/** Emitted prior to loading a program
 	 *
-	 *
+	 * @param p_ptr Unknown structured data.
+	 * @return VST_STATUS_NO if we couldn't load the data, VST_STATUS_YES if we can load the data, VST_STATUS_UNKNOWN if this isn't supported.
 	 */
 	VST_EFFECT_OPCODE_4C = 0x4C,
+	VST_EFFECT_OPCODE_PROGRAM_LOAD = 0x4C,
 
 	// VST 2.4 or later
 
