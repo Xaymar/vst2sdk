@@ -525,6 +525,8 @@ typedef intptr_t (*vst_host_callback_t)(vst_effect_t* plugin, VST_HOST_OPCODE op
 //------------------------------------------------------------------------------------------------------------------------
 
 #define VST_MAGICNUMBER 'VstP'
+#define VST_DEFAULT_SAMPLE_RATE 44100.0f
+#define VST_DEFAULT_BLOCK_SIZE 1024
 
 /** Plug-in Categories
  * All plug-ins must be in one of these categories and their behavior differs depending on which category they are in. 
@@ -1208,7 +1210,7 @@ struct vst_effect_t {
 
 	// 64-bit adds 4-byte padding here to align pointers.
 
-	/* Control the VST through an opcode and up to four parameters.
+	/** Control the VST through an opcode and up to four parameters.
 	 * 
 	 * @param this Pointer to the effect itself.
 	 * @param opcode The opcode to run, see VST_EFFECT_OPCODES.
@@ -1217,64 +1219,85 @@ struct vst_effect_t {
 	 * @param p_ptr Parameter, see VST_EFFECT_OPCODES.
 	 * @param p_float Parameter, see VST_EFFECT_OPCODES.
 	 */
-	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect_t* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
+	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect_t* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float) = 0;
 
-	/* Process the given number of samples in inputs and outputs.
+	/** Process the given number of samples in inputs and outputs.
 	 *
-	 * Different to process_float how? Never seen any difference.
+	 * Used to handle input data and provides output data. We seem to be the ones that provide the output buffer?
 	 * 
 	 * @param pthis Pointer to the effect itself.
 	 * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples) = 0;
 
-	/* Updates the value for the parameter at the given index, or does nothing if out of bounds.
+	/** Updates the value for the parameter at the given index, or does nothing if out of bounds.
 	 * 
 	 * @param pthis Pointer to the effect itself.
 	 * @param index Parameter index.
 	 * @param value New value for the parameter.
 	 */
-	void(VST_FUNCTION_INTERFACE* set_parameter)(vst_effect_t* pthis, uint32_t index, float value);
+	void(VST_FUNCTION_INTERFACE* set_parameter)(vst_effect_t* pthis, uint32_t index, float value) = 0;
 
-	/* Returns the value stored for the parameter at index, or 0 if out of bounds.
+	/** Returns the value stored for the parameter at index, or 0 if out of bounds.
 	 * 
 	 * @param pthis Pointer to the effect itself.
 	 * @param index Parameter index.
 	 * @return float Value of the parameter.
 	 */
-	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect_t* pthis, uint32_t index);
+	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect_t* pthis, uint32_t index) = 0;
 
-	int32_t num_programs; // Number of available programs.
-	int32_t num_params; // Number of parameters. All programs must have at least this many parameters.
-	int32_t num_inputs; // Number of inputs.
-	int32_t num_outputs; // Number of outputs.
+	int32_t num_programs = 0; // Number of available programs.
+	int32_t num_params = 0; // Number of parameters. All programs must have at least this many parameters.
+	int32_t num_inputs = 0; // Number of inputs.
+	int32_t num_outputs = 0; // Number of outputs.
 
-	/* Effect Flags
+	/** Effect Flags
 	 *
 	 * See: VST_EFFECT_FLAGS
 	 */
-	int32_t flags;
+	int32_t flags = 0;
 
 	// 64-bit adds 4-byte padding here to align pointers.
 
-	void* _unknown_ptr_00[2];
+	void* _unknown_00 = 0;
+	void* _unknown_01 = 0;
 
-	/* Initial delay before processing of samples can actually begin in Samples.
+	/** Initial delay before processing of samples can actually begin in Samples.
 	 *
 	 * Note: The host can modify this at runtime so it is not safe. 
 	 * Note: Should be reinitialized when the effect is resumed.
 	 */
-	int32_t delay;
+	int32_t delay = 0;
 
-	int32_t _unknown_int32_00[2]; // Unknown int32_t values.
-	float   _unknown_float_00; // Seems to always be 1.0
+	int32_t _unknown_02 = 0; // Unknown int32_t values.
+	int32_t _unknown_03 = 0;
 
-	void* effect_internal; // Pointer to Plugin internal data
-	void* host_internal; // Pointer to Host internal data.
+	/** Ratio of Input to Output production
+	 * Defines how much output data is produced relative to input data when using 'process' instead of 'processFloat'.
+	 * Example: A ratio of 2.0 means we produce twice as much output as we receive input.
+	 * 
+	 * Range: >0.0 to Infinity
+	 * Note: Ignored in VST 2.4 or with VST_EFFECT_FLAG_SUPPORTS_FLOAT.
+	 */
+	float input_output_ratio = 1.0;
 
-	/* Id of the plugin.
+	/** Effect Internal Pointer
+	 * 
+	 * You can freely set this to point at some sort of class or similar for use in your own effect. The host must
+	 * never modify this or the data available through this.
+	 */
+	void* effect_internal = 0;
+
+	/** Host Internal Pointer
+	 * 
+	 * The host may set this to point at data related to your effect instance that the host needs. The effect must
+	 * never modify this or the data available through this.
+	 */
+	void* host_internal = 0; // Pointer to Host internal data.
+
+	/** Id of the plugin.
 	 *
 	 * Due to this not being enough for uniqueness, it should not be used alone for indexing.
 	 * Ideally you want to index like this:
@@ -1283,26 +1306,40 @@ struct vst_effect_t {
 	 *
 	 * BUG: Some broken hosts rely on this alone to save information about VST plug-ins.
 	 */
-	int32_t unique_id;
+	int32_t unique_id = 0;
 
-	/* Plugin version
+	/** Plugin version
 	 * 
 	 * Unrelated to the minimum VST Version, but often the same.
 	 */
-	int32_t version;
+	int32_t version = 0;
 
 	// There is no padding here if everything went right.
 
-	/* Process the given number of single samples in inputs and outputs.
+	//--------------------------------------------------------------------------------
+	// VST 2.x starts here.
+	//--------------------------------------------------------------------------------
+
+	/** Process the given number of single samples in inputs and outputs.
 	 *
+	 * Process input and overwrite the output in place. Host provides output buffers.
+	 * 
+	 * Note: Not thread-safe on MacOS for some reason or another.
+	 * 
 	 * @param pthis Pointer to the effect itself.
 	 * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples) = 0;
 
-	/* Process the given number of double samples in inputs and outputs.
+	//--------------------------------------------------------------------------------
+	// VST 2.4 starts here.
+	//--------------------------------------------------------------------------------
+
+	/** Process the given number of double samples in inputs and outputs.
+	 *
+	 * Process input and overwrite the output in place. Host provides output buffers.
 	 *
 	 * Note: Not present and not called prior to VST 2.4. 
 	 * 
@@ -1311,7 +1348,7 @@ struct vst_effect_t {
 	 * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect_t* pthis, const double* const* inputs, double** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect_t* pthis, const double* const* inputs, double** outputs, int32_t samples) = 0;
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
