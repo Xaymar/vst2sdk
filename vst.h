@@ -29,27 +29,6 @@
 #define VST_FUNCTION_INTERFACE __cdecl // Incorrect for older Windows platforms. Is it actually stdcall sometimes? That would be stupid.
 #define VST_ALIGNMENT 8 // This appears to be wrong for 32-bit. But it's not 4 byte either? What.
 #define VST_MAGICNUMBER 'VstP'
-
-// Common VST buffer lengths:
-// 8: OpCodes(GetLabel, GetName, GetValue)
-#define VST_BUFFER_8 8
-#define VST_PARAM_BUFFER_SIZE VST_BUFFER_8
-// 16:
-#define VST_BUFFER_16 16
-// 24: OpCodes?
-#define VST_BUFFER_24 24
-// 32: OpCodes(EffectName)
-#define VST_BUFFER_32 32
-#define VST_EFFECT_BUFFER_SIZE 32
-// 64: OpCodes(ProductName, VendorName)
-#define VST_BUFFER_64 64
-#define VST_VENDOR_BUFFER_SIZE VST_BUFFER_64
-#define VST_PRODUCT_BUFFER_SIZE VST_BUFFER_64
-#define VST_NAME_BUFFER_SIZE VST_BUFFER_64
-#define VST_PROGRAM_BUFFER_SIZE VST_BUFFER_64
-// 100:
-#define VST_BUFFER_100 100
-
 #define VST_MAX_CHANNELS 32 // Couldn't find any audio editing software which would attempt to add more channels.
 
 #pragma pack(push, VST_ALIGNMENT)
@@ -61,26 +40,38 @@ extern "C" {
 #include <inttypes.h>
 #endif
 
-/*******************************************************************************
-|* Enumeration
-|*/
-
+/** Known Status Codes
+ */
 enum VST_STATUS {
 	VST_STATUS_0 = 0,
 	VST_STATUS_FALSE = 0,
 	VST_STATUS_ERROR = 0,
+	VST_STATUS_UNKNOWN = 0,
 
 	VST_STATUS_1 = 1,
 	VST_STATUS_TRUE = 1,
 	VST_STATUS_SUCCESS = 1,
+	VST_STATUS_YES = 1,
 
-	// Does not appear to be official, seen in some Reaper-style VST plug-ins.
+	// Only seen in one single op-code.
 	VST_STATUS_m1 = -1,
-	VST_STATUS_NOT_IMPLEMENTED = -1
+	VST_STATUS_NOT_IMPLEMENTED = -1, // Not an official status, but seen in some Reaper-style VSTs.
+	VST_STATUS_NO = -1,
 
 	_VST_STATUS_PAD = 0xFFFFFFFFul,
 }
 
+/** Known Buffer Sizes
+ */
+enum VST_BUFFER_SIZE {
+	VST_BUFFER_SIZE_PARAM_LABEL = 8,
+	VST_BUFFER_SIZE_PARAM_NAME = 8,
+	VST_BUFFER_SIZE_PARAM_VALUE = 8,
+	VST_BUFFER_SIZE_PROGRAM_NAME = 24,
+	VST_BUFFER_SIZE_EFFECT_NAME = 32,
+	VST_BUFFER_SIZE_VENDOR_NAME = 64,
+	VST_BUFFER_SIZE_PRODUCT_NAME = 64,
+} // This is an enum because I started to dislike macros.
 
 /** VST Version Enumeration
  * - The VST version format is in Base10.
@@ -174,7 +165,8 @@ enum VST_EFFECT_OPCODE {
 	/* Set Program Name
 	 *
 	 * Set the name of the currently selected program.
-	 * @param p_ptr `const char[VST_PROGRAM_BUFFER_SIZE]` Zero terminated string of at most VST_PROGRAM_BUFFER_SIZE bytes.
+	 *
+	 * @param p_ptr `const char[VST_BUFFER_SIZE_PROGRAM_NAME]` Zero terminated string.
 	 */
 	VST_EFFECT_OPCODE_04 = 0x04,
 	VST_EFFECT_OPCODE_SET_PROGRAM_NAME = 0x04,
@@ -182,7 +174,7 @@ enum VST_EFFECT_OPCODE {
 	/* Get Program Name
 	 *
 	 * Get the name of the currently selected program.
-	 * @param p_ptr `char[VST_PROGRAM_BUFFER_SIZE]` Zero terminated string of at most VST_PROGRAM_BUFFER_SIZE bytes.
+	 * @param p_ptr `char[VST_BUFFER_SIZE_PROGRAM_NAME]` Zero terminated string.
 	 */
 	VST_EFFECT_OPCODE_05 = 0x05,
 	VST_EFFECT_OPCODE_GET_PROGRAM_NAME = 0x05,
@@ -190,16 +182,16 @@ enum VST_EFFECT_OPCODE {
 	/* Get the value? label for the parameter.
 	 * 
 	 * @param p_int1 Parameter index.
-	 * @param p_ptr 'char[VST_PARAM_BUFFER_SIZE]'
+	 * @param p_ptr 'char[VST_BUFFER_SIZE_PARAM_LABEL]' Zero terminated string.
 	 * @return 0 on success, 1 on failure.
 	 */
 	VST_EFFECT_OPCODE_06             = 0x06,
 	VST_EFFECT_OPCODE_PARAM_GETLABEL = 0x06,
 
-	/* Get the string value for the parameter.
+	/* Get the string representing the value for the parameter.
 	 * 
 	 * @param p_int1 Parameter index.
-	 * @param p_ptr 'char[VST_PARAM_BUFFER_SIZE]'
+	 * @param p_ptr 'char[VST_BUFFER_SIZE_PARAM_VALUE]' Zero terminated string.
 	 * @return 0 on success, 1 on failure.
 	 */
 	VST_EFFECT_OPCODE_07             = 0x07,
@@ -208,7 +200,7 @@ enum VST_EFFECT_OPCODE {
 	/* Get the name for the parameter.
 	 * 
 	 * @param p_int1 Parameter index.
-	 * @param p_ptr 'char[VST_PARAM_BUFFER_SIZE]'
+	 * @param p_ptr 'char[VST_BUFFER_SIZE_PARAM_NAME]' Zero terminated string.
 	 * @return 0 on success, 1 on failure.
 	 */
 	VST_EFFECT_OPCODE_08            = 0x08,
@@ -337,11 +329,11 @@ enum VST_EFFECT_OPCODE {
 
 	/* Get Chunk Data
 	 *
-	 * Save current program or bank state to a buffer.
+	 * Save current program or bank state to a buffer. Called by the host if the flag for chunked programs/banks is set.
 	 * 
 	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
-	 * @param p_ptr		`char**` A pointer to a pointer. You should make this point at your own pointer
-	 * @return p_int2	Size of the Chunk Data in bytes.
+	 * @param p_ptr		`void**` Pointer to a potential pointer containing your own chunk data.
+	 * @return 			Size of the Chunk Data in bytes.
 	 */
 	VST_EFFECT_OPCODE_17 = 0x17,
 	VST_EFFECT_OPCODE_GET_CHUNK_DATA = 0x17,
@@ -351,8 +343,8 @@ enum VST_EFFECT_OPCODE {
 	 * Restore current program or bank state from a buffer.
 	 * 
 	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
-	 * @param p_int2 Size of the Chunk Data in bytes.
-	 * @param p_ptr `void**` Poi
+	 * @param p_int2	Size of the Chunk Data in bytes.
+	 * @param p_ptr		`void*` Pointer to a buffer containing chunk data.
 	 */
 	VST_EFFECT_OPCODE_18 = 0x18,
 	VST_EFFECT_OPCODE_SET_CHUNK_DATA = 0x18,
@@ -363,7 +355,7 @@ enum VST_EFFECT_OPCODE {
 
 	/*
 	 *
-	 *
+	 * Appears to be related to midi and audio events.
 	 */
 	VST_EFFECT_OPCODE_19 = 0x19,
 
@@ -456,19 +448,19 @@ enum VST_EFFECT_OPCODE {
 
 	/*
 	 *
-	 *
+	 * Seen in plug-ins with VST_CATEGORY_OFFLINE.
 	 */
 	VST_EFFECT_OPCODE_26 = 0x26,
 
 	/*
 	 *
-	 *
+	 * Seen in plug-ins with VST_CATEGORY_OFFLINE.
 	 */
 	VST_EFFECT_OPCODE_27 = 0x27,
 
 	/*
 	 *
-	 *
+	 * Seen in plug-ins with VST_CATEGORY_OFFLINE.
 	 */
 	VST_EFFECT_OPCODE_28 = 0x28,
 
@@ -501,7 +493,9 @@ enum VST_EFFECT_OPCODE {
 
 	/* Retrieve the effect name into the ptr buffer.
 	 *
-	 * @param p_ptr char[64] Buffer containing a zero-terminated effect information string. May be shorter than 64 bytes on older hosts.
+	 * Bug: Some officially licensed hosts do not provide the expected buffer size! The lowest I've seen is 32 bytes.
+	 * 
+	 * @param p_ptr `char[VST_BUFFER_SIZE_EFFECT_NAME]` Zero terminated string. 
 	 * @return Always 0, even on failure.
 	 */
 	VST_EFFECT_OPCODE_2D          = 0x2D,
@@ -510,23 +504,26 @@ enum VST_EFFECT_OPCODE {
 
 	/* Translate an error code to a string.
 	 *
-	 * @param p_ptr char[256] Buffer that should contain a zero-terminated error string.
+	 * Note: Not called in almost all licensed hosts.
+	 * Note: The buffer size varies wildly and there appears to be no common size.
+	 * 
+	 * @param p_ptr `char[...]` Zero terminated string buffer to which we write our error message.
+	 * @return VST_STATUS_TRUE if we could translate the error, VST_STATUS_FALSE if not.
 	 */
 	VST_EFFECT_OPCODE_2E              = 0x2E,
 	VST_EFFECT_OPCODE_TRANSLATE_ERROR = 0x2E,
 
 	/* Retrieve the vendor name into the ptr buffer.
 	 *
-	 * @param p_ptr char[64] Buffer containing a zero-terminated vendor information string. May be shorter than 64 bytes on older hosts.
-	 * @return Always 0, even on failure.
+	 * @param p_ptr `char[VST_BUFFER_SIZE_PRODUCT]` Zero terminated string.
 	 */
 	VST_EFFECT_OPCODE_2F          = 0x2F,
 	VST_EFFECT_OPCODE_GETVENDOR   = 0x2F,
 	VST_EFFECT_OPCODE_VENDOR_NAME = 0x2F,
 
-	/* See VST_EFFECT_OPCODE_GETNAME
+	/* Retrieve the product name into the ptr buffer.
 	 *
-	 * Rarely used, if at all even supported. Not sure what the purpose of this is even.
+	 * @param p_ptr `char[VST_BUFFER_SIZE_PRODUCT]` Zero terminated string.
 	 */
 	VST_EFFECT_OPCODE_30           = 0x30,
 	VST_EFFECT_OPCODE_GETNAME2     = 0x30,
@@ -549,14 +546,14 @@ enum VST_EFFECT_OPCODE {
 	/* Test for support of a specific named feature.
 	 * 
 	 * @param p_ptr Pointer to a zero-terminated buffer containing the feature name.
-	 * @return Non-zero if the feature is supported, otherwise 0.
+	 * @return VST_STATUS_YES if the feature is supported, VST_STATUS_NO if the feature is not supported, VST_STATUS_UNKNOWN in all other cases.
 	 */
 	VST_EFFECT_OPCODE_33       = 0x33,
 	VST_EFFECT_OPCODE_SUPPORTS = 0x33,
 
 	/* Number of samples that are at the tail at the end of playback.
 	 * 
-	 * @return 0 or 1 for no tail, > 1 for number of samples to tail.
+	 * @return VST_STATUS_UNKNOWN for automatic tail size, VST_STATUS_TRUE for no tail, any other number above 1 for the number of samples the tail has.
 	 */
 	VST_EFFECT_OPCODE_34             = 0x34,
 	VST_EFFECT_OPCODE_GETTAILSAMPLES = 0x34,
