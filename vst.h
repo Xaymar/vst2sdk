@@ -159,25 +159,103 @@ struct vst_parameter_properties_t {
 };
 
 enum VST_SPEAKER_TYPE {
+	// Default Types
 	VST_SPEAKER_TYPE_MONO       = 0,
 	VST_SPEAKER_TYPE_LEFT       = 1,
 	VST_SPEAKER_TYPE_RIGHT      = 2,
 	VST_SPEAKER_TYPE_CENTER     = 3,
 	VST_SPEAKER_TYPE_LFE        = 4,
-	VST_SPEAKER_TYPE_LEFT_SIDE  = 5,
-	VST_SPEAKER_TYPE_RIGHT_SIDE = 6,
+	VST_SPEAKER_TYPE_LEFT_REAR  = 5, // Rear/Surround Left
+	VST_SPEAKER_TYPE_RIGHT_REAR = 6, // Rear/Surround Right
+	// 7
+	// 8
+	// 9
+	VST_SPEAKER_TYPE_LEFT_SIDE  = 10, // Side Left
+	VST_SPEAKER_TYPE_RIGHT_SIDE = 11, // Side Right
+	// 12
+	// 13
+	// 14
+	// 15
+	// ...
+
+	// User Types (seen rarely, but never exceeds -32)
+	VST_SPEAKER_TYPE_USER_32 = -32,
+	VST_SPEAKER_TYPE_USER_31,
+	VST_SPEAKER_TYPE_USER_30,
+	VST_SPEAKER_TYPE_USER_29,
+	VST_SPEAKER_TYPE_USER_28,
+	VST_SPEAKER_TYPE_USER_27,
+	VST_SPEAKER_TYPE_USER_26,
+	VST_SPEAKER_TYPE_USER_25,
+	VST_SPEAKER_TYPE_USER_24,
+	VST_SPEAKER_TYPE_USER_23,
+	VST_SPEAKER_TYPE_USER_22,
+	VST_SPEAKER_TYPE_USER_21,
+	VST_SPEAKER_TYPE_USER_20,
+	VST_SPEAKER_TYPE_USER_19,
+	VST_SPEAKER_TYPE_USER_18,
+	VST_SPEAKER_TYPE_USER_17,
+	VST_SPEAKER_TYPE_USER_16,
+	VST_SPEAKER_TYPE_USER_15,
+	VST_SPEAKER_TYPE_USER_14,
+	VST_SPEAKER_TYPE_USER_13,
+	VST_SPEAKER_TYPE_USER_12,
+	VST_SPEAKER_TYPE_USER_11,
+	VST_SPEAKER_TYPE_USER_10,
+	VST_SPEAKER_TYPE_USER_09,
+	VST_SPEAKER_TYPE_USER_08,
+	VST_SPEAKER_TYPE_USER_07,
+	VST_SPEAKER_TYPE_USER_06,
+	VST_SPEAKER_TYPE_USER_05,
+	VST_SPEAKER_TYPE_USER_04,
+	VST_SPEAKER_TYPE_USER_03,
+	VST_SPEAKER_TYPE_USER_02,
+	VST_SPEAKER_TYPE_USER_01,
+
 
 	// Pad to force 32-bit number.
 	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
 };
 
 struct vst_speaker_properties_t {
-	float _unknown_00; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
-	float _unknown_04; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
-	float _unknown_08; // 0.0 if LFE, otherwise 1.0.
-	float _unknown_0C;
+	/** Azimuth in Radians
+	 * Range: -PI to PI
+	 * 
+	 * Note: Must be 10.0 if this is a LFE.
+	 */
+	float azimuth;
+
+	/** Altitude in Radians
+	 * Range: -PI/2 to PI/2
+	 * 
+	 * Note: Must be 10.0 if this is a LFE.
+	 */
+	float altitude;
+
+	/** Distance in Meters
+	 * range: 0 to +-Infinity
+	 * 
+	 * Note: Must be 0.0 if this is a LFE.
+	 */
+	float distance;
+
+	float _unknown_00 = 0;
+
+	/** Human readable name for this speaker.
+	 * 
+	 * Some hosts will behave weird if you use "L", "R", "C", "Ls", "Rs", "Lc", "Rc", "LFE", "Lfe", "Sl", "Sr", "Cs", 
+	 * and other 2 to 3 letter short codes. Best not to use those if you like your plug-in in a not-crashy state.
+	 */
 	char name[VST_BUFFER_SIZE_SPEAKER_NAME];
-	VST_SPEAKER_TYPE type;
+
+	/** The type of the speaker
+	 * 
+	 * See VST_SPEAKER_TYPE
+	 * 
+	 * If the above is one of those short codes some host seems to overwrite this with their own. Memory safety is 
+	 * optional apparently.
+	 */
+	int32_t type;
 
 	uint8_t _reserved[28]; // Reserved for future expansions?
 };
@@ -201,17 +279,27 @@ enum VST_SPEAKER_ARRANGEMENT_TYPE {
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_STEREO = 0x01,
 	
-	/** 5.0
+	/** Quadraphonic
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_4_0 = 0x0B,
+
+	/** 5.0 (Old Surround)
 	 * 
-	 * L, R, C, SL, SR
+	 * L, R, C, RL, RR
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_5_0 = 0x0E,
 
-	/** 5.1
+	/** 5.1 (Old Surround)
 	 * 
-	 * L, R, C, LFE, SL, SR
+	 * L, R, C, LFE, RL, RR
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_5_1 = 0x0F,
+
+	/** 7.1 (Full Surround)
+	 * 
+	 * L, R, C, LFE, SL, SR, RL, RR
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_7_1 = 0x17,
 
 	// Pad to force 32-bit number.
 	_VST_SPEAKER_ARRANGEMENT_TYPE_PAD = 0xFFFFFFFFul,
