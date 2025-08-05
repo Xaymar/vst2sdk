@@ -1227,7 +1227,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Enable/Disable bypassing the effect.
 	 *
-	 * Some hosts call VST_EFFECT_OPCODE_SUPPORTS with "bypass" first to see if it is supported.
+	 * See VST_EFFECT_OPCODE_SUPPORTS with vst_effect_supports.bypass for more information.
 	 * 
 	 * @param p_int2 Zero if bypassing the effect is disabled, otherwise 1.
 	 */
@@ -1513,8 +1513,12 @@ enum VST_EFFECT_OPCODE {
  * Harvested via strings command and just checking what plug-ins actually responded to. * 
  */
 struct {
-	/** Plug-in supports VST_EFFECT_OPCODE_BYPASS
+	/** Effect supports alternative bypass.
+	 * The alternative bypass still has the host call process/process_float/process_double and expects us to compensate
+	 * for our delay/latency, copy inputs to outputs, and do minimal work. If we don't support it the host will not call
+	 * process/process_float/process_double at all while bypass is enabled.
 	 *
+	 * Note: VST 2.3 or later only.
 	 * @return VST_STATUS_TRUE if we support this, otherwise VST_STATUS_FALSE.
 	 */
 	const char* bypass = "bypass";
@@ -1524,10 +1528,35 @@ struct {
 	
 	const char* sendVstMidiEvent = "sendVstMidiEvent";
 	const char* receiveVstMidiEvent = "receiveVstMidiEvent";
+
+	/**
+	 * 
+	 * VST 2.1 or later only.
+	 */
 	const char* midiProgramNames = "midiProgramNames";
 
 	const char* receiveVstTimeInfo = "receiveVstTimeInfo";
 	const char* offline = "offline";
+
+	// The following were only found in VST 2.3 plug-ins
+	
+	const char* plugAsChannelInsert = "plugAsChannelInsert";
+	const char* conformsToWindowRules = "conformsToWindowRules"; // Mac OS only, invalid in VST 2.4. Seems related to vst_host_supports.sizeWindow
+	const char* plugAsSend = "plugAsSend";
+	const char* mixDryWet = "mixDryWet";
+	const char* noRealTime = "noRealTime";
+	const char* multipass = "multipass";
+	const char* metapass = "metapass";
+	const char* _1in1out = "1in1out";
+	const char* _1in2out = "1in2out";
+	const char* _2in1out = "2in1out";
+	const char* _2in2out = "2in2out";
+	const char* _2in4out = "2in4out";
+	const char* _4in2out = "4in2out";
+	const char* _4in4out = "4in4out";
+	const char* _4in8out = "4in8out";
+	const char* _8in4out = "8in4out";
+	const char* _8in8out = "8in8out";
 } vst_effect_supports;
 
 /** Plug-in Effect definition
