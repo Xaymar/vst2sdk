@@ -125,6 +125,37 @@ enum VST_CATEGORY {
 	_VST_CATEGORY_PAD = 0xFFFFFFFFul,
 };
 
+/** Effect Flags
+ * 
+ * Bit		Description
+ * 1		Effect has "Editor"
+ * 2		Unknown
+ * 3		Unknown (Found in: ReaDelay)
+ * 4		Unknown (Found in: ReaDelay)
+ * 5		Has process_float
+ * 6		Unknown (Found in: ReaControlMIDI, ReaStream, ReaFir)
+ * 10		Unknown (Found in: ReaFir)
+ * 13		Has process_double
+ */
+enum VST_EFFECT_FLAG {
+	VST_EFFECT_FLAG_EDITOR = 1 << 0, // The plug-in provides a custom editor instead of the generic host interface.
+	//1 << 1,
+	//1 << 2, // Only seen when the plug-in responds to VST_EFFECT_OPCODE_09. Seems to be ignored by hosts entirely.
+	//1 << 3, // Only seen when the plug-in behaves differently in mono mode. Seems to be ignored by hosts entirely.
+	VST_EFFECT_FLAG_SUPPORTS_FLOAT = 1 << 4, // Plug-in supports process_float. Must be set if VST version is 2.4.
+	VST_EFFECT_FLAG_CHUNKS = 1 << 5, // Plug-in uses unformatted chunk data. 
+	//1 << 6,
+	//1 << 7,
+	//1 << 8,
+	VST_EFFECT_FLAG_INSTRUMENT = 1 << 8, // Plug-in is an instrument/generator of some kind.
+	//1 << 9,
+	VST_EFFECT_FLAG_NO_TAIL = 1 << 9, // Plug-in does not produce a tail. This is not the same as returning 1 in the tail samples op-code for some reason.
+	//1 << 10,
+	//1 << 11,
+	//1 << 12,
+	VST_EFFECT_FLAG_SUPPORTS_DOUBLE = 1 << 12, // Plug-in supports process_double. Optional mode for VST version 2.4, host can freely select.
+}
+
 /** Host to Plug-in Op-Codes
  * These Op-Codes are emitted by the host and we must either handle them or return 0 (false).
  */
@@ -329,7 +360,8 @@ enum VST_EFFECT_OPCODE {
 
 	/* Get Chunk Data
 	 *
-	 * Save current program or bank state to a buffer. Called by the host if the flag for chunked programs/banks is set.
+	 * Save current program or bank state to a buffer.
+	 * Behavior is different based on the chunk flag.
 	 * 
 	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
 	 * @param p_ptr		`void**` Pointer to a potential pointer containing your own chunk data.
@@ -341,6 +373,7 @@ enum VST_EFFECT_OPCODE {
 	/* Set Chunk Data
 	 *
 	 * Restore current program or bank state from a buffer.
+	 * Behavior is different based on the chunk flag.
 	 * 
 	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
 	 * @param p_int2	Size of the Chunk Data in bytes.
@@ -941,22 +974,14 @@ struct vst_effect {
 	 */
 	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect* pthis, uint32_t index);
 
-	int32_t num_programs; // Number of possible programs.
-	int32_t num_params; // Number of possible parameters.
+	int32_t num_programs; // Number of available programs.
+	int32_t num_params; // Number of parameters. All programs must have at least this many inputs.
 	int32_t num_inputs; // Number of inputs.
 	int32_t num_outputs; // Number of outputs.
 
-	/* Bitflags
-	 * 
-	 * Bit		Description
-	 * 1		Effect has "Editor"
-	 * 2		Unknown (Found in: ReaDelay)
-	 * 3		Unknown (Found in: ReaDelay)
-	 * 4		Unknown (Found in: ReaDelay)
-	 * 5		Has process_float (Found in: ReaDelay, ReaComp, ReaControlMIDI, ReaStream, ReaFir)
-	 * 6		Unknown (Found in: ReaControlMIDI, ReaStream, ReaFir)
-	 * 10		Unknown (Found in: ReaFir)
-	 * 13		Has process_double (Found in: ReaControlMIDI)
+	/* Effect Flags
+	 *
+	 * See: VST_EFFECT_FLAGS
 	 */
 	int32_t flags;
 
@@ -966,7 +991,8 @@ struct vst_effect {
 
 	/* Initial delay before processing of samples can actually begin in Samples.
 	 *
-	 * Should be updated before or during handling the 0x47 control call. 
+	 * Note: The host can modify this at runtime so it is not safe. 
+	 * Note: Should be reinitialized when the effect is resumed.
 	 */
 	int32_t delay;
 
@@ -978,11 +1004,12 @@ struct vst_effect {
 
 	/* Id of the plugin.
 	 *
-	 * Due to this not being enough for uniqueness, it should not be used alone 
-	 * for indexing. Ideally you want to index like this:
+	 * Due to this not being enough for uniqueness, it should not be used alone for indexing.
+	 * Ideally you want to index like this:
 	 *     [unique_id][module_name][version][flags]
-	 * If any of the checks after unique_id fail, you default to the first 
-	 * possible choice.
+	 * If any of the checks after unique_id fail, you default to the first possible choice.
+	 *
+	 * BUG: Some broken hosts rely on this alone to save information about VST plug-ins.
 	 */
 	int32_t unique_id;
 
@@ -1005,7 +1032,7 @@ struct vst_effect {
 
 	/* Process the given number of double samples in inputs and outputs.
 	 *
-	 * Used only by 2.4 hosts and plugins, possibly restricted to said version.
+	 * Note: Not present and not called prior to VST 2.4. 
 	 * 
 	 * @param pthis Pointer to the effect itself.
 	 * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
