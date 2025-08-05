@@ -727,6 +727,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Note: Present in some VST 2.1 or earlier plugins.
 	 * Note: Not present in many VST 2.4 plugins.
+	 * Note: Only on Mac OS?
 	 */
 	VST_EFFECT_OPCODE_10 = 0x10,
 	VST_EFFECT_OPCODE_WINDOW_DRAW = 0x10,
@@ -737,6 +738,7 @@ enum VST_EFFECT_OPCODE {
 	 * 
 	 * Note: Present in some VST 2.1 or earlier plugins.
 	 * Note: Not present in many VST 2.4 plugins.
+	 * Note: Only on Mac OS?
 	 */
 	VST_EFFECT_OPCODE_11 = 0x11,
 	VST_EFFECT_OPCODE_WINDOW_MOUSE = 0x11,
@@ -747,6 +749,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Note: Present in some VST 2.1 or earlier plugins.
 	 * Note: Not present in many VST 2.4 plugins.
+	 * Note: Only on Mac OS?
 	 */
 	VST_EFFECT_OPCODE_12 = 0x12,
 	VST_EFFECT_OPCODE_WINDOW_KEYBOARD = 0x12,
@@ -766,6 +769,7 @@ enum VST_EFFECT_OPCODE {
 	 * 
 	 * Note: Present in some VST 2.1 or earlier plugins.
 	 * Note: Not present in many VST 2.4 plugins.
+	 * Note: Only on Mac OS?
 	 */
 	VST_EFFECT_OPCODE_14 = 0x14,
 
@@ -775,6 +779,7 @@ enum VST_EFFECT_OPCODE {
 	 *	  
 	 * Note: Present in some VST 2.1 or earlier plugins.
 	 * Note: Not present in many VST 2.4 plugins.
+	 * Note: Only on Mac OS?
 	 */
 	VST_EFFECT_OPCODE_15 = 0x15,
 
