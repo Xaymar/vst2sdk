@@ -602,14 +602,14 @@ enum VST_HOST_OPCODE {
 	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
-#ifdef __cplusplus
+
 /** Plug-in to Hostn support checks
  * 
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
  * 
  * Harvested via strings command and just checking what plug-ins actually responded to. * 
  */
-namespace vst_host_supports {
+struct vst_host_supports {
 	/** Does the host support modifying input/output/params/delay when programs, banks or parameters are changed?
 	 * This only means that the host supports this inside of VST_EFFECT_OPCODE_IDLE (VST 2.3 or earlier) or outside of
 	 * a VST_EFFECT_OPCODE_PROCESS_BEGIN and VST_EFFECT_OPCODE_PROCESS_END group.
@@ -619,14 +619,14 @@ namespace vst_host_supports {
 	 * 
 	 * @return VST_STATUS_TRUE if it supports it.
 	 */
-	const char* acceptIOChanges = "acceptIOChanges";
+	const char* acceptIOChanges;
 
 	/** Is the host using process begin/end instead of idle?
 	 * 
 	 * This behavior is the default for all VST 2.4 hosts, but VST 2.3 hosts can opt for either.
 	 * @return VST_STATUS_TRUE if it supports it.
 	 */
-	const char* startStopProcess = "startStopProcess";
+	const char* startStopProcess;
 
 	/** Does the host support container plug-ins?
 	 * 
@@ -638,24 +638,38 @@ namespace vst_host_supports {
 	 * 
 	 * @return VST_STATUS_TRUE if the host supports it _and_ the current plug-in is a container plug-in.
 	 */
-	const char* shellCategory = "shellCategory";
+	const char* shellCategory;
 
-	const char* sendVstEvents = "sendVstEvents";
-	const char* receiveVstEvents = "receiveVstEvents";
+	const char* sendVstEvents;
+	const char* receiveVstEvents;
 
-	const char* sendVstMidiEvent = "sendVstMidiEvent";
-	const char* receiveVstMidiEvent = "receiveVstMidiEvent";
-	const char* sendVstMidiEventFlagIsRealtime = "sendVstMidiEventFlagIsRealtime";
+	const char* sendVstMidiEvent;
+	const char* receiveVstMidiEvent;
+	const char* sendVstMidiEventFlagIsRealtime;
 
-	const char* sendVstTimeInfo = "sendVstTimeInfo";
-	const char* reportConnectionChanges = "reportConnectionChanges"; // Seems related to speakers?
-	const char* sizeWindow = "sizeWindow";
-	const char* offline = "offline";
+	const char* sendVstTimeInfo;
+	const char* reportConnectionChanges; // Seems related to speakers?
+	const char* sizeWindow;
+	const char* offline;
 
-	const char* openFileSelector = "openFileSelector";
-	const char* closeFileSelector = "closeFileSelector";
+	const char* openFileSelector;
+	const char* closeFileSelector;
+} vst_host_supports = {
+	.acceptIOChanges = "acceptIOChanges",
+	.startStopProcess = "startStopProcess",
+	.shellCategory = "shellCategory",
+	.sendVstEvents = "sendVstEvents",
+	.receiveVstEvents = "receiveVstEvents",
+	.sendVstMidiEvent = "sendVstMidiEvent",
+	.receiveVstMidiEvent = "receiveVstMidiEvent",
+	.sendVstMidiEventFlagIsRealtime = "sendVstMidiEventFlagIsRealtime",
+	.sendVstTimeInfo = "sendVstTimeInfo",
+	.reportConnectionChanges = "reportConnectionChanges",
+	.sizeWindow = "sizeWindow",
+	.offline = "offline",
+	.openFileSelector = "openFileSelector",
+	.closeFileSelector = "closeFileSelector",
 };
-#endif
 
 /** Plug-in to Host callback
  *
@@ -1508,14 +1522,13 @@ enum VST_EFFECT_OPCODE {
 	_VST_EFFECT_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
-#ifdef __cplusplus
 /** Host to Plug-in support checks
  * 
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
  * 
  * Harvested via strings command and just checking what plug-ins actually responded to. * 
  */
-namespace vst_effect_supports {
+struct {
 	/** Effect supports alternative bypass.
 	 * The alternative bypass still has the host call process/process_float/process_double and expects us to compensate
 	 * for our delay/latency, copy inputs to outputs, and do minimal work. If we don't support it the host will not call
@@ -1524,44 +1537,60 @@ namespace vst_effect_supports {
 	 * Note: VST 2.3 or later only.
 	 * @return VST_STATUS_TRUE if we support this, otherwise VST_STATUS_FALSE.
 	 */
-	const char* bypass = "bypass";
+	const char* bypass;
 
-	const char* sendVstEvents = "sendVstEvents";
-	const char* receiveVstEvents = "receiveVstEvents";
-	
-	const char* sendVstMidiEvent = "sendVstMidiEvent";
-	const char* receiveVstMidiEvent = "receiveVstMidiEvent";
-
-	/**
-	 * 
-	 * VST 2.1 or later only.
-	 */
-	const char* midiProgramNames = "midiProgramNames";
-
-	const char* receiveVstTimeInfo = "receiveVstTimeInfo";
-	const char* offline = "offline";
-
-	// The following were only found in VST 2.3 plug-ins
-	
-	const char* plugAsChannelInsert = "plugAsChannelInsert";
-	const char* conformsToWindowRules = "conformsToWindowRules"; // Mac OS only, invalid in VST 2.4. Seems related to vst_host_supports.sizeWindow
-	const char* plugAsSend = "plugAsSend";
-	const char* mixDryWet = "mixDryWet";
-	const char* noRealTime = "noRealTime";
-	const char* multipass = "multipass";
-	const char* metapass = "metapass";
-	const char* _1in1out = "1in1out";
-	const char* _1in2out = "1in2out";
-	const char* _2in1out = "2in1out";
-	const char* _2in2out = "2in2out";
-	const char* _2in4out = "2in4out";
-	const char* _4in2out = "4in2out";
-	const char* _4in4out = "4in4out";
-	const char* _4in8out = "4in8out";
-	const char* _8in4out = "8in4out";
-	const char* _8in8out = "8in8out";
+	const char* sendVstEvents;
+	const char* receiveVstEvents;
+	const char* sendVstMidiEvent;
+	const char* receiveVstMidiEvent;
+	const char* midiProgramNames; // VST 2.1 or later.
+	const char* receiveVstTimeInfo;
+	const char* offline;
+	// The following were only found in VST 2.3 plug-ins	
+	const char* plugAsChannelInsert;
+	const char* conformsToWindowRules; // Mac OS only, invalid in VST 2.4. Seems related to vst_host_supports.sizeWindow
+	const char* plugAsSend;
+	const char* mixDryWet;
+	const char* noRealTime;
+	const char* multipass;
+	const char* metapass;
+	const char* _1in1out;
+	const char* _1in2out;
+	const char* _2in1out;
+	const char* _2in2out;
+	const char* _2in4out;
+	const char* _4in2out;
+	const char* _4in4out;
+	const char* _4in8out;
+	const char* _8in4out;
+	const char* _8in8out;
+} vst_effect_supports = {
+	.bypass = "bypass",
+	.sendVstEvents = "sendVstEvents",
+	.receiveVstEvents = "receiveVstEvents",
+	.sendVstMidiEvent = "sendVstMidiEvent",
+	.receiveVstMidiEvent = "receiveVstMidiEvent",
+	.midiProgramNames = "midiProgramNames",
+	.receiveVstTimeInfo = "receiveVstTimeInfo",
+	.offline = "offline",
+	.plugAsChannelInsert = "plugAsChannelInsert",
+	.conformsToWindowRules = "conformsToWindowRules",
+	.plugAsSend = "plugAsSend",
+	.mixDryWet = "mixDryWet",
+	.noRealTime = "noRealTime",
+	.multipass = "multipass",
+	.metapass = "metapass",
+	._1in1out = "1in1out",
+	._1in2out = "1in2out",
+	._2in1out = "2in1out",
+	._2in2out = "2in2out",
+	._2in4out = "2in4out",
+	._4in2out = "4in2out",
+	._4in4out = "4in4out",
+	._4in8out = "4in8out",
+	._8in4out = "8in4out",
+	._8in8out = "8in8out",
 };
-#endif
 
 /** Plug-in Effect definition
  */
