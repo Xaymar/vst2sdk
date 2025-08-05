@@ -701,7 +701,38 @@ enum VST_EFFECT_CATEGORY {
 	 * 
 	 * Host handling:
 	 * ```
+	 * uint32_t current_select_id = 0;
 	 * 
+	 * // ... in intptr_t vst_host_callback(vst_effect_t* plugin, VST_HOST_OPCODE opcode, ...)
+	 *     case VST_HOST_OPCODE_SUPPORTS: {
+	 *       char* text = (char*)p_ptr;
+	 *       // The plug-in may ask the host if it even supports containers at all and changes behavior if we don't.
+	 *       if (text && strcmp(text, vst_host_supports.shellCategory) == 0) {
+	 *         return VST_STATUS_TRUE;
+	 *       }
+	 *     }
+	 *     case VST_HOST_OPCODE_CURRENT_EFFECT_ID:
+	 *       return current_selected_id;
+	 * // ...
+	 * 
+	 * // ... in whatever you use to load plug-ins ...
+	 *   current_select_id = 0;
+	 *   vst_effect_t* plugin = plugin_main(&vst_host_callback);
+	 *   int32_t plugin_category = plugin->control(plugin, VST_EFFECT_OPCODE_CATEGORY, 0, 0, 0, 0)
+	 *   if (plugin_category == VST_EFFECT_CATEGORY_CONTAINER) {
+	 *     char effect_name[VST_BUFFER_SIZE_EFFECT_NAME] effect_name;
+	 *     int32_t effect_id;
+	 *     // Iterate over all contained effects.
+	 *     while ((effect_id = plugin->control(plugin, VST_EFFECT_OPCODE_CONTAINER_NEXT_EFFECT_ID, 0, 0, effect_name, 0)) != 0) {
+	 *       // Contained effects must be named as far as I can tell.
+	 *       if (effect_name[0] != 0) {
+	 *          // Do some logic that does the necessary things to list these in the host.
+	 *       }
+	 *     }
+	 *   } else {
+	 *     // Do things to list only this plugin in the host.
+	 *   }
+	 * // ...
 	 * ```
 	 * 
 	 * Plug-in handling:
@@ -741,6 +772,7 @@ enum VST_EFFECT_CATEGORY {
 	 *   }
 	 * }
 	 * 
+	 * // ...
 	 * ```
 	 */
 	VST_EFFECT_CATEGORY_0A            = 0x0A, 
@@ -1141,6 +1173,7 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_23              = 0x23,
 	VST_EFFECT_OPCODE_EFFECT_CATEGORY = 0x23,
+	VST_EFFECT_OPCODE_CATEGORY = 0x23,
 
 	/**
 	 *
@@ -1657,7 +1690,7 @@ struct vst_effect_t {
  * @return A new instance of the VST 2.x effect.
  */
 #define VST_ENTRYPOINT \
-	vst_effect_t* VSTPluginMain(vst_host_callback callback)
+	vst_effect_t* VSTPluginMain(vst_host_callback_t callback)
 
 /** [DEPRECATED] VST 1.x Entry Point for Windows
  *
@@ -1666,7 +1699,7 @@ struct vst_effect_t {
  * @return A new instance of the VST 1.x effect.
  */
 #define VST_ENTRYPOINT_WINDOWS \
-	vst_effect_t* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
+	vst_effect_t* MAIN(vst_host_callback_t callback) { return VSTPluginMain(callback); }
 
 /** [DEPRECATED] VST 1.x Entry Point for MacOS
  *
@@ -1675,7 +1708,7 @@ struct vst_effect_t {
  * @return A new instance of the VST 1.x effect.
  */
 #define VST_ENTRYPOINT_MACOS \
-	vst_effect_t* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
+	vst_effect_t* main_macho(vst_host_callback_t callback) { return VSTPluginMain(callback); }
 
 #ifdef __cplusplus
 }
