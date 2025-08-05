@@ -28,7 +28,6 @@
 
 #define VST_FUNCTION_INTERFACE __cdecl // Incorrect for older Windows platforms. Is it actually stdcall sometimes? That would be stupid.
 #define VST_ALIGNMENT 8 // This appears to be wrong for 32-bit. But it's not 4 byte either? What.
-#define VST_MAGICNUMBER 'VstP'
 #define VST_MAX_CHANNELS 32 // Couldn't find any audio editing software which would attempt to add more channels.
 
 #pragma pack(push, VST_ALIGNMENT)
@@ -366,6 +365,8 @@ struct vst_speaker_arrangement_t {
 // VST Host related Things
 //------------------------------------------------------------------------------------------------------------------------
 
+struct vst_effect_t; // Pre-define vst_effect_t so we can use it below.
+
 /** Plug-in to Host Op-Codes
  * These Op-Codes are emitted by the plug-in and the host _may_ handle them or return 0 (false).
  * We have no guarantees about anything actually happening.
@@ -517,11 +518,13 @@ enum VST_HOST_OPCODE {
  * @param p_str Zero terminated string or null on call.
  * @return ?
  */
-typedef intptr_t (*vst_host_callback)(vst_effect* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
+typedef intptr_t (*vst_host_callback_t)(vst_effect_t* plugin, VST_HOST_OPCODE opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
 
 //------------------------------------------------------------------------------------------------------------------------
 // VST Plug-in/Effect related Things
 //------------------------------------------------------------------------------------------------------------------------
+
+#define VST_MAGICNUMBER 'VstP'
 
 /** Plug-in Categories
  * All plug-ins must be in one of these categories and their behavior differs depending on which category they are in. 
@@ -1200,8 +1203,8 @@ enum VST_EFFECT_OPCODE {
 
 /** Plug-in Effect definition
  */
-struct vst_effect {
-	int32_t magic_number; // Should always be VST_MAGICNUMBER
+struct vst_effect_t {
+	int32_t magic_number = (int32_t)'VstP'; // Should always be VST_MAGICNUMBER
 
 	// 64-bit adds 4-byte padding here to align pointers.
 
@@ -1214,7 +1217,7 @@ struct vst_effect {
 	 * @param p_ptr Parameter, see VST_EFFECT_OPCODES.
 	 * @param p_float Parameter, see VST_EFFECT_OPCODES.
 	 */
-	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
+	intptr_t(VST_FUNCTION_INTERFACE* control)(vst_effect_t* pthis, VST_EFFECT_OPCODE opcode, int32_t p_int1, intptr_t p_int2, void* p_ptr, float p_float);
 
 	/* Process the given number of samples in inputs and outputs.
 	 *
@@ -1225,7 +1228,7 @@ struct vst_effect {
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process)(vst_effect* pthis, const float* const* inputs, float** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
 
 	/* Updates the value for the parameter at the given index, or does nothing if out of bounds.
 	 * 
@@ -1233,7 +1236,7 @@ struct vst_effect {
 	 * @param index Parameter index.
 	 * @param value New value for the parameter.
 	 */
-	void(VST_FUNCTION_INTERFACE* set_parameter)(vst_effect* pthis, uint32_t index, float value);
+	void(VST_FUNCTION_INTERFACE* set_parameter)(vst_effect_t* pthis, uint32_t index, float value);
 
 	/* Returns the value stored for the parameter at index, or 0 if out of bounds.
 	 * 
@@ -1241,7 +1244,7 @@ struct vst_effect {
 	 * @param index Parameter index.
 	 * @return float Value of the parameter.
 	 */
-	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect* pthis, uint32_t index);
+	float(VST_FUNCTION_INTERFACE* get_parameter)(vst_effect_t* pthis, uint32_t index);
 
 	int32_t num_programs; // Number of available programs.
 	int32_t num_params; // Number of parameters. All programs must have at least this many parameters.
@@ -1297,7 +1300,7 @@ struct vst_effect {
 	 * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect* pthis, const float* const* inputs, float** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_float)(vst_effect_t* pthis, const float* const* inputs, float** outputs, int32_t samples);
 
 	/* Process the given number of double samples in inputs and outputs.
 	 *
@@ -1308,7 +1311,7 @@ struct vst_effect {
 	 * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
 	 * @param samples Number of samples per channel in inputs.
 	 */
-	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect* pthis, const double* const* inputs, double** outputs, int32_t samples);
+	void(VST_FUNCTION_INTERFACE* process_double)(vst_effect_t* pthis, const double* const* inputs, double** outputs, int32_t samples);
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
@@ -1321,7 +1324,7 @@ struct vst_effect {
  * @return A new instance of the VST 2.x effect.
  */
 #define VST_ENTRYPOINT \
-	vst_effect* VSTPluginMain(vst_host_callback callback)
+	vst_effect_t* VSTPluginMain(vst_host_callback callback)
 
 /** [DEPRECATED] VST 1.x Entry Point for Windows
  *
@@ -1330,7 +1333,7 @@ struct vst_effect {
  * @return A new instance of the VST 1.x effect.
  */
 #define VST_ENTRYPOINT_WINDOWS \
-	vst_effect* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
+	vst_effect_t* MAIN(vst_host_callback callback) { return VSTPluginMain(callback); }
 
 /** [DEPRECATED] VST 1.x Entry Point for MacOS
  *
@@ -1339,7 +1342,7 @@ struct vst_effect {
  * @return A new instance of the VST 1.x effect.
  */
 #define VST_ENTRYPOINT_MACOS \
-	vst_effect* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
+	vst_effect_t* main_macho(vst_host_callback callback) { return VSTPluginMain(callback); }
 
 #ifdef __cplusplus
 }
