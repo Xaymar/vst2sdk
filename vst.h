@@ -38,6 +38,7 @@
 // Common VST buffer lengths:
 // 8: OpCodes(GetLabel, GetName, GetValue)
 #define VST_BUFFER_8 8
+#define VST_PARAM_BUFFER_SIZE VST_BUFFER_8
 // 16:
 #define VST_BUFFER_16 16
 // 24: OpCodes?
@@ -50,6 +51,7 @@
 #define VST_VENDOR_BUFFER_SIZE VST_BUFFER_64
 #define VST_PRODUCT_BUFFER_SIZE VST_BUFFER_64
 #define VST_NAME_BUFFER_SIZE VST_BUFFER_64
+#define VST_PROGRAM_BUFFER_SIZE VST_BUFFER_64
 // 100:
 #define VST_BUFFER_100 100
 
@@ -131,29 +133,32 @@ enum VST_EFFECT_OPCODE {
 
 	/* Set Program
 	 *
-	 * Seems to be for presets?
+	 * Set which program number is currently selected.
+	 * @param p_int2 The program number to set. Can be negative for some reason.
 	 */
 	VST_EFFECT_OPCODE_02 = 0x02,
 	VST_EFFECT_OPCODE_SET_PROGRAM = 0x02,
 
 	/* Get Program
 	 *
-	 * Seems to be for presets?
-	 * @return The currently set program number.
+	 * Get which program number is currently selected.
+	 * @return The currently set program number. Can be negative for some reason.
 	 */
 	VST_EFFECT_OPCODE_03 = 0x03,
 	VST_EFFECT_OPCODE_GET_PROGRAM = 0x03,
 
 	/* Set Program Name
 	 *
-	 * @param 
+	 * Set the name of the currently selected program.
+	 * @param p_ptr `const char[VST_PROGRAM_BUFFER_SIZE]` Zero terminated string of at most VST_PROGRAM_BUFFER_SIZE bytes.
 	 */
 	VST_EFFECT_OPCODE_04 = 0x04,
 	VST_EFFECT_OPCODE_SET_PROGRAM_NAME = 0x04,
 
 	/* Get Program Name
 	 *
-	 * @param p_ptr `char[]
+	 * Get the name of the currently selected program.
+	 * @param p_ptr `char[VST_PROGRAM_BUFFER_SIZE]` Zero terminated string of at most VST_PROGRAM_BUFFER_SIZE bytes.
 	 */
 	VST_EFFECT_OPCODE_05 = 0x05,
 	VST_EFFECT_OPCODE_GET_PROGRAM_NAME = 0x05,
@@ -161,7 +166,7 @@ enum VST_EFFECT_OPCODE {
 	/* Get the value? label for the parameter.
 	 * 
 	 * @param p_int1 Parameter index.
-	 * @param p_ptr 'char[8]'
+	 * @param p_ptr 'char[VST_PARAM_BUFFER_SIZE]'
 	 * @return 0 on success, 1 on failure.
 	 */
 	VST_EFFECT_OPCODE_06             = 0x06,
@@ -170,7 +175,7 @@ enum VST_EFFECT_OPCODE {
 	/* Get the string value for the parameter.
 	 * 
 	 * @param p_int1 Parameter index.
-	 * @param p_ptr 'char[8]'
+	 * @param p_ptr 'char[VST_PARAM_BUFFER_SIZE]'
 	 * @return 0 on success, 1 on failure.
 	 */
 	VST_EFFECT_OPCODE_07             = 0x07,
@@ -179,15 +184,15 @@ enum VST_EFFECT_OPCODE {
 	/* Get the name for the parameter.
 	 * 
 	 * @param p_int1 Parameter index.
-	 * @param p_ptr 'char[8]'
+	 * @param p_ptr 'char[VST_PARAM_BUFFER_SIZE]'
 	 * @return 0 on success, 1 on failure.
 	 */
 	VST_EFFECT_OPCODE_08            = 0x08,
 	VST_EFFECT_OPCODE_PARAM_GETNAME = 0x08,
 
-	/*
-	 *
-	 *
+	/* 
+	 * 
+	 * Note: Doesn't appear in any VST 2.2 or later plugins I checked.
 	 */
 	VST_EFFECT_OPCODE_09 = 0x09,
 
@@ -240,59 +245,97 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_0F             = 0x0F,
 	VST_EFFECT_OPCODE_WINDOW_DESTROY = 0x0F,
 
-	/*
+	/* Window Draw Event?
 	 *
+	 * Ocasionally called simultaneously as WM_DRAW on windows.
 	 *
+	 * Note: Present in some VST 2.1 or earlier plugins.
+	 * Note: Not present in many VST 2.4 plugins.
 	 */
 	VST_EFFECT_OPCODE_10 = 0x10,
+	VST_EFFECT_OPCODE_WINDOW_DRAW = 0x10,
 
-	/*
+	/* Window Mouse Event?
 	 *
-	 *
+	 * Called at the same time mouse events happen.
+	 * 
+	 * Note: Present in some VST 2.1 or earlier plugins.
+	 * Note: Not present in many VST 2.4 plugins.
 	 */
 	VST_EFFECT_OPCODE_11 = 0x11,
+	VST_EFFECT_OPCODE_WINDOW_MOUSE = 0x11,
 
-	/*
+	/* Window Keyboard Event?
 	 *
+	 * Called at the same time keyboard events happen.
 	 *
+	 * Note: Present in some VST 2.1 or earlier plugins.
+	 * Note: Not present in many VST 2.4 plugins.
 	 */
 	VST_EFFECT_OPCODE_12 = 0x12,
+	VST_EFFECT_OPCODE_WINDOW_KEYBOARD = 0x12,
 
-	/*
+	/* Idle/Keep-Alive Callback?
+	 * 
+	 * Does not receive any parameters. Randomly called when nothing happens? Idle/Keep-Alive callback?
 	 *
-	 *
+	 * Note: Not present in many VST 2.4 plugins.
 	 */
 	VST_EFFECT_OPCODE_13 = 0x13,
+	VST_EFFECT_OPCODE_KEEP_ALIVE = 0x13,
 
-	/*
+	/* Window Focus Event?
 	 *
-	 *
+	 * Sometimes called when the editor window goes back into focus.
+	 * 
+	 * Note: Present in some VST 2.1 or earlier plugins.
+	 * Note: Not present in many VST 2.4 plugins.
 	 */
 	VST_EFFECT_OPCODE_14 = 0x14,
 
-	/*
+	/* Window Unfocus Event?
 	 *
-	 *
+	 * Sometimes called when the editor window goes out of focus.
+	 *	  
+	 * Note: Present in some VST 2.1 or earlier plugins.
+	 * Note: Not present in many VST 2.4 plugins.
 	 */
 	VST_EFFECT_OPCODE_15 = 0x15,
 
-	/* Always returns the FourCC 'NvEF' (0x4E764566).
+	/* 
+	 * 
+	 * Note: Present in some VST 2.1 or earlier plugins.
+	 * Note: Not present in many VST 2.4 plugins.
+	 * Note: Some plugins always return the FourCC 'NvEf' (0x4E764566), other plugins return nothing.
 	 */
 	VST_EFFECT_OPCODE_16 = 0x16,
+	VST_EFFECT_OPCODE_FOURCC = 0x16,
 
-	/* Get Chunk
+	/* Get Chunk Data
 	 *
-	 *
+	 * Save current program or bank state to a buffer.
+	 * 
+	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
+	 * @param p_ptr		`char**` A pointer to a pointer. You should make this point at your own pointer
+	 * @return p_int2	Size of the Chunk Data in bytes.
 	 */
 	VST_EFFECT_OPCODE_17 = 0x17,
+	VST_EFFECT_OPCODE_GET_CHUNK_DATA = 0x17,
 
-	/* Set Chunk
+	/* Set Chunk Data
 	 *
-	 *
+	 * Restore current program or bank state from a buffer.
+	 * 
+	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
+	 * @param p_int2 Size of the Chunk Data in bytes.
+	 * @param p_ptr `void**` Poi
 	 */
 	VST_EFFECT_OPCODE_18 = 0x18,
+	VST_EFFECT_OPCODE_SET_CHUNK_DATA = 0x18,
 
+	//--------------------------------------------------------------------------------
 	// VST2.x starts here.
+	//--------------------------------------------------------------------------------
 
 	/*
 	 *
@@ -305,14 +348,18 @@ enum VST_EFFECT_OPCODE {
 	 * @param p_int1 Index of the parameter.
 	 * @return 1 if the parameter can be automated, otherwise 0.
 	 */
-	VST_EFFECT_OPCODE_1A                  = 0x1A,
-	VST_EFFECT_OPCODE_PARAM_ISAUTOMATABLE = 0x1A,
+	VST_EFFECT_OPCODE_1A                   = 0x1A,
+	VST_EFFECT_OPCODE_PARAM_ISAUTOMATABLE  = 0x1A,
+	VST_EFFECT_OPCODE_PARAM_IS_AUTOMATABLE = 0x1A,
 
-	/*
+	/* Set Parameter value from string representation.
 	 *
-	 *
+	 * @param p_int1 Index of the parameter.
+	 * @param p_ptr `const char*` Zero terminated string representation of the value to set.
+	 * @return 1 if it worked, otherwise 0.
 	 */
 	VST_EFFECT_OPCODE_1B = 0x1B,
+	VST_EFFECT_OPCODE_PARAM_VALUE_FROM_STRING = 0x1B,
 
 	/*
 	 *
