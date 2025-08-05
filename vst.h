@@ -21,6 +21,7 @@
 
 // Please refer to README.md and LICENSE for further information.
 
+// Protect against double inclusion in practically every compiler available.
 #pragma once
 #ifndef VST2SDK_VST_H
 #define VST2SDK_VST_H
@@ -58,19 +59,22 @@ enum VST_STATUS {
 	VST_STATUS_NO = -1,
 
 	_VST_STATUS_PAD = 0xFFFFFFFFul,
-}
+};
 
 /** Known Buffer Sizes
  */
 enum VST_BUFFER_SIZE {
 	VST_BUFFER_SIZE_PARAM_LABEL = 8,
+	VST_BUFFER_SIZE_PARAM_LONG_LABEL = 64,
 	VST_BUFFER_SIZE_PARAM_NAME = 8,
 	VST_BUFFER_SIZE_PARAM_VALUE = 8,
 	VST_BUFFER_SIZE_PROGRAM_NAME = 24,
+	VST_BUFFER_SIZE_CATEGORY_LABEL = 24,
 	VST_BUFFER_SIZE_EFFECT_NAME = 32,
 	VST_BUFFER_SIZE_VENDOR_NAME = 64,
 	VST_BUFFER_SIZE_PRODUCT_NAME = 64,
-} // This is an enum because I started to dislike macros.
+	VST_BUFFER_SIZE_SPEAKER_NAME = 64,
+}; // This is an enum because I started to dislike macros.
 
 /** VST Version Enumeration
  * - The VST version format is in Base10.
@@ -91,45 +95,13 @@ enum VST_VERSION {
 	_VST_VERSION_PAD = 0xFFFFFFFFul,
 };
 
-enum VST_ARRANGEMENT_TYPE {
-	/* Custom speaker arrangement.
-	 *
-	 * Accidentally discovered through random testing.
-	 */
-	VST_ARRANGEMENT_TYPE_CUSTOM = -2,
-
-	/* Unknown/Empty speaker layout.
-	 *
-	 */
-	VST_ARRANGEMENT_TYPE_UNKNOWN = -1,
-
-	/* Mono
-	 */
-	VST_ARRANGEMENT_TYPE_MONO = 0,
-
-	/* Stereo
-	 */
-	VST_ARRANGEMENT_TYPE_STEREO = 1,
-
-	/* 5.1
-	 */
-	VST_ARRANGEMENT_TYPE_5_1 = 0x0F,
-
-	// Pad to force 32-bit number.
-	_VST_ARRANGEMENT_TYPE_PAD = 0xFFFFFFFFul,
-};
-
-enum VST_SPEAKER_TYPE {
-	VST_SPEAKER_TYPE_MONO       = 0,
-	VST_SPEAKER_TYPE_LEFT       = 1,
-	VST_SPEAKER_TYPE_RIGHT      = 2,
-	VST_SPEAKER_TYPE_CENTER     = 3,
-	VST_SPEAKER_TYPE_LFE        = 4,
-	VST_SPEAKER_TYPE_LEFT_SIDE  = 5,
-	VST_SPEAKER_TYPE_RIGHT_SIDE = 6,
-
-	// Pad to force 32-bit number.
-	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
+/** Window/Editor Rectangle
+ */
+struct vst_rect {
+	int16_t top;
+	int16_t left;
+	int16_t bottom;
+	int16_t right;
 };
 
 enum VST_PARAMETER_FLAGS {
@@ -161,66 +133,95 @@ enum VST_PARAMETER_FLAGS {
 	_VST_PARAMETER_FLAGS_PAD     = 0xFFFFFFFFul,
 };
 
-/** Window/Editor Rectangle
- */
-struct vst_rect {
-	int16_t top;
-	int16_t left;
-	int16_t bottom;
-	int16_t right;
-} vst_rect_t;
-
-struct vst_parameter_properties {
+struct vst_parameter_properties_t {
 	float step_f32;
 	float step_small_f32;
 	float step_large_f32;
 
-	char name[VST_BUFFER_64];
+	char name[VST_BUFFER_SIZE_PARAM_LONG_LABEL];
 
 	uint32_t flags;
 	int32_t  min_value_i32;
 	int32_t  max_value_i32;
 	int32_t  step_i32;
 
-	char label[VST_BUFFER_8];
+	char label[VST_BUFFER_SIZE_PARAM_LABEL];
 
 	uint16_t index;
 
 	uint16_t category;
 	uint16_t num_parameters_in_category;
-	uint16_t _unknown_00;
+	uint16_t _unknown_00 = 0; // Must be set to 0.
 
-	char category_label[VST_BUFFER_24];
+	char category_label[VST_BUFFER_SIZE_CATEGORY_LABEL];
 
-	char _unknown_01[VST_BUFFER_16];
-} vst_parameter_properties_t;
+	char _reserved[16]; // Reserved for future expansions?
+};
 
-struct vst_speaker_properties {
-	float            _unknown_00; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
-	float            _unknown_04; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
-	float            _unknown_08; // 0.0 if LFE, otherwise 1.0.
-	float            _unknown_0C;
-	char             name[VST_BUFFER_64];
+enum VST_SPEAKER_TYPE {
+	VST_SPEAKER_TYPE_MONO       = 0,
+	VST_SPEAKER_TYPE_LEFT       = 1,
+	VST_SPEAKER_TYPE_RIGHT      = 2,
+	VST_SPEAKER_TYPE_CENTER     = 3,
+	VST_SPEAKER_TYPE_LFE        = 4,
+	VST_SPEAKER_TYPE_LEFT_SIDE  = 5,
+	VST_SPEAKER_TYPE_RIGHT_SIDE = 6,
+
+	// Pad to force 32-bit number.
+	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
+};
+
+struct vst_speaker_properties_t {
+	float _unknown_00; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
+	float _unknown_04; // 10.0 if LFE, otherwise random? Never exceeds -PI to PI range.
+	float _unknown_08; // 0.0 if LFE, otherwise 1.0.
+	float _unknown_0C;
+	char name[VST_BUFFER_SIZE_SPEAKER_NAME];
 	VST_SPEAKER_TYPE type;
 
-	uint8_t _unknown[28]; // Padding detected from testing.
-} vst_speaker_properties_t;
-
-struct vst_speaker_arrangement {
-	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
-	int32_t                channels; // Number of channels in speakers.
-	vst_speaker_properties speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
-} vst_speaker_arrangement_t;
-
-// Variable size variant of vst_speaker_arrangement.
-#ifdef __cplusplus
-template<size_t T>
-struct vst_speaker_arrangement_dynamic_t {
-	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
-	int32_t                channels; // Number of channels in speakers.
-	vst_speaker_properties speakers[T]; // Array of speaker properties, actual size defined by channels.
+	uint8_t _reserved[28]; // Reserved for future expansions?
 };
-#endif
+
+enum VST_SPEAKER_ARRANGEMENT_TYPE {
+	/** Custom speaker arrangement.
+	 *
+	 * Accidentally discovered through random testing.
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_CUSTOM = -2,
+
+	/** Unknown/Empty speaker layout.
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_UNKNOWN = -1,
+
+	/** Mono
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_MONO = 0x00,
+
+	/** Stereo
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_STEREO = 0x01,
+	
+	/** 5.0
+	 * 
+	 * L, R, C, SL, SR
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_5_0 = 0x0E,
+
+	/** 5.1
+	 * 
+	 * L, R, C, LFE, SL, SR
+	 */
+	VST_SPEAKER_ARRANGEMENT_TYPE_5_1 = 0x0F,
+
+	// Pad to force 32-bit number.
+	_VST_SPEAKER_ARRANGEMENT_TYPE_PAD = 0xFFFFFFFFul,
+};
+
+struct vst_speaker_arrangement_t {
+	int32_t type; // See VST_SPEAKER_ARRANGEMENT_TYPE
+	int32_t channels; // Number of channels in this arrangement.
+	vst_speaker_properties_t speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
+};
 
 //------------------------------------------------------------------------------------------------------------------------
 // VST Host related Things
@@ -435,7 +436,7 @@ enum VST_EFFECT_FLAG {
 	//1 << 11,
 	//1 << 12,
 	VST_EFFECT_FLAG_SUPPORTS_DOUBLE = 1 << 12, // Plug-in supports process_double. Optional mode for VST version 2.4, host can freely select.
-}
+};
 
 /** Host to Plug-in Op-Codes
  * These Op-Codes are emitted by the host and we must either handle them or return 0 (false).
@@ -1172,7 +1173,7 @@ struct vst_effect {
 
 	// Everything after this is unknown and was present in reacomp-standalone.dll.
 	uint8_t _unknown[56]; // 56-bytes of something. Could also just be 52-bytes.
-} vst_effect_t;
+};
 
 /** VST 2.x Entry Point for all platforms
  *
