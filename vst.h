@@ -1580,9 +1580,8 @@ enum VST_EFFECT_OPCODE {
 
 	/** Translate an error code to a string.
 	 *
-	 * Note: Not called in almost all licensed hosts.
-	 * Note: The buffer size varies wildly and there appears to be no common size.
-	 * 
+	 * @bug Some hosts provide unexpected data in p_ptr.
+	 * @deprecated (VST 2.4) Fairly sure this is deprecated in VST 2.4 and later.
 	 * @param p_ptr A zero terminated char buffer with undefined size.
 	 * @return VST_STATUS_TRUE if we could translate the error, VST_STATUS_FALSE if not.
 	 */
@@ -1664,20 +1663,16 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 *
+	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
 	 */
 	VST_EFFECT_OPCODE_36 = 0x36,
 
 	/**
 	 *
 	 *
+	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
 	 */
 	VST_EFFECT_OPCODE_37 = 0x37,
-
-	/**
-	 *
-	 *
-	 */
-	VST_EFFECT_OPCODE_38 = 0x38,
 
 	/** Parameter Properties
 	 *
@@ -1685,11 +1680,17 @@ enum VST_EFFECT_OPCODE {
 	 * @param p_ptr Pointer to @ref vst_parameter_properties for the given parameter.
 	 * @return @ref VST_STATUS_YES if supported, otherwise @ref VST_STATUS_NO.
 	 */
+	VST_EFFECT_OPCODE_38 = 0x38,
+	/** @sa VST_EFFECT_OPCODE_38 */
+	VST_EFFECT_OPCODE_GET_PARAMETER_PROPERTIES = 0x38,
+	/** @sa VST_EFFECT_OPCODE_38 */
+	VST_EFFECT_OPCODE_PARAM_PROPERTIES = 0x38,
+
+	/**
+	 *
+	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
+	 */
 	VST_EFFECT_OPCODE_39                       = 0x39,
-	/** @sa VST_EFFECT_OPCODE_39 */
-	VST_EFFECT_OPCODE_GET_PARAMETER_PROPERTIES = 0x39,
-	/** @sa VST_EFFECT_OPCODE_39 */
-	VST_EFFECT_OPCODE_PARAM_PROPERTIES = 0x39,
 
 	/** Retrieve the VST Version supported.
 	 *
@@ -1726,9 +1727,9 @@ enum VST_EFFECT_OPCODE {
 	/** @sa VST_EFFECT_OPCODE_3C */
 	VST_EFFECT_OPCODE_EDITOR_VKEY_UP = 0x3C,
 
-	/**
+	/** 
 	 *
-	 *
+	 * @param p_int2 A value between 0 and 2.
 	 */
 	VST_EFFECT_OPCODE_3D = 0x3D,
 
@@ -1834,16 +1835,21 @@ enum VST_EFFECT_OPCODE {
 	 */
 	VST_EFFECT_OPCODE_4A = 0x4A,
 
-	/**
+	/** Host wants to know if we can load the provided bank data.
+	 * Should be emitted prior to @ref VST_EFFECT_OPCODE_SET_CHUNK_DATA by the host.
 	 *
+	 * @param p_ptr Unknown structured data.
+	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data, 
+	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
 	 *
 	 */
 	VST_EFFECT_OPCODE_4B = 0x4B,
 
-	/** Emitted prior to loading a program
+	/** Host wants to know if we can load the provided program data.
+	 * Should be emitted prior to @ref VST_EFFECT_OPCODE_PROGRAM_SET_BEGIN by the host.
 	 *
 	 * @param p_ptr Unknown structured data.
-	 * @return @ref VST_STATUS_NO if we couldn't load the data, @ref VST_STATUS_YES if we can load the data, 
+	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data, 
 	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
 	 */
 	VST_EFFECT_OPCODE_4C = 0x4C,
@@ -1856,7 +1862,7 @@ enum VST_EFFECT_OPCODE {
 
 	/**
 	 *
-	 *
+	 * 
 	 */
 	VST_EFFECT_OPCODE_4D = 0x4D,
 
