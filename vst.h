@@ -1299,7 +1299,9 @@ enum VST_EFFECT_OPCODE {
 	 * Ocasionally called simultaneously as WM_DRAW on windows.
 	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * @important Appears to be Mac OS exclusive.
+	 * 
+	 * @note Appears to be Mac OS exclusive.
+	 * 
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_10 = 0x10,
@@ -1313,7 +1315,9 @@ enum VST_EFFECT_OPCODE {
 	 * Called at the same time mouse events happen.
 	 * 
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * @important Appears to be Mac OS exclusive.
+	 * 
+	 * @note Appears to be Mac OS exclusive.
+	 * 
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_11 = 0x11,
@@ -1327,7 +1331,9 @@ enum VST_EFFECT_OPCODE {
 	 * Called at the same time keyboard events happen.
 	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * @important Appears to be Mac OS exclusive.
+	 * 
+	 * @note Appears to be Mac OS exclusive.
+	 * 
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_12 = 0x12,
@@ -1349,7 +1355,7 @@ enum VST_EFFECT_OPCODE {
 	 * Sometimes called when the editor window goes back into focus.
 	 * 
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * @important Appears to be Mac OS exclusive.
+	 * @note Appears to be Mac OS exclusive.
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_14 = 0x14,
@@ -1359,7 +1365,7 @@ enum VST_EFFECT_OPCODE {
 	 * Sometimes called when the editor window goes out of focus.
 	 *	  
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * @important Appears to be Mac OS exclusive.
+	 * @note Appears to be Mac OS exclusive.
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_15 = 0x15,
