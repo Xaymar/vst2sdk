@@ -51,10 +51,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"vst_8h.html#a361be2f7556eb4aa006ff1fa2fa48d2ca866e8fcb98feec4bf1c1bcafcd9dabed",
-"vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af5ef7dd980f5a573a12026c2b6910b7a"
+"vst_8h.html#a361be2f7556eb4aa006ff1fa2fa48d2ca7cc7e2ddef53cfdbf2a939590d61fa9c",
+"vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af2f0136c707513df432291411c87fcf6"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronization';
-var SYNCOFFMSG = 'click to enable panel synchronization';
-var LISTOFALLMEMBERS = 'List of all members';
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';
