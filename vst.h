@@ -748,12 +748,12 @@ struct vst_host_supports_t {
 	const char* acceptIOChanges;
 
 	/** Is the host using process begin/end instead of idle?
-	 * The host may opt to emit @ref VST_HOST_OPCODE_IDLE or @ref VST_HOST_OPCODE_PROCESS_BEGIN and 
+	 * The host may opt to emit @ref VST_EFFECT_OPCODE_IDLE or @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and 
 	 * @ref VST_HOST_OPCODE_PROCESS_END when running in VST 2.3 compatibility mode.
 	 * 
-	 * @sa VST_HOST_OPCODE_PROCESS_BEGIN
-	 * @sa VST_HOST_OPCODE_PROCESS_END
-	 * @sa VST_HOST_OPCODE_IDLE
+	 * @sa VST_EFFECT_OPCODE_PROCESS_BEGIN
+	 * @sa VST_EFFECT_OPCODE_PROCESS_END
+	 * @sa VST_EFFECT_OPCODE_IDLE
 	 * @deprecated (VST 2.4) This behavior is the default in VST 2.4 and later.
 	 * @return @ref VST_STATUS_TRUE if it supports it.
 	 */
