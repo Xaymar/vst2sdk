@@ -31,8 +31,8 @@
 // Variable size variant of vst_speaker_arrangement.
 template<size_t T>
 struct vst_speaker_arrangement_dynamic_t {
-	VST_ARRANGEMENT_TYPE   type; // See VST_SPEAKER_ARRANGEMENT_TYPE
-	int32_t                channels; // Number of channels in speakers.
+	VST_SPEAKER_ARRANGEMENT_TYPE type; // See VST_SPEAKER_ARRANGEMENT_TYPE
+	int32_t channels; // Number of channels in speakers.
 	vst_speaker_properties_t speakers[T]; // Array of speaker properties, actual size defined by channels.
 };
 
