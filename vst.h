@@ -1818,7 +1818,7 @@ enum VST_EFFECT_OPCODE {
 	 * @important (VST 2.1+) Available from VST 2.1 onwards.
 	 * @return @ref VST_STATUS_TRUE if we understood the notification, or @ref VST_STATUS_FALSE if not.
 	 */
-	VST_EFFECT_OPCODE_43 = 0x44,
+	VST_EFFECT_OPCODE_44 = 0x44,
 	/** @sa VST_EFFECT_OPCODE_44 */
 	VST_EFFECT_OPCODE_PROGRAM_SET_END = 0x44,
 
