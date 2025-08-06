@@ -1556,7 +1556,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Enable/Disable bypassing the effect.
 	 *
-	 * See VST_EFFECT_OPCODE_SUPPORTS with vst_effect_supports.bypass for more information.
+	 * See @ref VST_EFFECT_OPCODE_SUPPORTS with @ref vst_effect_supports.bypass for more information.
 	 * 
 	 * @param p_int2 Zero if bypassing the effect is disabled, otherwise 1.
 	 */
@@ -1566,9 +1566,8 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve the effect name into the ptr buffer.
 	 *
-	 * Bug: Some officially licensed hosts do not provide the expected buffer size! The lowest I've seen is 32 bytes.
-	 * 
-	 * @param p_ptr `char[VST_BUFFER_SIZE_EFFECT_NAME]` Zero terminated string. 
+	 * @bug Various hosts only provide a buffer that is 32 bytes long.
+	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_EFFECT_NAME. 
 	 * @return Always 0, even on failure.
 	 */
 	VST_EFFECT_OPCODE_2D          = 0x2D,
@@ -1584,7 +1583,7 @@ enum VST_EFFECT_OPCODE {
 	 * Note: Not called in almost all licensed hosts.
 	 * Note: The buffer size varies wildly and there appears to be no common size.
 	 * 
-	 * @param p_ptr `char[...]` Zero terminated string buffer to which we write our error message.
+	 * @param p_ptr A zero terminated char buffer with undefined size.
 	 * @return VST_STATUS_TRUE if we could translate the error, VST_STATUS_FALSE if not.
 	 */
 	VST_EFFECT_OPCODE_2E              = 0x2E,
