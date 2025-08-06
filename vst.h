@@ -1078,7 +1078,7 @@ enum VST_EFFECT_FLAG {
 	/** Effect is an Instrument/Generator
 	 * 
 	 * This must be set in addition to @ref VST_EFFECT_CATEGORY_INSTRUMENT otherwise instruments don't work right.
-	 * @important (VST 2.x) Flag is new to VST 2.x and later.
+	 * @note (VST 2.x) Flag is new to VST 2.x and later.
 	 */
 	VST_EFFECT_FLAG_1ls8 = 1 << 8,
 	/** @sa VST_EFFECT_FLAG_1ls8 */
@@ -1088,7 +1088,7 @@ enum VST_EFFECT_FLAG {
 	 * 
 	 * Not to be confused with choosing to tell the host there is no tail.
 	 * @sa VST_EFFECT_OPCODE_GET_TAIL_SAMPLES
-	 * @important (VST 2.x) Flag is new to VST 2.x and later.
+	 * @note (VST 2.x) Flag is new to VST 2.x and later.
 	 */
 	VST_EFFECT_FLAG_1ls9 = 1 << 9,
 	/** @sa VST_EFFECT_FLAG_1ls9 */
@@ -1100,7 +1100,7 @@ enum VST_EFFECT_FLAG {
 	/** Effect supports process_double.
 	 * The host can freely choose between process_float and process_double as required.
 	 * 
-	 * @important (VST 2.4) Available in VST 2.4 and later only.
+	 * @note (VST 2.4) Available in VST 2.4 and later only.
 	 * @sa vst_effect_t.process_double
 	 * @sa vst_effect_process_double_t
 	 */
@@ -1409,13 +1409,13 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 * Appears to be related to midi and audio events.
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_19 = 0x19,
 
 	/** Can the parameter be automated?
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int1 Index of the parameter.
 	 * @return 1 if the parameter can be automated, otherwise 0.
 	 */
@@ -1429,7 +1429,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Set Parameter value from string representation.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int1 Index of the parameter.
 	 * @param p_ptr `const char*` Zero terminated string representation of the value to set.
 	 * @return 1 if it worked, otherwise 0.
@@ -1443,13 +1443,13 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_1C = 0x1C,
 
 	/**
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @sa VST_EFFECT_OPCODE_05
 	 */
 	VST_EFFECT_OPCODE_1D = 0x1D,
@@ -1457,27 +1457,27 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_1E = 0x1E,
 
 	/** Input connected.
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_1F = 0x1F,
 
 	/** Input disconnected.
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_20 = 0x20,
 
 	/** Retrieve properties for the given input index.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int1 Index of the input to get the properties for.
 	 * @param p_ptr Pointer to @ref vst_stream_properties_t for the selected input provided by the host.
 	 * @return @ref VST_STATUS_TRUE if p_ptr is updated, @ref VST_STATUS_FALSE otherwise.
@@ -1488,7 +1488,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve properties for the given output index.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int1 Index of the output to get the properties for.
 	 * @param p_ptr Pointer to @ref vst_stream_properties_t for the selected output provided by the host.
 	 * @return @ref VST_STATUS_TRUE if p_ptr is updated, @ref VST_STATUS_FALSE otherwise.
@@ -1499,7 +1499,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve category of this effect.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @return The category that this effect is in, see @ref VST_EFFECT_CATEGORY.
 	 */
 	VST_EFFECT_OPCODE_23              = 0x23,
@@ -1511,48 +1511,48 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_24 = 0x24,
 
 	/**
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_25 = 0x25,
 
 	/**
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_26 = 0x26,
 
 	/**
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_27 = 0x27,
 
 	/**
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_28 = 0x28,
 
 	/**
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_29 = 0x29,
 
 	/** Host wants to change the speaker arrangement.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int2 Pointer to a @ref vst_speaker_arrangement_t for the input.
 	 * @param p_ptr Pointer to a @ref vst_speaker_arrangement_t for the output.
 	 * @return @ref VST_STATUS_TRUE if we accept the new arrangement, @ref VST_STATUS_FALSE if we don't in which case
@@ -1576,7 +1576,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * See @ref VST_EFFECT_OPCODE_SUPPORTS with @ref vst_effect_supports_t.bypass for more information.
 	 * 
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int2 Zero if bypassing the effect is disabled, otherwise 1.
 	 */
 	VST_EFFECT_OPCODE_2C     = 0x2C,
@@ -1585,7 +1585,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve the effect name into the ptr buffer.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @bug Various hosts only provide a buffer that is 32 bytes long.
 	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_EFFECT_NAME. 
 	 * @return Always 0, even on failure.
@@ -1601,7 +1601,7 @@ enum VST_EFFECT_OPCODE {
 	/** Translate an error code to a string.
 	 *
 	 * @bug Some hosts provide unexpected data in p_ptr.
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4+) Fairly sure this is deprecated in VST 2.4 and later.
 	 * @param p_ptr A zero terminated char buffer with undefined size.
 	 * @return @ref VST_STATUS_TRUE if we could translate the error, @ref VST_STATUS_FALSE if not.
@@ -1612,7 +1612,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve the vendor name into the ptr buffer.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_VENDOR_NAME.
 	 */
 	VST_EFFECT_OPCODE_2F          = 0x2F,
@@ -1623,7 +1623,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve the product name into the ptr buffer.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_PRODUCT_NAME.
 	 */
 	VST_EFFECT_OPCODE_30           = 0x30,
@@ -1634,7 +1634,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Retrieve the vendor version in return value.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @return Version.
 	 */
 	VST_EFFECT_OPCODE_31               = 0x31,
@@ -1645,7 +1645,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** User-defined Op-Code for VST extensions.
 	 * 
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * All parameters are undefined by the standard and left up to the host/plug-in. Use @ref VST_EFFECT_OPCODE_SUPPORTS
 	 * and @ref VST_EFFECT_OPCODE_VENDOR_NAME + @ref VST_EFFECT_OPCODE_VENDOR_VERSION to check if the plug-in is 
 	 * compatible with your expected format.
@@ -1656,7 +1656,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Test for support of a specific named feature.
 	 * 
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_ptr A zero terminated char buffer of undefined size containing the feature name.
 	 * @return @ref VST_STATUS_YES if the feature is supported, @ref VST_STATUS_NO if the feature is not supported, 
 	 *         @ref VST_STATUS_UNKNOWN in all other cases.
@@ -1667,7 +1667,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Number of samples that are at the tail at the end of playback.
 	 * 
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @return @ref VST_STATUS_UNKNOWN for automatic tail size, @ref VST_STATUS_TRUE for no tail, any other number above
 	 *         1 for the number of samples the tail has.
 	 */
@@ -1679,7 +1679,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Notify effect that it is idle?
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4+) As of VST 2.4 the default behavior is @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and 
 	 *             @ref VST_EFFECT_OPCODE_PROCESS_END which allows cleaner control flows.
 	 * @sa vst_host_supports.startStopProcess
@@ -1691,7 +1691,7 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
 	 */
 	VST_EFFECT_OPCODE_36 = 0x36,
@@ -1699,14 +1699,14 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
 	 */
 	VST_EFFECT_OPCODE_37 = 0x37,
 
 	/** Parameter Properties
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int1 Parameter index to get properties for.
 	 * @param p_ptr Pointer to @ref vst_parameter_properties_t for the given parameter.
 	 * @return @ref VST_STATUS_YES if supported, otherwise @ref VST_STATUS_NO.
@@ -1719,14 +1719,14 @@ enum VST_EFFECT_OPCODE {
 
 	/**
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
 	 */
 	VST_EFFECT_OPCODE_39                       = 0x39,
 
 	/** Retrieve the VST Version supported.
 	 *
-	 * @important (VST 2.0+) Available from VST 2.0 onwards.
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @sa VST_VERSION
 	 * @return One of the valid enums in @ref VST_VERSION
 	 */
@@ -1740,7 +1740,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Editor Virtual Key Down Input
 	 *
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int1 ASCII character that represents the virtual key code.
 	 * @param p_int2 Virtual Key Code
 	 * @param p_float Modifiers being held down (bitfield)
@@ -1752,7 +1752,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Editor Virtual Key Up Event
 	 *
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int1 ASCII character that represents the virtual key code.
 	 * @param p_int2 Virtual Key Code
 	 * @param p_float Modifiers being held down (bitfield)
@@ -1764,7 +1764,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** 
 	 *
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int2 A value between 0 and 2.
 	 */
 	VST_EFFECT_OPCODE_3D = 0x3D,
@@ -1772,42 +1772,42 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 * Midi related
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 */
 	VST_EFFECT_OPCODE_3E = 0x3E,
 
 	/**
 	 *
 	 * Midi related
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 */
 	VST_EFFECT_OPCODE_3F = 0x3F,
 
 	/**
 	 *
 	 * Midi related
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 */
 	VST_EFFECT_OPCODE_40 = 0x40,
 
 	/**
 	 *
 	 * Midi related
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 */
 	VST_EFFECT_OPCODE_41 = 0x41,
 
 	/**
 	 *
 	 * Midi related
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 */
 	VST_EFFECT_OPCODE_42 = 0x42,
 
 	/** Host is starting to set up a program.
 	 * Emitted prior to the host loading a program.
 	 *
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @return @ref VST_STATUS_TRUE if we understood the notification, or @ref VST_STATUS_FALSE if not.
 	 */
 	VST_EFFECT_OPCODE_43 = 0x43,
@@ -1817,7 +1817,7 @@ enum VST_EFFECT_OPCODE {
 	/** Host is done setting up a program.
 	 * Emitted after the host finished loading a program.
 	 *
-	 * @important (VST 2.1+) Available from VST 2.1 onwards.
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @return @ref VST_STATUS_TRUE if we understood the notification, or @ref VST_STATUS_FALSE if not.
 	 */
 	VST_EFFECT_OPCODE_44 = 0x44,
@@ -1830,7 +1830,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Host wants to know the current speaker arrangement.
 	 *
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @param p_int2 Pointer to @ref vst_speaker_arrangement_t for the input.
 	 * @param p_ptr Pointer to @ref vst_speaker_arrangement_t for the output.
 	 * @return @ref VST_STATUS_TRUE if we were successful, otherwise @ref VST_STATUS_FALSE.
@@ -1844,7 +1844,7 @@ enum VST_EFFECT_OPCODE {
 	 * 
 	 * Used in combination with @ref VST_EFFECT_CATEGORY_CONTAINER.
 	 * 
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @param p_ptr Pointer to a char buffer of size @ref VST_BUFFER_SIZE_EFFECT_NAME to store the name of the next effect.
 	 * @return Next effects unique_id
 	 */
@@ -1855,7 +1855,7 @@ enum VST_EFFECT_OPCODE {
 	/** Begin processing of audio.
 	 *
 	 * Host is requesting that we prepare for a new section of audio separate from the previous section.
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 */
 	VST_EFFECT_OPCODE_47 = 0x47,
 	/** @sa VST_EFFECT_OPCODE_47 */
@@ -1864,7 +1864,7 @@ enum VST_EFFECT_OPCODE {
 	/** End processing of audio.
 	 *
 	 * Host is requesting that we stop processing audio and go into idle instead.
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 */
 	VST_EFFECT_OPCODE_48 = 0x48,
 	/** @sa VST_EFFECT_OPCODE_48 */
@@ -1873,13 +1873,13 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 *
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 */
 	VST_EFFECT_OPCODE_49 = 0x49,
 
 	/**
 	 * 
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @sa VST_EFFECT_CATEGORY_SPATIAL
 	 * @param p_int2 Unknown meaning.
 	 * @param p_float Unknown meaning, usually 1.0
@@ -1889,7 +1889,7 @@ enum VST_EFFECT_OPCODE {
 	/** Host wants to know if we can load the provided bank data.
 	 * Should be emitted prior to @ref VST_EFFECT_OPCODE_SET_CHUNK_DATA by the host.
 	 *
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @param p_ptr Unknown structured data.
 	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data, 
 	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
@@ -1901,7 +1901,7 @@ enum VST_EFFECT_OPCODE {
 	/** Host wants to know if we can load the provided program data.
 	 * Should be emitted prior to @ref VST_EFFECT_OPCODE_PROGRAM_SET_BEGIN by the host.
 	 *
-	 * @important (VST 2.3+) Available from VST 2.3 onwards.
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @param p_ptr Unknown structured data.
 	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data, 
 	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
@@ -1917,21 +1917,21 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 * 
-	 * @important (VST 2.4+) Available from VST 2.4 onwards.
+	 * @note (VST 2.4+) Available from VST 2.4 onwards.
 	 */
 	VST_EFFECT_OPCODE_4D = 0x4D,
 
 	/**
 	 *
 	 *
-	 * @important (VST 2.4+) Available from VST 2.4 onwards.
+	 * @note (VST 2.4+) Available from VST 2.4 onwards.
 	 */
 	VST_EFFECT_OPCODE_4E = 0x4E,
 
 	/**
 	 *
 	 *
-	 * @important (VST 2.4+) Available from VST 2.4 onwards.
+	 * @note (VST 2.4+) Available from VST 2.4 onwards.
 	 */
 	VST_EFFECT_OPCODE_4F = 0x4F,
 
@@ -2069,7 +2069,7 @@ typedef void(VST_FUNCTION_INTERFACE* vst_effect_process_float_t)(struct vst_effe
  *
  * Process input and overwrite the output in place. Host provides output buffers.
  *
- * @important (VST 2.4+) Available from VST 2.4 and later.
+ * @note (VST 2.4+) Available from VST 2.4 and later.
  * 
  * @param self Pointer to the effect itself.
  * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
@@ -2221,7 +2221,7 @@ struct vst_effect_t {
 
 	/** Process function for in-place single (32-bit float) processiong.
 	 * @sa vst_effect_process_single_t
-	 * @important (VST 2.0+) Available from VST 2.0 and later.
+	 * @note (VST 2.0+) Available from VST 2.0 and later.
 	 */
 	vst_effect_process_float_t process_float;
 
@@ -2231,7 +2231,7 @@ struct vst_effect_t {
 
 	/** Process function for in-place double (64-bit float) processiong.
 	 * @sa vst_effect_process_double_t
-	 * @important (VST 2.4+) Available from VST 2.4 and later.
+	 * @note (VST 2.4+) Available from VST 2.4 and later.
 	 */
 	vst_effect_process_double_t process_double;
 
