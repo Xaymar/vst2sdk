@@ -600,10 +600,12 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_0D = 0x0D,
 
 	/** Notify the host that numInputs/numOutputs/delay/numParams has changed.
-	 * Only supported if the host replies @ref VST_STATUS_TRUE to @ref VST_HOST_OPCODE_SUPPORTS query for @ref vst_host_supports.acceptIOChanges.
+	 * Only supported if the host replies @ref VST_STATUS_TRUE to @ref VST_HOST_OPCODE_SUPPORTS query for 
+	 * @ref vst_host_supports_t.acceptIOChanges.
 	 * 
 	 * @note In VST 2.3 and earlier calling this outside of @ref VST_EFFECT_OPCODE_IDLE may result in a crash.
-	 * @note In VST 2.3 and later this may only be called while between @ref VST_EFFECT_OPCODE_PROCESS_END and @ref VST_EFFECT_OPCODE_BEGIN.
+	 * @note In VST 2.3 and later this may only be called while between @ref VST_EFFECT_OPCODE_PROCESS_END and 
+	 *       @ref VST_EFFECT_OPCODE_PROCESS_BEGIN.
 	 * 
 	 * @return @ref VST_STATUS_TRUE if supported and handled otherwise @ref VST_STATUS_FALSE.
 	 */
@@ -649,7 +651,7 @@ enum VST_HOST_OPCODE {
 
 	/** Retrieve the vendor name into the ptr buffer.
 	 *
-	 * @param p_ptr `char[VST_BUFFER_SIZE_VENDOR]` Zero terminated string.
+	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_VENDOR_NAME.
 	 */
 	VST_HOST_OPCODE_21 = 0x21,
 	/** @sa VST_HOST_OPCODE_21 */
@@ -657,7 +659,7 @@ enum VST_HOST_OPCODE {
 
 	/** Retrieve the product name into the ptr buffer.
 	 *
-	 * @param p_ptr `char[VST_BUFFER_SIZE_PRODUCT]` Zero terminated string.
+	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_PRODUCT_NAME.
 	 */
 	VST_HOST_OPCODE_22 = 0x22,
 	/** @sa VST_HOST_OPCODE_22 */
@@ -683,7 +685,7 @@ enum VST_HOST_OPCODE {
 	/** Check if the host supports a certain feature.
 	 * 
 	 * @param p_ptr `char[...]` Zero terminated string for which feature we want to support.
-	 * @return VST_STATUS_TRUE if the feature is supported otherwise VST_STATUS_FALSE.
+	 * @return @ref VST_STATUS_TRUE if the feature is supported otherwise @ref VST_STATUS_FALSE.
 	 */
 	VST_HOST_OPCODE_26 = 0x26,
 	/** @sa VST_HOST_OPCODE_26 */
@@ -749,7 +751,7 @@ struct vst_host_supports_t {
 
 	/** Is the host using process begin/end instead of idle?
 	 * The host may opt to emit @ref VST_EFFECT_OPCODE_IDLE or @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and 
-	 * @ref VST_HOST_OPCODE_PROCESS_END when running in VST 2.3 compatibility mode.
+	 * @ref VST_EFFECT_OPCODE_PROCESS_END when running in VST 2.3 compatibility mode.
 	 * 
 	 * @sa VST_EFFECT_OPCODE_PROCESS_BEGIN
 	 * @sa VST_EFFECT_OPCODE_PROCESS_END
@@ -1498,7 +1500,7 @@ enum VST_EFFECT_OPCODE {
 	/** Retrieve category of this effect.
 	 *
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
-	 * @return The category that this effect is in, see @ref VST_CATEGORY.
+	 * @return The category that this effect is in, see @ref VST_EFFECT_CATEGORY.
 	 */
 	VST_EFFECT_OPCODE_23              = 0x23,
 	/** @sa VST_EFFECT_OPCODE_23 */
@@ -1522,28 +1524,28 @@ enum VST_EFFECT_OPCODE {
 
 	/**
 	 *
-	 * Seen in plug-ins with VST_CATEGORY_OFFLINE.
+	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_26 = 0x26,
 
 	/**
 	 *
-	 * Seen in plug-ins with VST_CATEGORY_OFFLINE.
+	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_27 = 0x27,
 
 	/**
 	 *
-	 * Seen in plug-ins with VST_CATEGORY_OFFLINE.
+	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_28 = 0x28,
 
 	/**
 	 *
-	 * Seen in plug-ins with VST_CATEGORY_OFFLINE.
+	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_EFFECT_OPCODE_29 = 0x29,
@@ -1572,7 +1574,7 @@ enum VST_EFFECT_OPCODE {
 
 	/** Enable/Disable bypassing the effect.
 	 *
-	 * See @ref VST_EFFECT_OPCODE_SUPPORTS with @ref vst_effect_supports.bypass for more information.
+	 * See @ref VST_EFFECT_OPCODE_SUPPORTS with @ref vst_effect_supports_t.bypass for more information.
 	 * 
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int2 Zero if bypassing the effect is disabled, otherwise 1.
@@ -1602,7 +1604,7 @@ enum VST_EFFECT_OPCODE {
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4+) Fairly sure this is deprecated in VST 2.4 and later.
 	 * @param p_ptr A zero terminated char buffer with undefined size.
-	 * @return VST_STATUS_TRUE if we could translate the error, VST_STATUS_FALSE if not.
+	 * @return @ref VST_STATUS_TRUE if we could translate the error, @ref VST_STATUS_FALSE if not.
 	 */
 	VST_EFFECT_OPCODE_2E              = 0x2E,
 	/** @sa VST_EFFECT_OPCODE_2E */
@@ -1611,7 +1613,7 @@ enum VST_EFFECT_OPCODE {
 	/** Retrieve the vendor name into the ptr buffer.
 	 *
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
-	 * @param p_ptr A zero terminated char buffer of @ref VST_BUFFER_SIZE_VENDOR size.
+	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_VENDOR_NAME.
 	 */
 	VST_EFFECT_OPCODE_2F          = 0x2F,
 	/** @sa VST_EFFECT_OPCODE_2F */
@@ -1622,7 +1624,7 @@ enum VST_EFFECT_OPCODE {
 	/** Retrieve the product name into the ptr buffer.
 	 *
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
-	 * @param p_ptr A zero terminated char buffer of @ref VST_BUFFER_SIZE_PRODUCT size.
+	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_PRODUCT_NAME.
 	 */
 	VST_EFFECT_OPCODE_30           = 0x30,
 	/** @sa VST_EFFECT_OPCODE_30 */
@@ -1706,7 +1708,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @important (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int1 Parameter index to get properties for.
-	 * @param p_ptr Pointer to @ref vst_parameter_properties for the given parameter.
+	 * @param p_ptr Pointer to @ref vst_parameter_properties_t for the given parameter.
 	 * @return @ref VST_STATUS_YES if supported, otherwise @ref VST_STATUS_NO.
 	 */
 	VST_EFFECT_OPCODE_38 = 0x38,
@@ -2042,11 +2044,11 @@ typedef void (VST_FUNCTION_INTERFACE* vst_effect_process_t) (struct vst_effect_t
  */
 typedef void(VST_FUNCTION_INTERFACE* vst_effect_set_parameter_t)(struct vst_effect_t* self, uint32_t index, float value); 
 
-/** Updates the value for the parameter at the given index, or does nothing if out of bounds.
+/** Retrieve the current value of the parameter at the given index, or do nothing if out of bounds.
  * 
  * @param self Pointer to the effect itself.
  * @param index Parameter index.
- * @param value New value for the parameter.
+ * @return Current value of the parameter.
  */
 typedef float(VST_FUNCTION_INTERFACE* vst_effect_get_parameter_t)(struct vst_effect_t* self, uint32_t index);
 
@@ -2054,7 +2056,7 @@ typedef float(VST_FUNCTION_INTERFACE* vst_effect_get_parameter_t)(struct vst_eff
  *
  * Process input and overwrite the output in place. Host provides output buffers.
  * 
- * @note Not thread-safe on MacOS for some reason or another.
+ * @important Not thread-safe on MacOS for some reason or another.
  * 
  * @param self Pointer to the effect itself.
  * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
@@ -2067,7 +2069,7 @@ typedef void(VST_FUNCTION_INTERFACE* vst_effect_process_float_t)(struct vst_effe
  *
  * Process input and overwrite the output in place. Host provides output buffers.
  *
- * @note Not present and not called prior to VST 2.4. 
+ * @important (VST 2.4+) Available from VST 2.4 and later.
  * 
  * @param self Pointer to the effect itself.
  * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
@@ -2095,6 +2097,8 @@ struct vst_effect_t {
 
 	/** Process Function
 	 * @sa vst_effect_process_t
+	 * @deprecated (VST 2.4+) Deprecated and practically unsupported in all VST 2.4 compatible hosts and may treat it
+	 *             as just another @ref vst_effect_t.process_float.
 	 */
 	vst_effect_process_t process;
 
@@ -2217,6 +2221,7 @@ struct vst_effect_t {
 
 	/** Process function for in-place single (32-bit float) processiong.
 	 * @sa vst_effect_process_single_t
+	 * @important (VST 2.0+) Available from VST 2.0 and later.
 	 */
 	vst_effect_process_float_t process_float;
 
@@ -2226,6 +2231,7 @@ struct vst_effect_t {
 
 	/** Process function for in-place double (64-bit float) processiong.
 	 * @sa vst_effect_process_double_t
+	 * @important (VST 2.4+) Available from VST 2.4 and later.
 	 */
 	vst_effect_process_double_t process_double;
 
