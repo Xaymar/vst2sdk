@@ -1,0 +1,84 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - 'root'
+      - '!documentation'
+    paths:
+      - '.github/workflows/documentation.yml'
+      - 'LICENSE'
+
+jobs:
+  docs:
+    name: "Generate Documentation"
+    runs-on: ubuntu-latest
+    steps:    
+    - name: "Set up Git"
+      shell: bash
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'xaymar@users.noreply.github.com'
+        git config --global pull.ff only
+        git config --global pull.rebase true
+
+    - name: "Clone"
+      uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+        fetch-depth: 0
+
+    - name: "Clone Documentation Cache"
+      id: doc_cache
+      continue-on-error: true
+      uses: actions/checkout@v3      
+      with:      
+        ref: 'documentation'
+        path: 'build/docs/html'
+        submodules: 'recursive'
+        fetch-depth: 0
+
+    - name: "Initialize Documentation Cache"
+      if: steps.doc_cache.outcome == 'failure'
+      shell: bash
+      run: |
+        mkdir -p build/docs/html
+        pushd build/docs/html
+        git init
+        git switch --orphan documentation
+        git remote remove origin
+        git remote add -t documentation origin ${{ github.repositoryUrl }}
+        popd
+
+    - name: "Install Prerequisites"
+      shell: bash
+      run: |
+        sudo apt-get install -y clang-19 clang-tools-19 doxygen graphviz 
+
+    - name: "Generate Documentation"
+      shell: bash
+      run: |
+        doxygen Doxyfile
+
+    - name: "Update Documentation"
+      shell: bash
+      run: |
+        pushd build/docs/html
+        git add .
+        git --no-pager diff --patch --minimal HEAD -- || true
+        git update-index --refresh
+        if ! git diff-index --quiet HEAD -- &> /dev/null; then
+          git commit -a -m "${{ github.sha }}"
+
+          # Only push from master branch.
+          if [[ "${{ github.ref }}" == "refs/heads/root" ]]; then
+            git push --set-upstream origin documentation
+            echo "Documentation has been updated!"
+          else
+            git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+          fi
+        else
+          echo "Documentation is still up to date."
+        fi
+        popd
+
