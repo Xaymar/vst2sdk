@@ -74,7 +74,7 @@ PROJECT_ICON           =
 # entered, it will be relative to the location where Doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = Z:/Projects/vst2sdk/docs
+OUTPUT_DIRECTORY       = docs
 
 # If the CREATE_SUBDIRS tag is set to YES then Doxygen will create up to 4096
 # sub-directories (in 2 levels) under the output directory of each output format
@@ -713,7 +713,7 @@ SORT_MEMBER_DOCS       = YES
 # this will also influence the order of the classes in the class list.
 # The default value is: NO.
 
-SORT_BRIEF_DOCS        = YES
+SORT_BRIEF_DOCS        = NO
 
 # If the SORT_MEMBERS_CTORS_1ST tag is set to YES then Doxygen will sort the
 # (brief and detailed) documentation of class members so that constructors and
@@ -752,7 +752,7 @@ SORT_BY_SCOPE_NAME     = YES
 # accept a match between prototype and implementation in such cases.
 # The default value is: NO.
 
-STRICT_PROTO_MATCHING  = NO
+STRICT_PROTO_MATCHING  = YES
 
 # The GENERATE_TODOLIST tag can be used to enable (YES) or disable (NO) the todo
 # list. This list is created by putting \todo commands in the documentation.
@@ -991,7 +991,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = Z:/Projects/vst2sdk/vst.h
+INPUT                  = vst.h
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1388,7 +1388,7 @@ GENERATE_HTML          = YES
 # The default directory is: html.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_OUTPUT            =
+HTML_OUTPUT            = .
 
 # The HTML_FILE_EXTENSION tag can be used to specify the file extension for each
 # generated HTML page (for example: .htm, .php, .asp).
