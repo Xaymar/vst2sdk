@@ -1,0 +1,26 @@
+var structvst__effect__t =
+[
+    [ "_unknown", "structvst__effect__t.html#aa7b1aaa0a269f355ae70dd7e98d2e88d", null ],
+    [ "_unknown_00", "structvst__effect__t.html#aea6508b20455977331f51749b9b5b15d", null ],
+    [ "_unknown_01", "structvst__effect__t.html#aa9b31c04fdd3054e9e666317adf7853c", null ],
+    [ "_unknown_02", "structvst__effect__t.html#a4a526814ed2457ff046fd4519eaef949", null ],
+    [ "_unknown_03", "structvst__effect__t.html#aaf83120c5797313a214c7a158ff61a12", null ],
+    [ "control", "structvst__effect__t.html#afec5297ef9b4703c2478d128568ce608", null ],
+    [ "delay", "structvst__effect__t.html#add0a35a4462b39e9b83d63fd5001231c", null ],
+    [ "effect_internal", "structvst__effect__t.html#acca19695c0017d0f9466e6057a3b8760", null ],
+    [ "flags", "structvst__effect__t.html#a6e60924b1b770b95ee4566c9c40ca516", null ],
+    [ "get_parameter", "structvst__effect__t.html#ad556a5a0e25085030509a4fac0d07e3b", null ],
+    [ "host_internal", "structvst__effect__t.html#a843c15cf66a288a5fc0116fcce5ec2b0", null ],
+    [ "input_output_ratio", "structvst__effect__t.html#a7339b8f2e5aa6f967d4a3968d89f98a1", null ],
+    [ "magic_number", "structvst__effect__t.html#a1f8a46bbce3d5a344c8913cb57bcb3ea", null ],
+    [ "num_inputs", "structvst__effect__t.html#ae95d43470b9e68ebb4ce9cc7930fb95b", null ],
+    [ "num_outputs", "structvst__effect__t.html#a16fb322ee839b5eabec21dfc6080a0aa", null ],
+    [ "num_params", "structvst__effect__t.html#acb1c1f4708f390c12473c37bcf941c81", null ],
+    [ "num_programs", "structvst__effect__t.html#a73439cdba53843cc4d8b5e7fd4541801", null ],
+    [ "process", "structvst__effect__t.html#a6b2cc5a39fa749e491d5293977fe3a10", null ],
+    [ "process_double", "structvst__effect__t.html#a289f10b730f005028dfa6e3a81e9fb6f", null ],
+    [ "process_float", "structvst__effect__t.html#a784b4b31eb7146fc3519c02e291a52ef", null ],
+    [ "set_parameter", "structvst__effect__t.html#a8b0e914e0f40313ae4a71e30a85b6e2b", null ],
+    [ "unique_id", "structvst__effect__t.html#a55281d2049cabb1f0f4720fea1155af4", null ],
+    [ "version", "structvst__effect__t.html#a7c9ecaba8204d87a389caa57f81c5694", null ]
+];

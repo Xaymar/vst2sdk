@@ -1,0 +1,28 @@
+var structvst__effect__supports__t =
+[
+    [ "_1in1out", "structvst__effect__supports__t.html#a369545653d354e1a37dbd43f4c61fbf2", null ],
+    [ "_1in2out", "structvst__effect__supports__t.html#a5fb5fcfc3fa8d47dcc79b02f2d5e6a01", null ],
+    [ "_2in1out", "structvst__effect__supports__t.html#a109a27795eba366359bb8c844efdf982", null ],
+    [ "_2in2out", "structvst__effect__supports__t.html#a4298a59574332c08ae251b19f8b4fb30", null ],
+    [ "_2in4out", "structvst__effect__supports__t.html#a66a4bb0e8768633350c0176d429323d0", null ],
+    [ "_4in2out", "structvst__effect__supports__t.html#a6e10d8e3128b98886cbccef28acfb906", null ],
+    [ "_4in4out", "structvst__effect__supports__t.html#a1424a3eaea6e3523a2095365c8b4d3f8", null ],
+    [ "_4in8out", "structvst__effect__supports__t.html#a41fe9d0d3694dcf3823e909266f1f655", null ],
+    [ "_8in4out", "structvst__effect__supports__t.html#a48935ec960f31f61d7d65fad5da3e654", null ],
+    [ "_8in8out", "structvst__effect__supports__t.html#ac8b18569b1bbf88299848558a44beafe", null ],
+    [ "bypass", "structvst__effect__supports__t.html#ab5037d9b564497d1ff6a981596fa746f", null ],
+    [ "conformsToWindowRules", "structvst__effect__supports__t.html#a8086cec9d9f331bc742bbfeb35de8ac8", null ],
+    [ "metapass", "structvst__effect__supports__t.html#af0adb0b6701433048ab1fb44c4b4022c", null ],
+    [ "midiProgramNames", "structvst__effect__supports__t.html#ad4593812b68452c9fb9cd9cda6ba2f2a", null ],
+    [ "mixDryWet", "structvst__effect__supports__t.html#a85726da73c22aa6bb437ef00cf4847d0", null ],
+    [ "multipass", "structvst__effect__supports__t.html#ad04d57a10924025ade25e361b9fb6a6c", null ],
+    [ "noRealTime", "structvst__effect__supports__t.html#ab3e7a6a9e6915365d48a497ff55464c1", null ],
+    [ "offline", "structvst__effect__supports__t.html#ae4546cdb70d2d73d66b5fe2cc74ac409", null ],
+    [ "plugAsChannelInsert", "structvst__effect__supports__t.html#a19f3b10dc37634c74ba652eb29dd8c9c", null ],
+    [ "plugAsSend", "structvst__effect__supports__t.html#aca1220ffa3c9a1efd7f810dad53e7b22", null ],
+    [ "receiveVstEvents", "structvst__effect__supports__t.html#a9b59e445c1974d4936b04a38aed6d9c8", null ],
+    [ "receiveVstMidiEvent", "structvst__effect__supports__t.html#ad98657dfee97ce13c47df387433b19c4", null ],
+    [ "receiveVstTimeInfo", "structvst__effect__supports__t.html#a9f75a06664aecd16b53c90e0dfe263c7", null ],
+    [ "sendVstEvents", "structvst__effect__supports__t.html#a6a4bc33d77e38c2a6dcb2338f80adbcd", null ],
+    [ "sendVstMidiEvent", "structvst__effect__supports__t.html#af460acd0d3a785e6f474c90337aefa44", null ]
+];
