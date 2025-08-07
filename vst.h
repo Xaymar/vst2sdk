@@ -785,7 +785,22 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_1E = 0x1E,
 
+	/** Retrieve the hosts output speaker arrangement.
+	 * Seems to always reply with the data provided in @ref VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT p_ptr.
+	 *
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
+	 * @deprecated (VST 2.4+) Deprecated from VST 2.4 onwards.
+	 * @sa vst_speaker_arrangement_t
+	 * @sa VST_EFFECT_OPCODE_SET_SPEAKER_ARRANGEMENT
+	 * @sa VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
+	 * @sa VST_HOST_OPCODE_GET_INPUT_SPEAKER_ARRANGEMENT
+	 * @return Seems to be a valid pointer to @ref vst_speaker_arrangement_t if supported.
+	 */
 	VST_HOST_OPCODE_1F = 0x1F,
+	/** @sa VST_HOST_OPCODE_1F */
+	VST_HOST_OPCODE_GET_OUTPUT_SPEAKER_ARRANGEMENT = 0x1F,
+	/** @sa VST_HOST_OPCODE_1F */
+	VST_HOST_OPCODE_OUTPUT_GET_SPEAKER_ARRANGEMENT = 0x1F,
 
 	/** Retrieve the vendor name into the ptr buffer.
 	 *
@@ -922,7 +937,22 @@ enum VST_HOST_OPCODE {
 	// VST 2.3
 	//--------------------------------------------------------------------------------
 
+	/** Retrieve the hosts input speaker arrangement.
+	 * Seems to always reply with the data provided in @ref VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT p_int2.
+	 *
+	 * @note (VST 2.3+) Available from VST 2.3 onwards.
+	 * @deprecated (VST 2.4+) Deprecated from VST 2.4 onwards.
+	 * @sa vst_speaker_arrangement_t
+	 * @sa VST_EFFECT_OPCODE_SET_SPEAKER_ARRANGEMENT
+	 * @sa VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
+	 * @sa VST_HOST_OPCODE_GET_OUTPUT_SPEAKER_ARRANGEMENT
+	 * @return Seems to be a valid pointer to @ref vst_speaker_arrangement_t if supported.
+	 */
 	VST_HOST_OPCODE_31 = 0x31,
+	/** @sa VST_HOST_OPCODE_31 */
+	VST_HOST_OPCODE_GET_INPUT_SPEAKER_ARRANGEMENT = 0x31,
+	/** @sa VST_HOST_OPCODE_31 */
+	VST_HOST_OPCODE_INPUT_GET_SPEAKER_ARRANGEMENT = 0x31,
 
 	// Highest number of known OPCODE.
 	VST_HOST_OPCODE_MAX,
