@@ -741,9 +741,31 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_13 */
 	VST_HOST_OPCODE_OUTPUT_LATENCY = 0x13,
 
+	/** Get which effect is attached to the indexed input stream.
+	 *
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @deprecated (VST 2.4+) Non-functional from VST 2.4 onwards and unimplemented in many earlier hosts.
+	 * @param p_int1 Which input stream should be queried?
+	 * @return Pointer to a valid @ref vst_effect_t structure or 0.
+	 */
 	VST_HOST_OPCODE_14 = 0x14,
+	/** @sa VST_HOST_OPCODE_14 */
+	VST_HOST_OPCODE_INPUT_GET_ATTACHED_EFFECT = 0x14,
+	/** @sa VST_HOST_OPCODE_14 */
+	VST_HOST_OPCODE_INPUT_STREAM_GET_ATTACHED_EFFECT = 0x14,
 
+	/** Get which effect is attached to the indexed output stream.
+	 *
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @deprecated (VST 2.4+) Non-functional from VST 2.4 onwards and unimplemented in many earlier hosts.
+	 * @param p_int1 Which output stream should be queried?
+	 * @return Pointer to a valid @ref vst_effect_t structure or 0.
+	 */
 	VST_HOST_OPCODE_15 = 0x15,
+	/** @sa VST_HOST_OPCODE_15 */
+	VST_HOST_OPCODE_OUTPUT_GET_ATTACHED_EFFECT = 0x15,
+	/** @sa VST_HOST_OPCODE_15 */
+	VST_HOST_OPCODE_OUTPUT_STREAM_GET_ATTACHED_EFFECT = 0x15,
 
 	VST_HOST_OPCODE_16 = 0x16,
 
