@@ -537,6 +537,50 @@ struct vst_stream_properties_t {
 };
 
 //------------------------------------------------------------------------------------------------------------------------
+// VST Events
+//------------------------------------------------------------------------------------------------------------------------
+
+/** A generic event.
+ *
+ * @sa vst_host_supports_t.sendVstEvents
+ * @sa vst_host_supports_t.receiveVstEvents
+ */
+struct vst_event_t {
+	int32_t _unknown_00;
+	int32_t _unknown_01;
+	int32_t _unknown_02;
+	int32_t _unknown_03;
+	int32_t _unknown_04; // Always zero or uninitialized.
+	int32_t _unknown_05; // Always zero or uninitialized.
+	int32_t _unknown_06; // Always zero or uninitialized.
+	int32_t _unknown_07; // Always zero or uninitialized.
+};
+
+/** A collection of events.
+ *
+ * @sa vst_event_t
+ * @sa vst_host_supports_t.sendVstEvents
+ * @sa vst_host_supports_t.receiveVstEvents
+ * @sa vst_effect_supports_t.sendVstEvents
+ * @sa vst_effect_supports_t.receiveVstEvents
+ * @sa VST_EFFECT_OPCODE_EVENT
+ * @sa VST_HOST_OPCODE_EVENT
+ */
+struct vst_events_t {
+	/** Number of events stored in @ref vst_events_t.events.
+	 */
+	int32_t count;
+
+	int32_t _unknown_00; // Always zero or uninitialized.
+
+	/** An array of pointers to valid @ref vst_event_t structures.
+	 *
+	 * The size of this array is defined by @ref vst_events_t.count.
+	 */
+	vst_event_t** events;
+};
+
+//------------------------------------------------------------------------------------------------------------------------
 // VST Host related Things
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -601,7 +645,22 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_08 = 0x08,
 
+	/** Send events from plug-in to host.
+	 * The host must support receiving events (see @ref vst_host_supports_t.receiveVstEvents) while the plug-in may
+	 * optionally signal to the host that it wants to send events to the host (see @ref
+	 * vst_effect_supports_t.sendVstEvents).
+	 *
+	 * @sa vst_event_t
+	 * @sa vst_events_t
+	 * @sa vst_effect_supports_t.sendVstEvents
+	 * @sa vst_host_supports_t.receiveVstEvents
+	 * @sa VST_EFFECT_OPCODE_EVENT
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @param p_ptr A valid pointer to a @ref vst_events_t structure.
+	 */
 	VST_HOST_OPCODE_09 = 0x09,
+	/** @sa VST_HOST_OPCODE_09 */
+	VST_HOST_OPCODE_EVENT = 0x09,
 
 	VST_HOST_OPCODE_0A = 0x0A,
 
@@ -805,7 +864,20 @@ struct vst_host_supports_t {
 	 */
 	const char* sizeWindow;
 
+	/** Host can send events to plug-in.
+	 *
+	 * @sa vst_effect_supports_t.receiveVstEvents
+	 * @sa VST_EFFECT_OPCODE_EVENT
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* sendVstEvents;
+
+	/** Host can receive events from plug-in.
+	 *
+	 * @sa vst_effect_supports_t.sendVstEvents
+	 * @sa VST_HOST_OPCODE_EVENT
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* receiveVstEvents;
 
 	const char* sendVstMidiEvent;
@@ -1446,12 +1518,22 @@ enum VST_EFFECT_OPCODE {
 	// VST 2.x starts here.
 	//--------------------------------------------------------------------------------
 
-	/**
+	/** Send events from host to plug-in.
+	 * The plug-in must support receiving events (see @ref vst_effect_supports_t.receiveVstEvents) while the host may
+	 * optionally signal to the plugin that it wants to send events to the host (see @ref
+	 * vst_host_supports_t.sendVstEvents).
 	 *
-	 * Appears to be related to midi and audio events.
+	 * @sa vst_event_t
+	 * @sa vst_events_t
+	 * @sa vst_host_supports_t.sendVstEvents
+	 * @sa vst_effect_supports_t.receiveVstEvents
+	 * @sa VST_HOST_OPCODE_EVENT
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @param p_ptr A valid pointer to a @ref vst_events_t structure.
 	 */
 	VST_EFFECT_OPCODE_19 = 0x19,
+	/** @sa VST_EFFECT_OPCODE_19 */
+	VST_EFFECT_OPCODE_EVENT = 0x19,
 
 	/** Can the parameter be automated?
 	 *
@@ -1999,8 +2081,22 @@ struct vst_effect_supports_t {
 	 */
 	const char* bypass;
 
+	/** Plug-in can send events to host.
+	 *
+	 * @sa vst_host_supports_t.receiveVstEvents
+	 * @sa VST_HOST_OPCODE_EVENT
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* sendVstEvents;
+
+	/** Plug-in can receive events from host.
+	 *
+	 * @sa vst_host_supports_t.sendVstEvents
+	 * @sa VST_EFFECT_OPCODE_EVENT
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* receiveVstEvents;
+
 	const char* sendVstMidiEvent;
 	const char* receiveVstMidiEvent;
 	const char* midiProgramNames; // VST 2.1 or later.
