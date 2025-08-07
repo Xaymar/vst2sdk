@@ -721,9 +721,25 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_11 */
 	VST_HOST_OPCODE_GET_BLOCK_SIZE = 0x11,
 
+	/** Current input latency.
+	 * Appears to only work with ASIO input/output devices.
+	 *
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @return Current input audio latency in samples.
+	 */
 	VST_HOST_OPCODE_12 = 0x12,
+	/** @sa VST_HOST_OPCODE_12 */
+	VST_HOST_OPCODE_INPUT_LATENCY = 0x12,
 
+	/** Current output latency.
+	 * Appears to only work with ASIO input/output devices.
+	 *
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @return Current output audio latency in samples.
+	 */
 	VST_HOST_OPCODE_13 = 0x13,
+	/** @sa VST_HOST_OPCODE_13 */
+	VST_HOST_OPCODE_OUTPUT_LATENCY = 0x13,
 
 	VST_HOST_OPCODE_14 = 0x14,
 
