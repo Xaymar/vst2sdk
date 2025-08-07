@@ -1068,14 +1068,17 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_2C */
 	VST_HOST_OPCODE_PARAM_UNLOCK = 0x2C,
 
+	/** Crash the host depending on what p_ptr is pointing at. */
 	VST_HOST_OPCODE_2D = 0x2D,
 
 	//--------------------------------------------------------------------------------
 	// VST 2.2
 	//--------------------------------------------------------------------------------
 
+	/** Crash the host depending on what p_ptr is pointing at. */
 	VST_HOST_OPCODE_2E = 0x2E,
 
+	/** Crash the host depending on what p_ptr is pointing at. */
 	VST_HOST_OPCODE_2F = 0x2F,
 
 	/**
