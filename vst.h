@@ -156,6 +156,10 @@ struct vst_rect_t {
 	int16_t right;
 };
 
+//------------------------------------------------------------------------------------------------------------------------
+// VST Parameters
+//------------------------------------------------------------------------------------------------------------------------
+
 /** Flags for parameters.
  * @sa vst_parameter_properties_t
  */
@@ -329,6 +333,10 @@ struct vst_parameter_properties_t {
 	char _reserved[16]; // Reserved for future expansions?
 };
 
+//------------------------------------------------------------------------------------------------------------------------
+// VST Input Microphones/Output Speakers
+//------------------------------------------------------------------------------------------------------------------------
+
 enum VST_SPEAKER_TYPE {
 	// Default Types
 	VST_SPEAKER_TYPE_MONO       = 0,
@@ -481,6 +489,10 @@ struct vst_speaker_arrangement_t {
 	int32_t channels; // Number of channels in this arrangement.
 	struct vst_speaker_properties_t speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
 };
+
+//------------------------------------------------------------------------------------------------------------------------
+// VST Input/Output Streams
+//------------------------------------------------------------------------------------------------------------------------
 
 enum VST_STREAM_FLAG {
 	/** Ignored?
@@ -978,6 +990,7 @@ struct vst_host_supports_t {
 	 * @sa VST_EFFECT_OPCODE_PROCESS_BEGIN
 	 * @sa VST_EFFECT_OPCODE_PROCESS_END
 	 * @sa VST_EFFECT_OPCODE_IDLE
+	 * @note (VST 2.3) Available from VST 2.3 onwards.
 	 * @deprecated (VST 2.4) This behavior is the default in VST 2.4 and later.
 	 * @return @ref VST_STATUS_TRUE if it supports it.
 	 */
@@ -985,12 +998,9 @@ struct vst_host_supports_t {
 
 	/** Does the host support container plug-ins?
 	 *
-	 * Signals that the host and plug-in support the following:
-	 * - @ref VST_HOST_OPCODE_CURRENT_EFFECT_ID
-	 * - @ref VST_EFFECT_OPCODE_CONTAINER_NEXT_EFFECT_ID
-	 *
 	 * @note Is shell a reference to Windows shell menus?
-	 *
+	 * @sa VST_HOST_OPCODE_CURRENT_EFFECT_ID
+	 * @sa VST_EFFECT_OPCODE_CONTAINER_NEXT_EFFECT_ID
 	 * @return @ref VST_STATUS_TRUE if the host supports it _and_ the current plug-in is a container plug-in.
 	 */
 	const char* shellCategory;
