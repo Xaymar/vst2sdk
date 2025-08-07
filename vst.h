@@ -27,8 +27,8 @@
 /** @private */
 #define VST2SDK_VST_H
 
-/* The VST 2.x alignment appears to be 8 for both 32 and 64-bit. This alignment is ignored by some earlier Windows 
- * platforms and compilers, but we don't care about those. 
+/* The VST 2.x alignment appears to be 8 for both 32 and 64-bit. This alignment is ignored by some earlier Windows
+ * platforms and compilers, but we don't care about those.
  */
 #pragma pack(push, 8)
 
@@ -58,7 +58,7 @@ extern "C" {
 enum VST_STATUS {
 	/** Unknown / False
 	 * We either don't know the answer or we can't handle the data/notification.
-	 * 
+	 *
 	 * @sa VST_HOST_OPCODE
 	 * @sa VST_EFFECT_OPCODE
 	 */
@@ -72,7 +72,7 @@ enum VST_STATUS {
 
 	/** Yes / True
 	 * We've handled the data/notification.
-	 * 
+	 *
 	 * @sa VST_HOST_OPCODE
 	 * @sa VST_EFFECT_OPCODE
 	 */
@@ -86,7 +86,7 @@ enum VST_STATUS {
 
 	/** No
 	 * We're unable to handle the data/notification.
-	 * 
+	 *
 	 * @sa VST_HOST_OPCODE
 	 * @sa VST_EFFECT_OPCODE
 	 */
@@ -116,11 +116,11 @@ enum VST_BUFFER_SIZE {
 
 /** Valid VST 1.x and 2.x versions
  * The format is either a single digit or four digits in Base10 format.
- * 
+ *
  * @code{.c}
  * // Converts a Base10 VST version to a uint8_t[4] representation of the version.
  * uint32_t expand_vst_version(uint32_t v) {
- *   if (v < 10) { // 
+ *   if (v < 10) { //
  *     return v << 24;
  *   }
  *   uint8_t major = v / 1000;
@@ -209,7 +209,7 @@ enum VST_PARAMETER_FLAG {
 	VST_PARAMETER_FLAG_CATEGORY = 1 << 5,
 
 	/** Parameter can be gradually increased/decreased.
-	 * 
+	 *
 	 * @sa VST_EFFECT_OPCODE_PARAM_IS_AUTOMATABLE
 	 */
 	VST_PARAMETER_FLAG_1ls6 = 1 << 6,
@@ -220,14 +220,14 @@ enum VST_PARAMETER_FLAG {
 };
 
 /** Information about a parameter.
- * 
+ *
  * @important Many VST hosts and plug-ins expect their parameters to be normalized within 0.0 and 1.0.
  */
 struct vst_parameter_properties_t {
 	/** Float Step value
-	 * 
+	 *
 	 * Some hosts and plug-ins expect this to be within 0 and 1.0.
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_STEP_FLOAT to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
@@ -235,9 +235,9 @@ struct vst_parameter_properties_t {
 
 	/** Float small step value
 	 * This is used for "tiny" changes.
-	 * 
+	 *
 	 * Some hosts and plug-ins expect this to be within 0 and 1.0.
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_STEP_FLOAT to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
@@ -245,65 +245,65 @@ struct vst_parameter_properties_t {
 
 	/** Float large step value
 	 * This is used for "huge" changes.
-	 * 
+	 *
 	 * Some hosts and plug-ins expect this to be within 0 and 1.0.
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_STEP_FLOAT to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
 	float step_large_f32;
 
 	/** Human-readable name for this parameter.
-	 * 
+	 *
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
 	char name[VST_BUFFER_SIZE_PARAM_LONG_NAME];
 
 	/** Parameter Flags
-	 * 
+	 *
 	 * Any combination of @ref VST_PARAMETER_FLAG.
 	 */
 	uint32_t flags;
 
 	/** Minimum Integer value
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_INTEGER_LIMITS to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
 	int32_t  min_value_i32;
 
 	/** Maximum Integer value
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_INTEGER_LIMITS to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
 	int32_t  max_value_i32;
 
 	/** Integer Step value
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_STEP_INT to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
 	int32_t  step_i32;
 
 	/** Short Human-readable label for this parameter.
-	 * 
+	 *
 	 * I have no idea why this exists?
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
 	char label[VST_BUFFER_SIZE_PARAM_LABEL];
 
 	/** Display order index.
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_INDEX to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
 	uint16_t index;
 
 	/** Category index
-	 * 
+	 *
 	 * Must either be 0 for no category, or any number increasing from 1 onwards.
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_CATEGORY to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
@@ -311,7 +311,7 @@ struct vst_parameter_properties_t {
 
 	/** How many parameters are in this category?
 	 * This allows the plug-in to specify the same category multiple times.
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_CATEGORY to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
@@ -320,7 +320,7 @@ struct vst_parameter_properties_t {
 	uint16_t _unknown_00; // Must be set to 0.
 
 	/** Human-readable name for the category this parameter is in.
-	 * 
+	 *
 	 * @note Requires @ref VST_PARAMETER_FLAG_CATEGORY to be set.
 	 * @note Ignored if @ref VST_EFFECT_FLAG_EDITOR is set.
 	 */
@@ -391,21 +391,21 @@ enum VST_SPEAKER_TYPE {
 struct vst_speaker_properties_t {
 	/** Azimuth in Radians
 	 * Range: -PI (Left) through 0.0 (Right) to PI (Left)
-	 * 
+	 *
 	 * @note Must be 10.0 if this is a LFE.
 	 */
 	float azimuth;
 
 	/** Altitude in Radians
 	 * Range: -PI/2 (Bottom) to PI/2 (Top)
-	 * 
+	 *
 	 * @note Must be 10.0 if this is a LFE.
 	 */
 	float altitude;
 
 	/** Distance in Meters
 	 * range: 0 to +-Infinity
-	 * 
+	 *
 	 * @note Must be 0.0 if this is a LFE.
 	 */
 	float distance;
@@ -413,17 +413,17 @@ struct vst_speaker_properties_t {
 	float _unknown_00; // Must be set to 0
 
 	/** Human readable name for this speaker.
-	 * 
-	 * Some hosts will behave weird if you use "L", "R", "C", "Ls", "Rs", "Lc", "Rc", "LFE", "Lfe", "Sl", "Sr", "Cs", 
+	 *
+	 * Some hosts will behave weird if you use "L", "R", "C", "Ls", "Rs", "Lc", "Rc", "LFE", "Lfe", "Sl", "Sr", "Cs",
 	 * and other 2 to 3 letter short codes. Best not to use those if you like your plug-in in a not-crashy state.
 	 */
 	char name[VST_BUFFER_SIZE_SPEAKER_NAME];
 
 	/** The type of the speaker
-	 * 
+	 *
 	 * See VST_SPEAKER_TYPE
-	 * 
-	 * If the above is one of those short codes some host seems to overwrite this with their own. Memory safety is 
+	 *
+	 * If the above is one of those short codes some host seems to overwrite this with their own. Memory safety is
 	 * optional apparently.
 	 */
 	int32_t type;
@@ -449,25 +449,25 @@ enum VST_SPEAKER_ARRANGEMENT_TYPE {
 	/** Stereo
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_STEREO = 0x01,
-	
+
 	/** Quadraphonic
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_4_0 = 0x0B,
 
 	/** 5.0 (Old Surround)
-	 * 
+	 *
 	 * L, R, C, RL, RR
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_5_0 = 0x0E,
 
 	/** 5.1 (Old Surround)
-	 * 
+	 *
 	 * L, R, C, LFE, RL, RR
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_5_1 = 0x0F,
 
 	/** 7.1 (Full Surround)
-	 * 
+	 *
 	 * L, R, C, LFE, SL, SR, RL, RR
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_7_1 = 0x17,
@@ -488,14 +488,14 @@ enum VST_STREAM_FLAG {
 	VST_STREAM_FLAG_1ls0 = 1 << 0,
 
 	/** Stream is in Stereo
-	 * 
+	 *
 	 * Can't be used with VST_STREAM_FLAG_USE_TYPE.
 	 */
 	VST_STREAM_FLAG_1ls1 = 1 << 1,
 	VST_STREAM_FLAG_STEREO = 1 << 1,
 
 	/** Stream is defined by VST_SPEAKER_ARRANGEMENT_TYPE
-	 * 
+	 *
 	 * Can't be used with VST_STREAM_FLAG_STEREO.
 	 */
 	VST_STREAM_FLAG_1ls2 = 1 << 2,
@@ -536,9 +536,9 @@ struct vst_effect_t; // Pre-define vst_effect_t so we can use it below.
  */
 enum VST_HOST_OPCODE {
 	/** Update automation for a given Parameter
-	 * 
+	 *
 	 * Must be used to notify the host that the parameter was changed by the user if a custom editor is used.
-	 * 
+	 *
 	 * @param p_int1 Parameter Index
 	 * @param p_float Parameter Value
 	 * @return Expected to return... something.
@@ -548,9 +548,9 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_AUTOMATE = 0x00,
 	/** @sa VST_HOST_OPCODE_00 */
 	VST_HOST_OPCODE_PARAM_UPDATE = 0x00,
-	
+
 	/** Retrieve the Hosts VST Version.
-	 * 
+	 *
 	 * @return See VST_VERSION enumeration.
 	 */
 	VST_HOST_OPCODE_01 = 0x01,
@@ -558,9 +558,9 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_VST_VERSION = 0x01,
 
 	/** Get the currently selected effect id in container plug-ins.
-	 * 
+	 *
 	 * Used in combination with @ref VST_EFFECT_CATEGORY_CONTAINER.
-	 * 
+	 *
 	 * @return The currently selected unique effect id in this container.
 	 */
 	VST_HOST_OPCODE_02 = 0x02, // bool cb(0, 0x02, 0, 0, 0);
@@ -568,7 +568,7 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_CURRENT_EFFECT_ID = 0x02,
 
 	/** Some sort of idle keep-alive?
-	 * 
+	 *
 	 * Seems to be called only in editor windows when a modal popup is present.
 	 */
 	VST_HOST_OPCODE_03 = 0x03,
@@ -583,7 +583,7 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_05 = 0x05,
 
-	VST_HOST_OPCODE_06 = 0x06,	
+	VST_HOST_OPCODE_06 = 0x06,
 
 	VST_HOST_OPCODE_07 = 0x07,
 
@@ -600,13 +600,13 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_0D = 0x0D,
 
 	/** Notify the host that numInputs/numOutputs/delay/numParams has changed.
-	 * Only supported if the host replies @ref VST_STATUS_TRUE to @ref VST_HOST_OPCODE_SUPPORTS query for 
+	 * Only supported if the host replies @ref VST_STATUS_TRUE to @ref VST_HOST_OPCODE_SUPPORTS query for
 	 * @ref vst_host_supports_t.acceptIOChanges.
-	 * 
+	 *
 	 * @note In VST 2.3 and earlier calling this outside of @ref VST_EFFECT_OPCODE_IDLE may result in a crash.
-	 * @note In VST 2.3 and later this may only be called while between @ref VST_EFFECT_OPCODE_PROCESS_END and 
+	 * @note In VST 2.3 and later this may only be called while between @ref VST_EFFECT_OPCODE_PROCESS_END and
 	 *       @ref VST_EFFECT_OPCODE_PROCESS_BEGIN.
-	 * 
+	 *
 	 * @return @ref VST_STATUS_TRUE if supported and handled otherwise @ref VST_STATUS_FALSE.
 	 */
 	VST_HOST_OPCODE_0E = 0x0E,
@@ -647,49 +647,49 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_1F = 0x1F,
 
-	VST_HOST_OPCODE_20 = 0x20,
-
 	/** Retrieve the vendor name into the ptr buffer.
 	 *
 	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_VENDOR_NAME.
 	 */
-	VST_HOST_OPCODE_21 = 0x21,
-	/** @sa VST_HOST_OPCODE_21 */
-	VST_HOST_OPCODE_VENDOR_NAME = 0x21,
+	VST_HOST_OPCODE_20 = 0x20,
+	/** @sa VST_HOST_OPCODE_20 */
+	VST_HOST_OPCODE_VENDOR_NAME = 0x20,
 
 	/** Retrieve the product name into the ptr buffer.
 	 *
 	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_PRODUCT_NAME.
 	 */
-	VST_HOST_OPCODE_22 = 0x22,
-	/** @sa VST_HOST_OPCODE_22 */
-	VST_HOST_OPCODE_PRODUCT_NAME = 0x22,
+	VST_HOST_OPCODE_21 = 0x21,
+	/** @sa VST_HOST_OPCODE_21 */
+	VST_HOST_OPCODE_PRODUCT_NAME = 0x21,
 
 	/** Retrieve the vendor version in return value.
 	 *
 	 * @return Version.
 	 */
-	VST_HOST_OPCODE_23 = 0x23,
-	/** @sa VST_HOST_OPCODE_23 */
-	VST_HOST_OPCODE_VENDOR_VERSION = 0x23,
+	VST_HOST_OPCODE_22 = 0x22,
+	/** @sa VST_HOST_OPCODE_22 */
+	VST_HOST_OPCODE_VENDOR_VERSION = 0x22,
 
 	/** User defined OP Code, for custom interaction.
-	 * 
+	 *
 	 */
-	VST_HOST_OPCODE_24 = 0x24,
-	/** @sa VST_HOST_OPCODE_24 */
-	VST_HOST_OPCODE_CUSTOM = 0x24,
+	VST_HOST_OPCODE_23 = 0x23,
+	/** @sa VST_HOST_OPCODE_23 */
+	VST_HOST_OPCODE_CUSTOM = 0x23,
 
-	VST_HOST_OPCODE_25 = 0x25,	
+	VST_HOST_OPCODE_24 = 0x24,
 
 	/** Check if the host supports a certain feature.
-	 * 
+	 *
 	 * @param p_ptr `char[...]` Zero terminated string for which feature we want to support.
 	 * @return @ref VST_STATUS_TRUE if the feature is supported otherwise @ref VST_STATUS_FALSE.
 	 */
+	VST_HOST_OPCODE_25 = 0x25,
+	/** @sa VST_HOST_OPCODE_25 */
+	VST_HOST_OPCODE_SUPPORTS = 0x25,
+
 	VST_HOST_OPCODE_26 = 0x26,
-	/** @sa VST_HOST_OPCODE_26 */
-	VST_HOST_OPCODE_SUPPORTS = 0x26,
 
 	VST_HOST_OPCODE_27 = 0x27,
 
@@ -713,7 +713,7 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_PARAM_START_EDIT = 0x2B,
 
 	/** Notify host that parameter is no longer being edited.
-	 * 
+	 *
 	 * @param p_int1 Parameter index.
 	 */
 	VST_HOST_OPCODE_2C = 0x2C,
@@ -732,27 +732,27 @@ enum VST_HOST_OPCODE {
 };
 
 /** Plug-in to Host support checks
- * 
+ *
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
- * 
+ *
  * Harvested via strings command and just checking what hosts actually responded to.
  */
 struct vst_host_supports_t {
 	/** Does the host support modifying input/output/params/delay when programs, banks or parameters are changed?
 	 * This only means that the host supports this inside of @ref VST_EFFECT_OPCODE_IDLE (VST 2.3 or earlier) or outside
 	 * of a @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and @ref VST_EFFECT_OPCODE_PROCESS_END group.
-	 * 
+	 *
 	 * Signals that the host supports the following:
 	 * - @ref VST_HOST_OPCODE_IO_MODIFIED
-	 * 
+	 *
 	 * @return @ref VST_STATUS_TRUE if it supports it.
 	 */
 	const char* acceptIOChanges;
 
 	/** Is the host using process begin/end instead of idle?
-	 * The host may opt to emit @ref VST_EFFECT_OPCODE_IDLE or @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and 
+	 * The host may opt to emit @ref VST_EFFECT_OPCODE_IDLE or @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and
 	 * @ref VST_EFFECT_OPCODE_PROCESS_END when running in VST 2.3 compatibility mode.
-	 * 
+	 *
 	 * @sa VST_EFFECT_OPCODE_PROCESS_BEGIN
 	 * @sa VST_EFFECT_OPCODE_PROCESS_END
 	 * @sa VST_EFFECT_OPCODE_IDLE
@@ -762,13 +762,13 @@ struct vst_host_supports_t {
 	const char* startStopProcess;
 
 	/** Does the host support container plug-ins?
-	 * 
+	 *
 	 * Signals that the host and plug-in support the following:
 	 * - @ref VST_HOST_OPCODE_CURRENT_EFFECT_ID
 	 * - @ref VST_EFFECT_OPCODE_CONTAINER_NEXT_EFFECT_ID
-	 * 
+	 *
 	 * @note Is shell a reference to Windows shell menus?
-	 * 
+	 *
 	 * @return @ref VST_STATUS_TRUE if the host supports it _and_ the current plug-in is a container plug-in.
 	 */
 	const char* shellCategory;
@@ -807,7 +807,7 @@ struct vst_host_supports_t {
 /** Plug-in to Host callback
  *
  * The plug-in may call this to attempt to change things on the host side. The host side is free to ignore all requests, annoyingly enough.
- * 
+ *
  * @param opcode See VST_HOST_OPCODE
  * @param p_str Zero terminated string or null on call.
  * @return ?
@@ -819,36 +819,36 @@ typedef intptr_t (VST_FUNCTION_INTERFACE *vst_host_callback_t)(struct vst_effect
 //------------------------------------------------------------------------------------------------------------------------
 
 /** Magic Number identifying a VST 2.x plug-in structure
- * 
+ *
  * @sa vst_effect_t.magic_numer
  */
 #define VST_MAGICNUMBER VST_FOURCC('V', 's', 't', 'P')
 
 /** Default VST 2.x Sample Rate
- * All VST 2.x hosts expect you to initialize your plug-in to these default values. 
- * 
+ * All VST 2.x hosts expect you to initialize your plug-in to these default values.
+ *
  * @sa VST_EFFECT_OPCODE_SET_SAMPLE_RATE
  */
 #define VST_DEFAULT_SAMPLE_RATE 44100.0f
 
 /** Default VST 2.x Block Size
- * All VST 2.x hosts expect you to initialize your plug-in to these default values. 
- * 
+ * All VST 2.x hosts expect you to initialize your plug-in to these default values.
+ *
  * @sa VST_EFFECT_OPCODE_SET_BLOCK_SIZE
  */
 #define VST_DEFAULT_BLOCK_SIZE 1024
 
 /** Plug-in Categories
- * Pre-defined category grouping that also affect host behavior when handling the plug-in. This is not just a UI/UX 
+ * Pre-defined category grouping that also affect host behavior when handling the plug-in. This is not just a UI/UX
  * thing, it actually affects what plug-ins can do, so place your plug-in into the correct category.
- * 
+ *
  */
 enum VST_EFFECT_CATEGORY {
 	VST_EFFECT_CATEGORY_UNCATEGORIZED = 0x00,
 
 	/** Generic Effects
 	 * Examples: Distortion, Pitch Shift, ...
-	 * 
+	 *
 	 * Supports: Delay (Optional), Tail Samples, MIDI
 	 */
 	VST_EFFECT_CATEGORY_01            = 0x01,
@@ -857,7 +857,7 @@ enum VST_EFFECT_CATEGORY {
 
 	/** Instruments
 	 * Examples: Instruments, Synths, Samplers, ...
-	 * 
+	 *
 	 * Supports: Delay (Optional), Tail Samples, MIDI
 	 */
 	VST_EFFECT_CATEGORY_02            = 0x02,
@@ -866,7 +866,7 @@ enum VST_EFFECT_CATEGORY {
 
 	/** Metering
 	 * Examples: Loudness Meters, Volume Analysis, ...
-	 * 
+	 *
 	 * Supports: Tail Samples, MIDI
 	 * @note Delay causes crashes in some hosts. Fun.
 	 */
@@ -876,7 +876,7 @@ enum VST_EFFECT_CATEGORY {
 
 	/** Mastering
 	 * Examples: Compressors, Limiters, ...
-	 * 
+	 *
 	 * Supports: Delay, Tail Samples (optional), MIDI
 	 */
 	VST_EFFECT_CATEGORY_04            = 0x04,
@@ -885,7 +885,7 @@ enum VST_EFFECT_CATEGORY {
 
 	/** Spatializers
 	 * Examples: Channel Panning, Expanders, ...
-	 * 
+	 *
 	 * Supports: Tail Samples (optional), MIDI
 	 */
 	VST_EFFECT_CATEGORY_05            = 0x05,
@@ -894,28 +894,28 @@ enum VST_EFFECT_CATEGORY {
 
 	/** Delay/Echo
 	 * Examples: Echo, Reverb, Room Simulation, Delay, ...
-	 * 
+	 *
 	 * Supports: Delay, Tail Samples, MIDI
 	 */
 	VST_EFFECT_CATEGORY_06            = 0x06,
 	/** @sa VST_EFFECT_CATEGORY_06 */
 	VST_EFFECT_CATEGORY_DELAY_OR_ECHO = 0x06,
 
-	VST_EFFECT_CATEGORY_07            = 0x07, 
+	VST_EFFECT_CATEGORY_07            = 0x07,
 
 	/** Restoration
 	 * Examples: Noise Filtering, Upsamplers, ...
-	 * 
-	 * Supports: Delay, Tail Samples, MIDI  
+	 *
+	 * Supports: Delay, Tail Samples, MIDI
 	 * @note Some DAWs allocate additional processing time to these.
 	 */
-	VST_EFFECT_CATEGORY_08            = 0x08,	
+	VST_EFFECT_CATEGORY_08            = 0x08,
 	/** @sa VST_EFFECT_CATEGORY_08 */
 	VST_EFFECT_CATEGORY_RESTORATION   = 0x08,
 
 	/** Offline Processing
-	 * Examples: Nothing  
-	 * Supports: Nothing  
+	 * Examples: Nothing
+	 * Supports: Nothing
 	 */
 	VST_EFFECT_CATEGORY_09            = 0x09,
 	/** @sa VST_EFFECT_CATEGORY_09 */
@@ -923,11 +923,11 @@ enum VST_EFFECT_CATEGORY {
 
 	/** Container Plug-in
 	 * This plug-in contains multiple effects in one and requires special handling on both sides.
-	 * 
+	 *
 	 * Host handling:
 	 * @code{.c}
 	 * uint32_t current_select_id;
-	 * 
+	 *
 	 * // ... in intptr_t vst_host_callback(vst_effect_t* plugin, VST_HOST_OPCODE opcode, ...)
 	 *     case VST_HOST_OPCODE_SUPPORTS: {
 	 *       char* text = (char*)p_ptr;
@@ -939,7 +939,7 @@ enum VST_EFFECT_CATEGORY {
 	 *     case VST_HOST_OPCODE_CURRENT_EFFECT_ID:
 	 *       return current_selected_id;
 	 * // ...
-	 * 
+	 *
 	 * // ... in whatever you use to load plug-ins ...
 	 *   current_select_id;
 	 *   vst_effect_t* plugin = plugin_main(&vst_host_callback);
@@ -959,7 +959,7 @@ enum VST_EFFECT_CATEGORY {
 	 *   }
 	 * // ...
 	 * @endcode
-	 * 
+	 *
 	 * Plug-in handling:
 	 * @code{.c}
 	 * // ... in vst_effect for the container
@@ -977,15 +977,15 @@ enum VST_EFFECT_CATEGORY {
 	 *       // Some code that turns effect indices into names to store into p_ptr.
 	 *       return effect_list[current_effect_idx++]; // Return the effect id.
 	 * // ...
-	 * 
+	 *
 	 * VST_ENTRYPOINT {
 	 *   // Ensure the host VST 2.x compatible.
 	 *   int32_t vst_version = callback(nullptr, VST_HOST_OPCODE_VST_VERSION, 0, 0, 0, 0);
 	 *   if (vst_version == 0) {
 	 *     return 0; // It's not so we exit early.
 	 *   }
-	 *   
-	 *   // Check if the host wants 
+	 *
+	 *   // Check if the host wants
 	 *   int32_t effect_id = callback(nullptr, VST_HOST_OPCODE_CURRENT_EFFECT_ID, 0, 0, 0);
 	 *   if (effect_id == 0) {
 	 *     // ... logic specific to making the container.
@@ -995,20 +995,20 @@ enum VST_EFFECT_CATEGORY {
 	 *     return new vst_sub_effect();
 	 *   }
 	 * }
-	 * 
+	 *
 	 * // ...
 	 * @endcode
 	 */
-	VST_EFFECT_CATEGORY_0A            = 0x0A, 
+	VST_EFFECT_CATEGORY_0A            = 0x0A,
 	/** @sa VST_EFFECT_CATEGORY_0A */
 	VST_EFFECT_CATEGORY_CONTAINER     = 0x0A,
 
 	/** Waveform Generators
-	 * Examples: Sine Wave Generator, ...   
-	 * Supports: Delay, Tail Samples  
-	 * 
+	 * Examples: Sine Wave Generator, ...
+	 * Supports: Delay, Tail Samples
+	 *
 	 * I don't know why this exists, there's only one plug-in that has it and all it does is generate a 400hz sine wave.
-	 * 
+	 *
 	 * @sa VST_EFFECT_CATEGORY_INSTRUMENT
 	 */
 	VST_EFFECT_CATEGORY_0B            = 0x0B,
@@ -1026,10 +1026,10 @@ enum VST_EFFECT_CATEGORY {
  */
 enum VST_EFFECT_FLAG {
 	/** Effect provides a custom editor.
-	 * The host will not provide a generic editor interface and expects @ref VST_EFFECT_OPCODE_EDITOR_OPEN and 
+	 * The host will not provide a generic editor interface and expects @ref VST_EFFECT_OPCODE_EDITOR_OPEN and
 	 * @ref VST_EFFECT_OPCODE_EDITOR_CLOSE to work as expected. We are in charge of notifying the host about various
 	 * things like which parameter is in focus and stuff.
-	 * 
+	 *
 	 * @sa VST_EFFECT_OPCODE_EDITOR_GET_RECT
 	 * @sa VST_EFFECT_OPCODE_EDITOR_OPEN
 	 * @sa VST_EFFECT_OPCODE_EDITOR_CLOSE
@@ -1053,7 +1053,7 @@ enum VST_EFFECT_FLAG {
 	//1 << 3, // Only seen when the plug-in behaves differently in mono mode. Seems to be ignored by hosts entirely.
 
 	/** Effect uses process_float.
-	 * 
+	 *
 	 * @sa vst_effect_t.process_float
 	 * @sa vst_effect_process_float_t
 	 * @deprecated (VST 2.4) Must be set in VST 2.4 and later or the host should fail to load the plug-in.
@@ -1064,7 +1064,7 @@ enum VST_EFFECT_FLAG {
 
 	/** Effect supports saving/loading programs/banks from unformatted chunk data.
 	 * When not set some sort of format is expected that I've yet to decipher.
-	 * 
+	 *
 	 * @sa VST_EFFECT_OPCODE_GET_CHUNK_DATA
 	 * @sa VST_EFFECT_OPCODE_SET_CHUNK_DATA
 	 */
@@ -1076,16 +1076,16 @@ enum VST_EFFECT_FLAG {
 	//1 << 7,
 
 	/** Effect is an Instrument/Generator
-	 * 
+	 *
 	 * This must be set in addition to @ref VST_EFFECT_CATEGORY_INSTRUMENT otherwise instruments don't work right.
 	 * @note (VST 2.x) Flag is new to VST 2.x and later.
 	 */
 	VST_EFFECT_FLAG_1ls8 = 1 << 8,
 	/** @sa VST_EFFECT_FLAG_1ls8 */
-	VST_EFFECT_FLAG_INSTRUMENT = 1 << 8, 
+	VST_EFFECT_FLAG_INSTRUMENT = 1 << 8,
 
 	/** Effect does not produce tail samples when the input is silent.
-	 * 
+	 *
 	 * Not to be confused with choosing to tell the host there is no tail.
 	 * @sa VST_EFFECT_OPCODE_GET_TAIL_SAMPLES
 	 * @note (VST 2.x) Flag is new to VST 2.x and later.
@@ -1096,10 +1096,10 @@ enum VST_EFFECT_FLAG {
 
 	//1 << 10,
 	//1 << 11,
-	
+
 	/** Effect supports process_double.
 	 * The host can freely choose between process_float and process_double as required.
-	 * 
+	 *
 	 * @note (VST 2.4) Available in VST 2.4 and later only.
 	 * @sa vst_effect_t.process_double
 	 * @sa vst_effect_process_double_t
@@ -1114,7 +1114,7 @@ enum VST_EFFECT_FLAG {
  */
 enum VST_EFFECT_OPCODE {
 	/** Create/Initialize the effect (if it has not been created already).
-	 * 
+	 *
 	 * @return Always 0.
 	 */
 	VST_EFFECT_OPCODE_00         = 0x00,
@@ -1126,7 +1126,7 @@ enum VST_EFFECT_OPCODE {
 	/** Destroy the effect (if there is any) and free its memory.
 	 *
 	 * This should destroy the actual object created by VST_ENTRYPOINT.
-	 * 
+	 *
 	 * @return Always 0.
 	 */
 	VST_EFFECT_OPCODE_01      = 0x01,
@@ -1134,7 +1134,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_DESTROY = 0x01,
 
 	/** Set which program number is currently select.
-	 * 
+	 *
 	 * @param p_int2 The program number to set. Can be negative for some reason.
 	 */
 	VST_EFFECT_OPCODE_02 = 0x02,
@@ -1144,7 +1144,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_PROGRAM_SET = 0x02,
 
 	/** Get currently selected program number.
-	 * 
+	 *
 	 * @return The currently set program number. Can be negative for some reason.
 	 */
 	VST_EFFECT_OPCODE_03 = 0x03,
@@ -1154,7 +1154,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_PROGRAM_GET = 0x03,
 
 	/** Set the name of the currently selected program.
-	 * 
+	 *
 	 * @param p_ptr `const char[VST_BUFFER_SIZE_PROGRAM_NAME]` Zero terminated string.
 	 */
 	VST_EFFECT_OPCODE_04 = 0x04,
@@ -1164,7 +1164,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_PROGRAM_SET_NAME = 0x04,
 
 	/** Get the name of the currently selected program.
-	 * 
+	 *
 	 * @param p_ptr `char[VST_BUFFER_SIZE_PROGRAM_NAME]` Zero terminated string.
 	 */
 	VST_EFFECT_OPCODE_05 = 0x05,
@@ -1174,7 +1174,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_PROGRAM_GET_NAME = 0x05,
 
 	/** Get the value? label for the parameter.
-	 * 
+	 *
 	 * @param p_int1 Parameter index.
 	 * @param p_ptr 'char[VST_BUFFER_SIZE_PARAM_LABEL]' Zero terminated string.
 	 * @return 0 on success, 1 on failure.
@@ -1188,7 +1188,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_PARAM_LABEL = 0x06,
 
 	/** Get the string representing the value for the parameter.
-	 * 
+	 *
 	 * @param p_int1 Parameter index.
 	 * @param p_ptr 'char[VST_BUFFER_SIZE_PARAM_VALUE]' Zero terminated string.
 	 * @return 0 on success, 1 on failure.
@@ -1204,7 +1204,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_PARAM_VALUE_TO_STRING = 0x07,
 
 	/** Get the name for the parameter.
-	 * 
+	 *
 	 * @param p_int1 Parameter index.
 	 * @param p_ptr 'char[VST_BUFFER_SIZE_PARAM_NAME]' Zero terminated string.
 	 * @return 0 on success, 1 on failure.
@@ -1217,14 +1217,14 @@ enum VST_EFFECT_OPCODE {
 	/** @sa VST_EFFECT_OPCODE_08 */
 	VST_EFFECT_OPCODE_PARAM_NAME = 0x08,
 
-	/** 
-	 * 
+	/**
+	 *
 	 * @deprecated: (VST 2.3+) Not used in VST 2.3 or later.
 	 */
 	VST_EFFECT_OPCODE_09 = 0x09,
 
 	/** Set the new sample rate for the plugin to use.
-	 * 
+	 *
 	 * @param p_float New sample rate as a float (double on 64-bit because register upgrades).
 	 */
 	VST_EFFECT_OPCODE_0A              = 0x0A,
@@ -1245,10 +1245,10 @@ enum VST_EFFECT_OPCODE {
 
 	/** Effect processing should be suspended/paused or resumed/unpaused.
 	 *
-	 * Unclear if this is should result in a flush of buffers. In VST 2.3+ this is quite clear as we get process 
+	 * Unclear if this is should result in a flush of buffers. In VST 2.3+ this is quite clear as we get process
 	 * begin/end.
-	 * 
-	 * @param p_int2 @ref VST_STATUS_FALSE if the effect should suspend processing, @ref VST_STATUS_TRUE if it should 
+	 *
+	 * @param p_int2 @ref VST_STATUS_FALSE if the effect should suspend processing, @ref VST_STATUS_TRUE if it should
 	 *               resume.
 	 */
 	VST_EFFECT_OPCODE_0C      = 0x0C,
@@ -1274,7 +1274,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_EDITOR_GET_RECT = 0x0D,
 
 	/** Create the window for the plugin.
-	 * 
+	 *
 	 * @param p_ptr HWND of the parent window.
 	 * @return 0 on failure, or HWND on success.
 	 */
@@ -1285,7 +1285,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_EDITOR_OPEN = 0x0E,
 
 	/** Destroy the plugins window.
-	 * 
+	 *
 	 * @return Always 0.
 	 */
 	VST_EFFECT_OPCODE_0F             = 0x0F,
@@ -1299,9 +1299,9 @@ enum VST_EFFECT_OPCODE {
 	 * Ocasionally called simultaneously as WM_DRAW on windows.
 	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * 
+	 *
 	 * @note Appears to be Mac OS exclusive.
-	 * 
+	 *
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_10 = 0x10,
@@ -1313,11 +1313,11 @@ enum VST_EFFECT_OPCODE {
 	/** Window Mouse Event?
 	 *
 	 * Called at the same time mouse events happen.
-	 * 
+	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * 
+	 *
 	 * @note Appears to be Mac OS exclusive.
-	 * 
+	 *
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_11 = 0x11,
@@ -1331,9 +1331,9 @@ enum VST_EFFECT_OPCODE {
 	 * Called at the same time keyboard events happen.
 	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
-	 * 
+	 *
 	 * @note Appears to be Mac OS exclusive.
-	 * 
+	 *
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_12 = 0x12,
@@ -1343,7 +1343,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_EDITOR_KEYBOARD = 0x12,
 
 	/** Window/Editor Idle/Keep-Alive Callback?
-	 * 
+	 *
 	 * Does not receive any parameters. Randomly called when nothing happens? Idle/Keep-Alive callback?
 	 */
 	VST_EFFECT_OPCODE_13 = 0x13,
@@ -1353,7 +1353,7 @@ enum VST_EFFECT_OPCODE {
 	/** Window Focus Event?
 	 *
 	 * Sometimes called when the editor window goes back into focus.
-	 * 
+	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
 	 * @note Appears to be Mac OS exclusive.
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
@@ -1363,15 +1363,15 @@ enum VST_EFFECT_OPCODE {
 	/** Window Unfocus Event?
 	 *
 	 * Sometimes called when the editor window goes out of focus.
-	 *	  
+	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
 	 * @note Appears to be Mac OS exclusive.
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
 	 */
 	VST_EFFECT_OPCODE_15 = 0x15,
 
-	/** 
-	 * 
+	/**
+	 *
 	 * @note Present in some VST 2.1 or earlier plugins.
 	 * @important Almost all plug-ins return the @ref VST_FOURCC 'NvEf' (0x4E764566) here.
 	 * @deprecated (VST 2.4+) Likely deprecated in VST 2.4 and later.
@@ -1384,7 +1384,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Save current program or bank state to a buffer.
 	 * Behavior is different based on the @ref VST_EFFECT_FLAG_CHUNKS flag.
-	 * 
+	 *
 	 * @sa VST_EFFECT_FLAG_CHUNKS
 	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
 	 * @param p_ptr		`void**` Pointer to a potential pointer containing your own chunk data.
@@ -1398,7 +1398,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Restore current program or bank state from a buffer.
 	 * Behavior is different based on the @ref VST_EFFECT_FLAG_CHUNKS flag.
-	 * 
+	 *
 	 * @sa VST_EFFECT_FLAG_CHUNKS
 	 * @param p_int1	0 means Bank, 1 means Program, nothing else used?
 	 * @param p_int2	Size of the Chunk Data in bytes.
@@ -1581,7 +1581,7 @@ enum VST_EFFECT_OPCODE {
 	/** Enable/Disable bypassing the effect.
 	 *
 	 * See @ref VST_EFFECT_OPCODE_SUPPORTS with @ref vst_effect_supports_t.bypass for more information.
-	 * 
+	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_int2 Zero if bypassing the effect is disabled, otherwise 1.
 	 */
@@ -1593,7 +1593,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @bug Various hosts only provide a buffer that is 32 bytes long.
-	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_EFFECT_NAME. 
+	 * @param p_ptr A zero terminated char buffer of size @ref VST_BUFFER_SIZE_EFFECT_NAME.
 	 * @return Always 0, even on failure.
 	 */
 	VST_EFFECT_OPCODE_2D          = 0x2D,
@@ -1650,10 +1650,10 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_VENDOR_VERSION   = 0x31,
 
 	/** User-defined Op-Code for VST extensions.
-	 * 
+	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * All parameters are undefined by the standard and left up to the host/plug-in. Use @ref VST_EFFECT_OPCODE_SUPPORTS
-	 * and @ref VST_EFFECT_OPCODE_VENDOR_NAME + @ref VST_EFFECT_OPCODE_VENDOR_VERSION to check if the plug-in is 
+	 * and @ref VST_EFFECT_OPCODE_VENDOR_NAME + @ref VST_EFFECT_OPCODE_VENDOR_VERSION to check if the plug-in is
 	 * compatible with your expected format.
 	 */
 	VST_EFFECT_OPCODE_32     = 0x32,
@@ -1661,10 +1661,10 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_CUSTOM = 0x32,
 
 	/** Test for support of a specific named feature.
-	 * 
+	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_ptr A zero terminated char buffer of undefined size containing the feature name.
-	 * @return @ref VST_STATUS_YES if the feature is supported, @ref VST_STATUS_NO if the feature is not supported, 
+	 * @return @ref VST_STATUS_YES if the feature is supported, @ref VST_STATUS_NO if the feature is not supported,
 	 *         @ref VST_STATUS_UNKNOWN in all other cases.
 	 */
 	VST_EFFECT_OPCODE_33       = 0x33,
@@ -1672,7 +1672,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_SUPPORTS = 0x33,
 
 	/** Number of samples that are at the tail at the end of playback.
-	 * 
+	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @return @ref VST_STATUS_UNKNOWN for automatic tail size, @ref VST_STATUS_TRUE for no tail, any other number above
 	 *         1 for the number of samples the tail has.
@@ -1686,7 +1686,7 @@ enum VST_EFFECT_OPCODE {
 	/** Notify effect that it is idle?
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
-	 * @deprecated (VST 2.4+) As of VST 2.4 the default behavior is @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and 
+	 * @deprecated (VST 2.4+) As of VST 2.4 the default behavior is @ref VST_EFFECT_OPCODE_PROCESS_BEGIN and
 	 *             @ref VST_EFFECT_OPCODE_PROCESS_END which allows cleaner control flows.
 	 * @sa vst_host_supports.startStopProcess
 	 */
@@ -1768,7 +1768,7 @@ enum VST_EFFECT_OPCODE {
 	/** @sa VST_EFFECT_OPCODE_3C */
 	VST_EFFECT_OPCODE_EDITOR_VKEY_UP = 0x3C,
 
-	/** 
+	/**
 	 *
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int2 A value between 0 and 2.
@@ -1847,9 +1847,9 @@ enum VST_EFFECT_OPCODE {
 
 	/** Get the next effect contained in this effect.
 	 * This returns the next effect based on an effect internal counter, the host does not provide any index.
-	 * 
+	 *
 	 * Used in combination with @ref VST_EFFECT_CATEGORY_CONTAINER.
-	 * 
+	 *
 	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @param p_ptr Pointer to a char buffer of size @ref VST_BUFFER_SIZE_EFFECT_NAME to store the name of the next effect.
 	 * @return Next effects unique_id
@@ -1884,7 +1884,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_49 = 0x49,
 
 	/**
-	 * 
+	 *
 	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @sa VST_EFFECT_CATEGORY_SPATIAL
 	 * @param p_int2 Unknown meaning.
@@ -1897,7 +1897,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @param p_ptr Unknown structured data.
-	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data, 
+	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data,
 	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
 	 */
 	VST_EFFECT_OPCODE_4B = 0x4B,
@@ -1909,7 +1909,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.3+) Available from VST 2.3 onwards.
 	 * @param p_ptr Unknown structured data.
-	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data, 
+	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data,
 	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
 	 */
 	VST_EFFECT_OPCODE_4C = 0x4C,
@@ -1922,7 +1922,7 @@ enum VST_EFFECT_OPCODE {
 
 	/**
 	 *
-	 * 
+	 *
 	 * @note (VST 2.4+) Available from VST 2.4 onwards.
 	 */
 	VST_EFFECT_OPCODE_4D = 0x4D,
@@ -1949,10 +1949,10 @@ enum VST_EFFECT_OPCODE {
 };
 
 /** Host to Plug-in support checks
- * 
+ *
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
- * 
- * Harvested via strings command and just checking what plug-ins actually responded to. 
+ *
+ * Harvested via strings command and just checking what plug-ins actually responded to.
  */
 struct vst_effect_supports_t {
 	/** Effect supports alternative bypass.
@@ -1972,7 +1972,7 @@ struct vst_effect_supports_t {
 	const char* midiProgramNames; // VST 2.1 or later.
 	const char* receiveVstTimeInfo;
 	const char* offline;
-	// The following were only found in VST 2.3 plug-ins	
+	// The following were only found in VST 2.3 plug-ins
 	const char* plugAsChannelInsert;
 	const char* conformsToWindowRules; // Mac OS only, invalid in VST 2.4. Seems related to vst_host_supports.sizeWindow
 	const char* plugAsSend;
@@ -2019,9 +2019,9 @@ struct vst_effect_supports_t {
 };
 
 /** Control the VST through an opcode and up to four parameters.
- * 
+ *
  * @sa VST_EFFECT_OPCODE
- * 
+ *
  * @param self Pointer to the effect itself.
  * @param opcode The opcode to run, see @ref VST_EFFECT_OPCODE.
  * @param p_int1 Parameter, see @ref VST_EFFECT_OPCODE.
@@ -2034,7 +2034,7 @@ typedef intptr_t (VST_FUNCTION_INTERFACE* vst_effect_control_t)(struct vst_effec
 /** Process the given number of samples in inputs and outputs.
  *
  * Used to handle input data and provides output data. We seem to be the ones that provide the output buffer?
- * 
+ *
  * @param self Pointer to the effect itself.
  * @param inputs Pointer to an array of 'const float[samples]' with size @ref vst_effect_t.num_inputs.
  * @param outputs Pointer to an array of 'float[samples]' with size @ref vst_effect_t.num_outputs.
@@ -2043,15 +2043,15 @@ typedef intptr_t (VST_FUNCTION_INTERFACE* vst_effect_control_t)(struct vst_effec
 typedef void (VST_FUNCTION_INTERFACE* vst_effect_process_t) (struct vst_effect_t* self, const float* const* inputs, float** outputs, int32_t samples);
 
 /** Updates the value for the parameter at the given index, or does nothing if out of bounds.
- * 
+ *
  * @param self Pointer to the effect itself.
  * @param index Parameter index.
  * @param value New value for the parameter.
  */
-typedef void(VST_FUNCTION_INTERFACE* vst_effect_set_parameter_t)(struct vst_effect_t* self, uint32_t index, float value); 
+typedef void(VST_FUNCTION_INTERFACE* vst_effect_set_parameter_t)(struct vst_effect_t* self, uint32_t index, float value);
 
 /** Retrieve the current value of the parameter at the given index, or do nothing if out of bounds.
- * 
+ *
  * @param self Pointer to the effect itself.
  * @param index Parameter index.
  * @return Current value of the parameter.
@@ -2061,9 +2061,9 @@ typedef float(VST_FUNCTION_INTERFACE* vst_effect_get_parameter_t)(struct vst_eff
 /** Process the given number of single samples in inputs and outputs.
  *
  * Process input and overwrite the output in place. Host provides output buffers.
- * 
+ *
  * @important Not thread-safe on MacOS for some reason or another.
- * 
+ *
  * @param self Pointer to the effect itself.
  * @param inputs Pointer to an array of 'const float[samples]' with size numInputs.
  * @param outputs Pointer to an array of 'float[samples]' with size numOutputs.
@@ -2076,7 +2076,7 @@ typedef void(VST_FUNCTION_INTERFACE* vst_effect_process_float_t)(struct vst_effe
  * Process input and overwrite the output in place. Host provides output buffers.
  *
  * @note (VST 2.4+) Available from VST 2.4 and later.
- * 
+ *
  * @param self Pointer to the effect itself.
  * @param inputs Pointer to an array of 'const double[samples]' with size numInputs.
  * @param outputs Pointer to an array of 'double[samples]' with size numOutputs.
@@ -2088,9 +2088,9 @@ typedef void (VST_FUNCTION_INTERFACE* vst_effect_process_double_t)(struct vst_ef
  */
 struct vst_effect_t {
 	/** VST Magic Number
-	 * 
+	 *
 	 * Should always be VST_FOURCC('VstP')
-	 * 
+	 *
 	 * @sa VST_MAGICNUMBER
 	 */
 	int32_t magic_number;
@@ -2119,7 +2119,7 @@ struct vst_effect_t {
 	vst_effect_get_parameter_t get_parameter;
 
 	/** Number of available pre-defined programs.
-	 * 
+	 *
 	 * @sa VST_EFFECT_OPCODE_PROGRAM_LOAD
 	 * @sa VST_EFFECT_OPCODE_PROGRAM_SET_BEGIN
 	 * @sa VST_EFFECT_OPCODE_PROGRAM_SET
@@ -2135,14 +2135,14 @@ struct vst_effect_t {
 
 	/** Number of available parameters.
 	 * All programs must have at least this many parameters.
-	 * 
+	 *
 	 * @sa VST_HOST_OPCODE_IO_MODIFIED
 	 */
 	int32_t num_params;
 
 	/** Number of available input streams.
-	 * 
-	 * 
+	 *
+	 *
 	 * @sa VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
 	 * @sa VST_EFFECT_OPCODE_INPUT_GET_PROPERTIES
 	 * @sa VST_HOST_OPCODE_IO_MODIFIED
@@ -2150,7 +2150,7 @@ struct vst_effect_t {
 	int32_t num_inputs;
 
 	/** Number of available output streams.
-	 * 
+	 *
 	 * @sa VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
 	 * @sa VST_EFFECT_OPCODE_OUTPUT_GET_PROPERTIES
 	 * @sa VST_HOST_OPCODE_IO_MODIFIED
@@ -2168,9 +2168,9 @@ struct vst_effect_t {
 
 	/** Initial delay before processing of samples can actually begin in Samples.
 	 *
-	 * @note The host can modify this at runtime so it is not safe. 
+	 * @note The host can modify this at runtime so it is not safe.
 	 * @note Should be reinitialized when the effect is resumed.
-	 * 
+	 *
 	 * @sa VST_HOST_OPCODE_IO_MODIFIED
 	 */
 	int32_t delay;
@@ -2181,7 +2181,7 @@ struct vst_effect_t {
 	/** Ratio of Input to Output production
 	 * Defines how much output data is produced relative to input data when using 'process' instead of 'processFloat'.
 	 * Example: A ratio of 2.0 means we produce twice as much output as we receive input.
-	 * 
+	 *
 	 * Range: >0.0 to Infinity
 	 * Default: 1.0
 	 * @note Ignored in VST 2.4 or with VST_EFFECT_FLAG_SUPPORTS_FLOAT.
@@ -2189,14 +2189,14 @@ struct vst_effect_t {
 	float input_output_ratio;
 
 	/** Effect Internal Pointer
-	 * 
+	 *
 	 * You can freely set this to point at some sort of class or similar for use in your own effect. The host must
 	 * never modify this or the data available through this.
 	 */
 	void* effect_internal;
 
 	/** Host Internal Pointer
-	 * 
+	 *
 	 * The host may set this to point at data related to your effect instance that the host needs. The effect must
 	 * never modify this or the data available through this.
 	 */
@@ -2208,7 +2208,7 @@ struct vst_effect_t {
 	 * Ideally you want to index like this:
 	 *     [unique_id][module_name][version][flags]
 	 * If any of the checks after unique_id fail, you default to the first possible choice.
-	 * 
+	 *
 	 * Used in combination with @ref VST_EFFECT_CATEGORY_CONTAINER.
 	 *
 	 * BUG: Some broken hosts rely on this alone to save information about VST plug-ins.
@@ -2216,7 +2216,7 @@ struct vst_effect_t {
 	int32_t unique_id;
 
 	/** Plugin version
-	 * 
+	 *
 	 * Unrelated to the minimum VST Version, but often the same.
 	 */
 	int32_t version;
@@ -2257,7 +2257,7 @@ struct vst_effect_t {
 /** [DEPRECATED] VST 1.x Entry Point for Windows
  *
  * Do not implement in VST 2.1 or later plug-ins!
- * 
+ *
  * @return A new instance of the VST 1.x effect.
  */
 #define VST_ENTRYPOINT_WINDOWS \
@@ -2266,16 +2266,16 @@ struct vst_effect_t {
 /** [DEPRECATED] VST 1.x Entry Point for MacOS
  *
  * Do not implement in VST 2.1 or later plug-ins!
- * 
+ *
  * @return A new instance of the VST 1.x effect.
  */
 #define VST_ENTRYPOINT_MACOS \
 	vst_effect_t* main_macho(vst_host_callback_t callback) { return VSTPluginMain(callback); }
 
 /** [DEPRECATED] VST 2.3 Entry Point for PowerPC
- * 
- * Present in some VST 2.3 and earlier compatible plug-ins that support MacOS. 
- *  
+ *
+ * Present in some VST 2.3 and earlier compatible plug-ins that support MacOS.
+ *
  * @return A new instance of the VST 2.x effect.
  */
 #define VST_ENTRYPOINT_MACOS_POWERPC \
