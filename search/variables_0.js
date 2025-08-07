@@ -10,10 +10,14 @@ var searchData=
   ['_5f4in8out_7',['_4in8out',['../structvst__effect__supports__t.html#a41fe9d0d3694dcf3823e909266f1f655',1,'vst_effect_supports_t']]],
   ['_5f8in4out_8',['_8in4out',['../structvst__effect__supports__t.html#a48935ec960f31f61d7d65fad5da3e654',1,'vst_effect_supports_t']]],
   ['_5f8in8out_9',['_8in8out',['../structvst__effect__supports__t.html#ac8b18569b1bbf88299848558a44beafe',1,'vst_effect_supports_t']]],
-  ['_5freserved_10',['_reserved',['../structvst__parameter__properties__t.html#a0979487731dfdc09f40df4a65c403a97',1,'vst_parameter_properties_t::_reserved'],['../structvst__stream__properties__t.html#ac110bfbb4b679136b9bd71a9931711fd',1,'vst_stream_properties_t::_reserved'],['../structvst__speaker__properties__t.html#af92d5e12067e8d6970853dda58ed935c',1,'vst_speaker_properties_t::_reserved']]],
+  ['_5freserved_10',['_reserved',['../structvst__parameter__properties__t.html#a0979487731dfdc09f40df4a65c403a97',1,'vst_parameter_properties_t::_reserved'],['../structvst__speaker__properties__t.html#af92d5e12067e8d6970853dda58ed935c',1,'vst_speaker_properties_t::_reserved'],['../structvst__stream__properties__t.html#ac110bfbb4b679136b9bd71a9931711fd',1,'vst_stream_properties_t::_reserved']]],
   ['_5funknown_11',['_unknown',['../structvst__effect__t.html#aa7b1aaa0a269f355ae70dd7e98d2e88d',1,'vst_effect_t']]],
-  ['_5funknown_5f00_12',['_unknown_00',['../structvst__parameter__properties__t.html#ad5cfe12a6ec0e20578728cd92d64a473',1,'vst_parameter_properties_t::_unknown_00'],['../structvst__speaker__properties__t.html#a16757ae22c28e865e8e297daa18059c4',1,'vst_speaker_properties_t::_unknown_00'],['../structvst__effect__t.html#aea6508b20455977331f51749b9b5b15d',1,'vst_effect_t::_unknown_00']]],
-  ['_5funknown_5f01_13',['_unknown_01',['../structvst__effect__t.html#aa9b31c04fdd3054e9e666317adf7853c',1,'vst_effect_t']]],
-  ['_5funknown_5f02_14',['_unknown_02',['../structvst__effect__t.html#a4a526814ed2457ff046fd4519eaef949',1,'vst_effect_t']]],
-  ['_5funknown_5f03_15',['_unknown_03',['../structvst__effect__t.html#aaf83120c5797313a214c7a158ff61a12',1,'vst_effect_t']]]
+  ['_5funknown_5f00_12',['_unknown_00',['../structvst__parameter__properties__t.html#ad5cfe12a6ec0e20578728cd92d64a473',1,'vst_parameter_properties_t::_unknown_00'],['../structvst__effect__t.html#aea6508b20455977331f51749b9b5b15d',1,'vst_effect_t::_unknown_00'],['../structvst__events__t.html#a7fa1362edfa20687d3d57341ebc2c37c',1,'vst_events_t::_unknown_00'],['../structvst__event__t.html#a4753bb926f568ff4f889c20ef1cc553e',1,'vst_event_t::_unknown_00'],['../structvst__speaker__properties__t.html#a16757ae22c28e865e8e297daa18059c4',1,'vst_speaker_properties_t::_unknown_00']]],
+  ['_5funknown_5f01_13',['_unknown_01',['../structvst__event__t.html#a4e77649352f045b129a618d9db60f90f',1,'vst_event_t::_unknown_01'],['../structvst__effect__t.html#aa9b31c04fdd3054e9e666317adf7853c',1,'vst_effect_t::_unknown_01']]],
+  ['_5funknown_5f02_14',['_unknown_02',['../structvst__event__t.html#a23e9ce255ab0811ebc3ef176ec415938',1,'vst_event_t::_unknown_02'],['../structvst__effect__t.html#a4a526814ed2457ff046fd4519eaef949',1,'vst_effect_t::_unknown_02']]],
+  ['_5funknown_5f03_15',['_unknown_03',['../structvst__event__t.html#a433f902b176ad373beb39c5b3a21f0c4',1,'vst_event_t::_unknown_03'],['../structvst__effect__t.html#aaf83120c5797313a214c7a158ff61a12',1,'vst_effect_t::_unknown_03']]],
+  ['_5funknown_5f04_16',['_unknown_04',['../structvst__event__t.html#a93ff94774159325f4863bec04d1397b0',1,'vst_event_t']]],
+  ['_5funknown_5f05_17',['_unknown_05',['../structvst__event__t.html#aaa23f6966737a732ec0f17d7e7fc1e0e',1,'vst_event_t']]],
+  ['_5funknown_5f06_18',['_unknown_06',['../structvst__event__t.html#a6d9417303acb87344c44c235e0412155',1,'vst_event_t']]],
+  ['_5funknown_5f07_19',['_unknown_07',['../structvst__event__t.html#a11d733d43b2f9eecfff5d6c3c0fef309',1,'vst_event_t']]]
 ];

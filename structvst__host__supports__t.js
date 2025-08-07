@@ -2,6 +2,7 @@ var structvst__host__supports__t =
 [
     [ "acceptIOChanges", "structvst__host__supports__t.html#a0e29115f972dc33f1e0f94e5dd29d135", null ],
     [ "closeFileSelector", "structvst__host__supports__t.html#adc0596abc5b3c78c66b595a966cdf652", null ],
+    [ "editFile", "structvst__host__supports__t.html#a40698dc52504db3ac80b9d8d0423b2db", null ],
     [ "offline", "structvst__host__supports__t.html#a46ed15dad8c717fbc424538c60f5c2d2", null ],
     [ "openFileSelector", "structvst__host__supports__t.html#a18302ba2b6035a074d65fe91126ec7c7", null ],
     [ "receiveVstEvents", "structvst__host__supports__t.html#aa373ce1fbc010668609eceb8b5b8d380", null ],
