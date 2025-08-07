@@ -786,7 +786,7 @@ enum VST_HOST_OPCODE {
 	/** Refresh everything related to the effect that called this.
 	 * This includes things like parameters, programs, banks, windows, files, meters, streams, sample rate, block size,
 	 * and a lot more. Anything that has to do with the effect should be refreshed when the effect calls this.
-	 * 
+	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_HOST_OPCODE_2A = 0x2A,
@@ -826,8 +826,32 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_PARAM_UNLOCK = 0x2C,
 
 	VST_HOST_OPCODE_2D = 0x2D,
+
+	//--------------------------------------------------------------------------------
+	// VST 2.2
+	//--------------------------------------------------------------------------------
+
 	VST_HOST_OPCODE_2E = 0x2E,
+
 	VST_HOST_OPCODE_2F = 0x2F,
+
+	/**
+	 * When queried by the plug-in shortly after @ref VST_EFFECT_OPCODE_PROGRAM_LOAD it often crashes compatible hosts
+	 * with a memory access exception. This exception can be controlled with p_ptr but it's unclear what that is
+	 * pointing at so far. In the event that it doesn't crash the memory address we pointed at changes to a path.
+	 *
+	 * @todo Figure out what p_ptr is.
+	 * @note (VST 2.2+) Available from VST 2.2 onwards.
+	 * @deprecated (VST 2.4+) Deprecated from VST 2.4 onwards.
+	 * @param p_ptr A pointer to something
+	 */
+	VST_HOST_OPCODE_30 = 0x30,
+
+	//--------------------------------------------------------------------------------
+	// VST 2.3
+	//--------------------------------------------------------------------------------
+
+	VST_HOST_OPCODE_31 = 0x31,
 
 	// Highest number of known OPCODE.
 	VST_HOST_OPCODE_MAX,
