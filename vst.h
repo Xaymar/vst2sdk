@@ -841,7 +841,20 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_0E = 0x0E,
 
+	/** Request that the host changes the size of the containing window.
+	 *
+	 * @note (VST 2.x) Available from VST 2.0 onwards.
+	 * @sa vst_host_supports_t.sizeWindow
+	 *
+	 * @param p_int1 Width (in pixels) that we'd like to have.
+	 * @param p_int2 Height (in pixels) that we'd like to have.
+	 * @param p_ptr Must be zero'd.
+	 * @param p_float Must be zero'd.
+	 * @return @ref VST_STATUS_TRUE if change was accepted, anything else if not. Do not rely on the return code being 0.
+	 */
 	VST_HOST_OPCODE_0F = 0x0F,
+	/** @sa VST_HOST_OPCODE_0F */
+	VST_HOST_OPCODE_EDITOR_RESIZE = 0x0F,
 
 	VST_HOST_OPCODE_10 = 0x10,
 
@@ -1005,12 +1018,13 @@ struct vst_host_supports_t {
 	 */
 	const char* shellCategory;
 
-	/** Host can send events to plug-in.
+	/** Can we request that the host changes the editor window size?
 	 *
-	 * @sa vst_effect_supports_t.receiveVstEvents
-	 * @sa VST_EFFECT_OPCODE_EVENT
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @sa VST_HOST_OPCODE_EDITOR_RESIZE
 	 */
+	const char* sizeWindow;
+
 	const char* sendVstEvents;
 
 	/** Host can receive events from plug-in.
@@ -1053,7 +1067,7 @@ struct vst_host_supports_t {
 
 	const char* sendVstTimeInfo;
 	const char* reportConnectionChanges; // Seems related to speakers?
-	const char* sizeWindow;
+
 	const char* offline;
 
 	const char* openFileSelector;
@@ -1062,6 +1076,7 @@ struct vst_host_supports_t {
 	.acceptIOChanges = "acceptIOChanges",
 	.startStopProcess = "startStopProcess",
 	.shellCategory = "shellCategory",
+	.sizeWindow = "sizeWindow",
 	.sendVstEvents = "sendVstEvents",
 	.receiveVstEvents = "receiveVstEvents",
 	.sendVstMidiEvent = "sendVstMidiEvent",
@@ -1069,7 +1084,6 @@ struct vst_host_supports_t {
 	.sendVstMidiEventFlagIsRealtime = "sendVstMidiEventFlagIsRealtime",
 	.sendVstTimeInfo = "sendVstTimeInfo",
 	.reportConnectionChanges = "reportConnectionChanges",
-	.sizeWindow = "sizeWindow",
 	.offline = "offline",
 	.openFileSelector = "openFileSelector",
 	.closeFileSelector = "closeFileSelector",
