@@ -817,6 +817,7 @@ struct vst_host_supports_t {
 
 	const char* offline;
 
+	const char* editFile;
 	const char* openFileSelector;
 	const char* closeFileSelector;
 } /** @private */ vst_host_supports = {
@@ -832,6 +833,7 @@ struct vst_host_supports_t {
 	.sendVstTimeInfo = "sendVstTimeInfo",
 	.reportConnectionChanges = "reportConnectionChanges",
 	.offline = "offline",
+	.editFile = "editFile",
 	.openFileSelector = "openFileSelector",
 	.closeFileSelector = "closeFileSelector",
 };
