@@ -51,8 +51,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"vst_8h.html#a361be2f7556eb4aa006ff1fa2fa48d2ca7cc7e2ddef53cfdbf2a939590d61fa9c",
-"vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af2f0136c707513df432291411c87fcf6"
+"vst_8h.html#a361be2f7556eb4aa006ff1fa2fa48d2ca6b30aa7f6809a663b420038df23ecb92",
+"vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af28c319c3cf4ba14c65e0395ae956bb1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
