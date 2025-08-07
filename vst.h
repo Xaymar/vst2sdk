@@ -947,25 +947,35 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_2A */
 	VST_HOST_OPCODE_EDITOR_UPDATE = 0x2A,
 
+	//--------------------------------------------------------------------------------
+	// VST 2.1
+	//--------------------------------------------------------------------------------
+
 	/** Notify host that a parameter is being edited.
+	 * "Locks" the parameter from being edited in compatible hosts.
 	 *
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int1 Parameter index.
 	 */
 	VST_HOST_OPCODE_2B = 0x2B,
 	/** @sa VST_HOST_OPCODE_2B */
 	VST_HOST_OPCODE_PARAM_START_EDIT = 0x2B,
+	/** @sa VST_HOST_OPCODE_2B */
+	VST_HOST_OPCODE_PARAM_LOCK = 0x2B,
 
 	/** Notify host that parameter is no longer being edited.
-	 * "Unlocks" the parameter for further editing in compatible hosts. Remember to call the @ref VST_HOST_OPCODE_PARAM_UPDATE
+	 * "Unlocks" the parameter for further editing in compatible hosts. Remember to call the @ref VST_HOST_PARAM_UPDATE
 	 * op-code afterwards so that the host knows it needs to update its automation data.
 	 *
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
-	 * @sa VST_HOST_OPCODE_PARAM_UPDATE
+	 * @sa VST_HOST_PARAM_UPDATE
 	 * @param p_int1 Parameter index.
 	 */
 	VST_HOST_OPCODE_2C = 0x2C,
 	/** @sa VST_HOST_OPCODE_2C */
 	VST_HOST_OPCODE_PARAM_STOP_EDIT = 0x2C,
+	/** @sa VST_HOST_OPCODE_2C */
+	VST_HOST_OPCODE_PARAM_UNLOCK = 0x2C,
 
 	VST_HOST_OPCODE_2D = 0x2D,
 	VST_HOST_OPCODE_2E = 0x2E,
