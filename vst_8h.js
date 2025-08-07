@@ -304,7 +304,6 @@ var vst_8h =
       [ "VST_HOST_OPCODE_29", "vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca738ae2e2aa8fe5a3727e5bcfe5557d6a", null ],
       [ "VST_HOST_OPCODE_2A", "vst_8h.html#a223eb6814e8e03b7f89687280db8b8ecab727e8f8bd83b8ead48c9c7d32b5cccd", null ],
       [ "VST_HOST_OPCODE_EDITOR_UPDATE", "vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca0ffcacbc5374ae2f07f839adefb7c88e", null ],
-      [ "VST_HOST_OPCODE_REFRESH", "vst_8h.html#a223eb6814e8e03b7f89687280db8b8ecafaec5b29280246f1001a933192facfde", null ],
       [ "VST_HOST_OPCODE_2B", "vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca554b9a2e4b2527f2f2809efd88bf1545", null ],
       [ "VST_HOST_OPCODE_PARAM_START_EDIT", "vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca149b360bad03dbfbf517ca2e5a92a867", null ],
       [ "VST_HOST_OPCODE_2C", "vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca9e86c9deba6977be5229b2982d0c8aa6", null ],

@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af28c319c3cf4ba14c65e0395ae956bb1":[3,0,0,29,126],
 "vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af2f0136c707513df432291411c87fcf6":[3,0,0,29,145],
 "vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af35fff2e9d68b3ac04d8cc84d44019de":[3,0,0,29,139],
 "vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af40fd3a5261cde86ff2ccccd6e302b70":[3,0,0,29,49],
