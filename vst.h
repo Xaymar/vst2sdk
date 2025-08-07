@@ -699,9 +699,27 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_0F */
 	VST_HOST_OPCODE_EDITOR_RESIZE = 0x0F,
 
+	/** Get the current sample rate the effect should be running at.
+	 *
+	 * @note (VST 2.x) Available from VST 2.0 onwards.
+	 * @sa VST_EFFECT_OPCODE_SET_SAMPLE_RATE
+	 *
+	 * @return The current sample rate in Hertz.
+	 */
 	VST_HOST_OPCODE_10 = 0x10,
+	/** @sa VST_HOST_OPCODE_10 */
+	VST_HOST_OPCODE_GET_SAMPLE_RATE = 0x10,
 
+	/** Get the current block size for the effect.
+	 *
+	 * @note (VST 2.x) Available from VST 2.0 onwards.
+	 * @sa VST_EFFECT_OPCODE_SET_BLOCK_SIZE
+	 *
+	 * @return The current block size in samples.
+	 */
 	VST_HOST_OPCODE_11 = 0x11,
+	/** @sa VST_HOST_OPCODE_11 */
+	VST_HOST_OPCODE_GET_BLOCK_SIZE = 0x11,
 
 	VST_HOST_OPCODE_12 = 0x12,
 
