@@ -26,7 +26,6 @@ var NAVTREE =
 [
   [ "VST2SDK", "index.html", [
     [ "Deprecated List", "deprecated.html", null ],
-    [ "Todo List", "todo.html", null ],
     [ "Bug List", "bug.html", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -52,8 +51,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"vst_8h.html#a33f0d71a677d6226e9b5f00c706803b3a41ec0cd179a700a7781114acd7db83e0",
-"vst_8h.html#abfb1cdba3c236829cb63d4196f33d696ac1ef7107ea949706999ca80bd7aba9d1"
+"vst_8h.html#a361be2f7556eb4aa006ff1fa2fa48d2ca7cc7e2ddef53cfdbf2a939590d61fa9c",
+"vst_8h.html#abfb1cdba3c236829cb63d4196f33d696af2f0136c707513df432291411c87fcf6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

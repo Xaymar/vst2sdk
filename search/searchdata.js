@@ -8,7 +8,7 @@ var indexSectionsWithContent =
   5: "v",
   6: "_v",
   7: "v",
-  8: "bdlt"
+  8: "bdl"
 };
 
 var indexSectionNames =
