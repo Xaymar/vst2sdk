@@ -783,12 +783,17 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_29 = 0x29,
 
-	/** Request an update of the editor window.
+	/** Refresh everything related to the effect that called this.
+	 * This includes things like parameters, programs, banks, windows, files, meters, streams, sample rate, block size,
+	 * and a lot more. Anything that has to do with the effect should be refreshed when the effect calls this.
 	 * 
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 */
 	VST_HOST_OPCODE_2A = 0x2A,
 	/** @sa VST_HOST_OPCODE_2A */
 	VST_HOST_OPCODE_EDITOR_UPDATE = 0x2A,
+	/** @sa VST_HOST_OPCODE_2A */
+	VST_HOST_OPCODE_REFRESH = 0x2A,
 
 	//--------------------------------------------------------------------------------
 	// VST 2.1
