@@ -773,7 +773,13 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_25 */
 	VST_HOST_OPCODE_SUPPORTS = 0x25,
 
+	/** What language is the host in?
+	 *
+	 * @return 1 if english, 2 if german. more possible?
+	 */
 	VST_HOST_OPCODE_26 = 0x26,
+	/** @sa VST_HOST_OPCODE_26 */
+	VST_HOST_OPCODE_LANGUAGE = 0x26,
 
 	/** Crash the host if p_ptr isn't nullptr. */
 	VST_HOST_OPCODE_27 = 0x27,
