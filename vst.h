@@ -962,8 +962,8 @@ struct vst_events_t {
 	 */
 	int32_t count;
 
-	/** @todo Seems to always be zero or left uninitialized. */
-	int32_t _unknown_00;
+	/** @private Reserved, must be zero. */
+	int32_t _reserved_00;
 
 	/** An array of pointers to valid @ref vst_event_t structures.
 	 *
