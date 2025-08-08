@@ -597,8 +597,6 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_0C = 0x0C,
 
-	VST_HOST_OPCODE_0D = 0x0D,
-
 	/** Notify the host that numInputs/numOutputs/delay/numParams has changed.
 	 * Only supported if the host replies @ref VST_STATUS_TRUE to @ref VST_HOST_OPCODE_SUPPORTS query for
 	 * @ref vst_host_supports_t.acceptIOChanges.
@@ -609,9 +607,11 @@ enum VST_HOST_OPCODE {
 	 *
 	 * @return @ref VST_STATUS_TRUE if supported and handled otherwise @ref VST_STATUS_FALSE.
 	 */
+	VST_HOST_OPCODE_0D = 0x0D,
+	/** @sa VST_HOST_OPCODE_0D */
+	VST_HOST_OPCODE_IO_MODIFIED = 0x0D,
+
 	VST_HOST_OPCODE_0E = 0x0E,
-	/** @sa VST_HOST_OPCODE_0E */
-	VST_HOST_OPCODE_IO_MODIFIED = 0x0E,
 
 	VST_HOST_OPCODE_0F = 0x0F,
 
@@ -691,8 +691,10 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_26 = 0x26,
 
+	/** Crash the host if p_ptr isn't nullptr. */
 	VST_HOST_OPCODE_27 = 0x27,
 
+	/** Crash the host if p_ptr isn't nullptr. */
 	VST_HOST_OPCODE_28 = 0x28,
 
 	VST_HOST_OPCODE_29 = 0x29,
