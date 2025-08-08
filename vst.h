@@ -19,9 +19,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Please refer to README.md and LICENSE for further information.
+/* Please refer to README.md and LICENSE for further information. */
 
-// Protect against double inclusion in practically every compiler available.
+/* Protect against double inclusion in practically every compiler available. */
 #pragma once
 #ifndef VST2SDK_VST_H
 /** @private */
@@ -101,7 +101,7 @@ enum VST_STATUS {
 	/** @sa VST_STATUS_m1 */
 	VST_STATUS_NO = -1,
 
-	_VST_STATUS_PAD = 0xFFFFFFFFul,
+	_VST_STATUS_PAD = (-1l)
 };
 
 /** Known Buffer Sizes
@@ -118,8 +118,8 @@ enum VST_BUFFER_SIZE {
 	VST_BUFFER_SIZE_PRODUCT_NAME = 64,
 	VST_BUFFER_SIZE_SPEAKER_NAME = 64,
 	VST_BUFFER_SIZE_STREAM_NAME = 64,
-	VST_BUFFER_SIZE_VENDOR_NAME = 64,
-}; // This is an enum because I started to dislike macros.
+	VST_BUFFER_SIZE_VENDOR_NAME = 64
+};
 
 /** Valid VST 1.x and 2.x versions
  * The format is either a single digit or four digits in Base10 format.
@@ -139,18 +139,33 @@ enum VST_BUFFER_SIZE {
  * @endcode
  */
 enum VST_VERSION {
-	VST_VERSION_1       = 0, // Anything before 2.0, used by official plug-ins.
-	VST_VERSION_1_0_0_0 = 1000, // 1.0, used by some third-party plug-ins.
-	VST_VERSION_1_1_0_0 = 1100, // 1.1, used by some third-party plug-ins.
-	VST_VERSION_2       = 2, // 2.0, used by official plug-ins.
-	VST_VERSION_2_0_0_0 = 2000, // 2.0, used by some third-party plug-ins.
-	VST_VERSION_2_1_0_0 = 2100, // 2.1
-	VST_VERSION_2_2_0_0 = 2200, // 2.2
-	VST_VERSION_2_3_0_0 = 2300, // 2.3
-	VST_VERSION_2_4_0_0 = 2400, // 2.4
+	/** Private SDK Version 1.0
+	 *
+	 * Many types likely won't quite match up with what we expect.
+	 */
+	VST_VERSION_1       = 0,
+	/** SDK Version 1.0. */
+	VST_VERSION_1_0_0_0 = 1000,
+	/** SDK Version 1.1. */
+	VST_VERSION_1_1_0_0 = 1100,
+	/** Private SDK Version 2.0
+	 *
+	 * Many types likely won't quite match up with what we expect.
+	 */
+	VST_VERSION_2       = 2,
+	/** SDK Version 2.0 */
+	VST_VERSION_2_0_0_0 = 2000,
+	/** SDK Version 2.1 */
+	VST_VERSION_2_1_0_0 = 2100,
+	/** SDK Version 2.2 */
+	VST_VERSION_2_2_0_0 = 2200,
+	/** SDK Version 2.3 */
+	VST_VERSION_2_3_0_0 = 2300,
+	/** SDK Version 2.4 */
+	VST_VERSION_2_4_0_0 = 2400,
 
-	// Pad to force 32-bit number.
-	_VST_VERSION_PAD = 0xFFFFFFFFul,
+	/* @private Pad to 32-bit. */
+	_VST_VERSION_PAD = (-1l)
 };
 
 /** Window/Editor Rectangle.
@@ -179,7 +194,7 @@ enum VST_VKEY {
 	VST_VKEY_03 = 3,
 
 	VST_VKEY_04 = 4,
-	VST_VKEY_RETURN = 4, // The big one left of the arrow keys.
+	VST_VKEY_RETURN = 4,
 
 	VST_VKEY_05 = 5,
 	VST_VKEY_PAUSE = 5,
@@ -324,13 +339,13 @@ enum VST_VKEY {
 	VST_VKEY_SCROLLLOCK = 53,
 
 	VST_VKEY_54 = 54,
-	VST_VKEY_SHIFT = 54, // Left or Right
+	VST_VKEY_SHIFT = 54,
 
 	VST_VKEY_55 = 55,
-	VST_VKEY_CONTROL = 55, // Left or Right
+	VST_VKEY_CONTROL = 55,
 
 	VST_VKEY_56 = 56,
-	VST_VKEY_ALT = 56, // Left or Right
+	VST_VKEY_ALT = 56,
 
 	VST_VKEY_57 = 57,
 	VST_VKEY_58 = 58,
@@ -344,7 +359,7 @@ enum VST_VKEY {
 	VST_VKEY_66 = 66,
 	VST_VKEY_67 = 67,
 	VST_VKEY_68 = 68,
-	VST_VKEY_69 = 69,
+	VST_VKEY_69 = 69
 };
 
 enum VST_VKEY_MODIFIER {
@@ -372,12 +387,12 @@ enum VST_VKEY_MODIFIER {
 	 */
 	VST_VKEY_MODIFIER_1ls3 = 1 << 3,
 	/** @sa VST_VKEY_MODIFIER_1ls3 */
-	VST_VKEY_MODIFIER_CONTROL = 1 << 3,
+	VST_VKEY_MODIFIER_CONTROL = 1 << 3
 };
 
-//------------------------------------------------------------------------------------------------------------------------
-// VST Parameters
-//------------------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* VST Parameters */
+/*------------------------------------------------------------------------------------------------------------------------*/
 
 /** Flags for parameters.
  * @sa vst_parameter_properties_t
@@ -439,7 +454,7 @@ enum VST_PARAMETER_FLAG {
 	/** @sa VST_PARAMETER_FLAG_1ls6 */
 	VST_PARAMETER_FLAG_RAMPING = 1 << 6,
 
-	_VST_PARAMETER_FLAG_PAD     = 0xFFFFFFFFul,
+	_VST_PARAMETER_FLAG_PAD     = (-1l)
 };
 
 /** Information about a parameter.
@@ -540,7 +555,8 @@ struct vst_parameter_properties_t {
 	 */
 	uint16_t num_parameters_in_category;
 
-	uint16_t _unknown_00; // Must be set to 0.
+	/** @private Must be zero anyway. */
+	uint16_t _unknown_00;
 
 	/** Human-readable name for the category this parameter is in.
 	 *
@@ -549,38 +565,38 @@ struct vst_parameter_properties_t {
 	 */
 	char category_label[VST_BUFFER_SIZE_CATEGORY_LABEL];
 
-	char _reserved[16]; // Reserved for future expansions?
+	/** @private Reserved for future expansion? */
+	char _reserved[16];
 };
 
-//------------------------------------------------------------------------------------------------------------------------
-// VST Input Microphones/Output Speakers
-//------------------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* VST Input Microphones/Output Speakers */
+/*------------------------------------------------------------------------------------------------------------------------*/
 
 /** Default speaker types.
  *
  * @todo Are there more?
  */
 enum VST_SPEAKER_TYPE {
-	// Default Types
+	/** Mono */
 	VST_SPEAKER_TYPE_MONO       = 0,
+	/** (Front) Left */
 	VST_SPEAKER_TYPE_LEFT       = 1,
+	/** (Front) Right */
 	VST_SPEAKER_TYPE_RIGHT      = 2,
+	/** (Front) Center */
 	VST_SPEAKER_TYPE_CENTER     = 3,
+	/** LFE / Subwoofer */
 	VST_SPEAKER_TYPE_LFE        = 4,
-	VST_SPEAKER_TYPE_LEFT_REAR  = 5, // Rear/Surround Left
-	VST_SPEAKER_TYPE_RIGHT_REAR = 6, // Rear/Surround Right
-	// 7
-	// 8
-	// 9
-	VST_SPEAKER_TYPE_LEFT_SIDE  = 10, // Side Left
-	VST_SPEAKER_TYPE_RIGHT_SIDE = 11, // Side Right
-	// 12
-	// 13
-	// 14
-	// 15
-	// ...
+	/** Rear/Surround Left */
+	VST_SPEAKER_TYPE_LEFT_REAR  = 5,
+	/** Rear/Surround Right */
+	VST_SPEAKER_TYPE_RIGHT_REAR = 6,
+	/** Side Left */
+	VST_SPEAKER_TYPE_LEFT_SIDE  = 10,
+	/** Side Right */
+	VST_SPEAKER_TYPE_RIGHT_SIDE = 11,
 
-	// User Types (seen rarely, but never exceeds -32)
 	VST_SPEAKER_TYPE_USER_32 = -32,
 	VST_SPEAKER_TYPE_USER_31,
 	VST_SPEAKER_TYPE_USER_30,
@@ -615,8 +631,8 @@ enum VST_SPEAKER_TYPE {
 	VST_SPEAKER_TYPE_USER_01,
 
 
-	// Pad to force 32-bit number.
-	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
+	/* @private Pad to 32-bit. */
+	_VST_SPEAKER_TYPE_PAD = (-1l)
 };
 
 /** Speaker properties.
@@ -643,7 +659,8 @@ struct vst_speaker_properties_t {
 	 */
 	float distance;
 
-	float _unknown_00; // Must be set to 0
+	/** @private Must be zero. */
+	float _unknown_00;
 
 	/** Human readable name for this speaker.
 	 *
@@ -661,7 +678,8 @@ struct vst_speaker_properties_t {
 	 */
 	int32_t type;
 
-	uint8_t _reserved[28]; // Reserved for future expansions?
+	/** @private Reserved for future expansion? */
+	uint8_t _reserved[28];
 };
 
 /** Known default speaker arrangements.
@@ -709,8 +727,8 @@ enum VST_SPEAKER_ARRANGEMENT_TYPE {
 	 */
 	VST_SPEAKER_ARRANGEMENT_TYPE_7_1 = 0x17,
 
-	// Pad to force 32-bit number.
-	_VST_SPEAKER_ARRANGEMENT_TYPE_PAD = 0xFFFFFFFFul,
+	/* @private Pad to 32-bit. */
+	_VST_SPEAKER_ARRANGEMENT_TYPE_PAD = (-1l)
 };
 
 /** Speaker arrangement definition.
@@ -725,7 +743,7 @@ struct vst_speaker_arrangement_t {
 	 *
 	 * Appears to be limited to @ref VST_MAX_CHANNELS.
 	 */
-	int32_t channels; // Number of channels in this arrangement.
+	int32_t channels;
 
 	/** Array of @ref vst_speaker_properties_t with size @ref channels.
 	 *
@@ -734,9 +752,9 @@ struct vst_speaker_arrangement_t {
 	struct vst_speaker_properties_t speakers[VST_MAX_CHANNELS];
 };
 
-//------------------------------------------------------------------------------------------------------------------------
-// VST Input/Output Streams
-//------------------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* VST Input/Output Streams */
+/*------------------------------------------------------------------------------------------------------------------------*/
 
 enum VST_STREAM_FLAG {
 	/** Ignored?
@@ -755,7 +773,7 @@ enum VST_STREAM_FLAG {
 	 * Can't be used with VST_STREAM_FLAG_STEREO.
 	 */
 	VST_STREAM_FLAG_1ls2 = 1 << 2,
-	VST_STREAM_FLAG_USE_TYPE = 1 << 2,
+	VST_STREAM_FLAG_USE_TYPE = 1 << 2
 };
 
 struct vst_stream_properties_t {
@@ -777,12 +795,13 @@ struct vst_stream_properties_t {
 	 */
 	char label[VST_BUFFER_SIZE_STREAM_LABEL];
 
-	uint8_t _reserved[48]; // 48 bytes of uninitialized data, always.
+	/** @private Reserved for future expansion? */
+	uint8_t _reserved[48];
 };
 
-//------------------------------------------------------------------------------------------------------------------------
-// VST Events
-//------------------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* VST Events */
+/*------------------------------------------------------------------------------------------------------------------------*/
 
 /** Available event types.
  *
@@ -912,8 +931,8 @@ union vst_event_midi_t {
 		 */
 		int8_t velocity;
 
-		/** @private */
-		char _pad[2]; // Padding
+		/** @private Padding */
+		char _pad_01[2];
 	} midi;
 };
 
@@ -979,11 +998,12 @@ struct vst_events_t {
 	struct vst_event_t** events;
 };
 
-//------------------------------------------------------------------------------------------------------------------------
-// VST Host related Things
-//------------------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------------*/
+/* VST Host related Things */
+/*------------------------------------------------------------------------------------------------------------------------*/
 
-struct vst_effect_t; // Pre-define vst_effect_t so we can use it below.
+/* Pre-define vst_effect_t so we can use it below. */
+struct vst_effect_t;
 
 /**
  * @sa VST_HOST_OPCODE_ACTIVE_THREAD
@@ -1015,7 +1035,7 @@ enum VST_HOST_ACTIVE_THREAD {
 	/** @private */
 	VST_HOST_ACTIVE_THREAD_MAX,
 	/** @private */
-	_VST_HOST_ACTIVE_THREAD_PAD = 0xFFFFFFFFul,
+	_VST_HOST_ACTIVE_THREAD_PAD = (-1l)
 };
 
 /** Plug-in to Host Op-Codes
@@ -1031,7 +1051,7 @@ enum VST_HOST_OPCODE {
 	 * @param p_float Parameter Value
 	 * @return Expected to return... something.
 	 */
-	VST_HOST_OPCODE_00 = 0x00, // cb(vst, 0x00, ?, 0, 0);
+	VST_HOST_OPCODE_00 = 0x00,
 	/** @sa VST_HOST_OPCODE_00 */
 	VST_HOST_OPCODE_AUTOMATE = 0x00,
 	/** @sa VST_HOST_OPCODE_00 */
@@ -1051,7 +1071,7 @@ enum VST_HOST_OPCODE {
 	 *
 	 * @return The currently selected unique effect id in this container.
 	 */
-	VST_HOST_OPCODE_02 = 0x02, // bool cb(0, 0x02, 0, 0, 0);
+	VST_HOST_OPCODE_02 = 0x02,
 	/** @sa VST_HOST_OPCODE_02 */
 	VST_HOST_OPCODE_CURRENT_EFFECT_ID = 0x02,
 
@@ -1066,9 +1086,9 @@ enum VST_HOST_OPCODE {
 	/** @todo */
 	VST_HOST_OPCODE_04 = 0x04,
 
-	//--------------------------------------------------------------------------------
-	// VST 2.x starts here.
-	//--------------------------------------------------------------------------------
+	/*-------------------------------------------------------------------------------- */
+	/* VST 2.0 */
+	/*--------------------------------------------------------------------------------*/
 
 	/** @todo */
 	VST_HOST_OPCODE_05 = 0x05,
@@ -1346,9 +1366,9 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_2A */
 	VST_HOST_OPCODE_REFRESH = 0x2A,
 
-	//--------------------------------------------------------------------------------
-	// VST 2.1
-	//--------------------------------------------------------------------------------
+	/*--------------------------------------------------------------------------------*/
+	/* VST 2.1 */
+	/*--------------------------------------------------------------------------------*/
 
 	/** Notify host that a parameter is being edited.
 	 * "Locks" the parameter from being edited in compatible hosts.
@@ -1381,9 +1401,9 @@ enum VST_HOST_OPCODE {
 	 */
 	VST_HOST_OPCODE_2D = 0x2D,
 
-	//--------------------------------------------------------------------------------
-	// VST 2.2
-	//--------------------------------------------------------------------------------
+	/*--------------------------------------------------------------------------------*/
+	/* VST 2.2 */
+	/*--------------------------------------------------------------------------------*/
 
 	/** Crash the host depending on what p_ptr is pointing at.
 	 * @todo
@@ -1408,9 +1428,9 @@ enum VST_HOST_OPCODE {
 	 */
 	VST_HOST_OPCODE_30 = 0x30,
 
-	//--------------------------------------------------------------------------------
-	// VST 2.3
-	//--------------------------------------------------------------------------------
+	/*--------------------------------------------------------------------------------*/
+	/* VST 2.3 */
+	/*--------------------------------------------------------------------------------*/
 
 	/** Retrieve the hosts input speaker arrangement.
 	 * Seems to always reply with the data provided in @ref VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT p_int2.
@@ -1433,9 +1453,10 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_MAX,
 
 	/** @private Force as 32-bit unsigned integer in compatible compilers. */
-	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
+	_VST_HOST_OPCODE_PAD = (-1l)
 };
 
+#if (__STDC_VERSION__ >= 199901L) || (__cplusplus >= 202002L)
 /** Plug-in to Host support checks
  *
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
@@ -1548,6 +1569,7 @@ struct vst_host_supports_t {
 	.openFileSelector = "openFileSelector",
 	.closeFileSelector = "closeFileSelector",
 };
+#endif
 
 /** Plug-in to Host callback
  *
@@ -1771,7 +1793,7 @@ enum VST_EFFECT_CATEGORY {
 	VST_EFFECT_CATEGORY_MAX, // Not part of specification, marks maximum category.
 
 	/** @private */
-	_VST_EFFECT_CATEGORY_PAD = 0xFFFFFFFFul,
+	_VST_EFFECT_CATEGORY_PAD = (-1l)
 };
 
 /** Effect Flags
@@ -1858,7 +1880,7 @@ enum VST_EFFECT_FLAG {
 	 */
 	VST_EFFECT_FLAG_1ls12 = 1 << 12,
 	/** @sa VST_EFFECT_FLAG_1ls12 */
-	VST_EFFECT_FLAG_SUPPORTS_DOUBLE = 1 << 12,
+	VST_EFFECT_FLAG_SUPPORTS_DOUBLE = 1 << 12
 };
 
 /** Host to Plug-in Op-Codes
@@ -2740,14 +2762,17 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_MAX,
 
 	/** @private Force as 32-bit unsigned integer in compatible compilers. */
-	_VST_EFFECT_OPCODE_PAD = 0xFFFFFFFFul,
+	_VST_EFFECT_OPCODE_PAD = (-1l)
 };
 
+#if (__STDC_VERSION__ >= 199901L) || (__cplusplus >= 202002L)
 /** Host to Plug-in support checks
  *
  * Provided as `char* p_ptr` in the VST_EFFECT_OPCODE_SUPPORTS op code.
  *
  * Harvested via strings command and just checking what plug-ins actually responded to.
+ *
+ * @important These are only available with a C99 or a C++20 or newer compiler.
  */
 struct vst_effect_supports_t {
 	/** Effect supports alternative bypass.
@@ -2853,6 +2878,7 @@ struct vst_effect_supports_t {
 	._8in4out = "8in4out",
 	._8in8out = "8in8out",
 };
+#endif
 
 /** Control the VST through an opcode and up to four parameters.
  *
