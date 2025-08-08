@@ -33,6 +33,11 @@
 #pragma pack(push, 8)
 
 #ifdef __cplusplus
+#if __cplusplus < 201103L
+#include <inttypes.h>
+#else
+#include <cinttypes>
+#endif
 extern "C" {
 #else
 #include <inttypes.h>
