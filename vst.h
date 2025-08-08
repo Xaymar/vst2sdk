@@ -586,6 +586,39 @@ struct vst_events_t {
 
 struct vst_effect_t; // Pre-define vst_effect_t so we can use it below.
 
+/**
+ * @sa VST_HOST_OPCODE_ACTIVE_THREAD
+ */
+enum VST_HOST_ACTIVE_THREAD {
+	/** The active thread has no special usage assigned.
+	 */
+	VST_HOST_ACTIVE_THREAD_UNKNOWN = 0,
+
+	/** The active thread is used for user interface work.
+	 */
+	VST_HOST_ACTIVE_THREAD_INTERFACE = 1,
+
+	/** The active thread is used for audio processing.
+	 */
+	VST_HOST_ACTIVE_THREAD_AUDIO = 2,
+
+	/** The active thread is related to events and event handling.
+	 *
+	 * @sa VST_HOST_OPCODE_EVENT
+	 * @sa VST_EFFECT_OPCODE_EVENT
+	 */
+	VST_HOST_ACTIVE_THREAD_EVENT = 3,
+
+	/** The active thread was created by an effect.
+	 */
+	VST_HOST_ACTIVE_THREAD_USER = 4,
+
+	/** @private */
+	VST_HOST_ACTIVE_THREAD_MAX,
+	/** @private */
+	_VST_HOST_ACTIVE_THREAD_PAD = 0xFFFFFFFFul,
+};
+
 /** Plug-in to Host Op-Codes
  * These Op-Codes are emitted by the plug-in and the host _may_ handle them or return 0 (false).
  * We have no guarantees about anything actually happening.
@@ -769,7 +802,16 @@ enum VST_HOST_OPCODE {
 
 	VST_HOST_OPCODE_16 = 0x16,
 
+	/** Which thread is the host currently processing this call from?
+	 * Useful for memory and thread safety since we can guarantee code paths don't intersect between threads in
+	 * compatible hosts. Not so useful in incompatible hosts.
+	 *
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @return Any of @ref VST_HOST_ACTIVE_THREAD or 0 if unsupported.
+	 */
 	VST_HOST_OPCODE_17 = 0x17,
+	/** @sa VST_HOST_OPCODE_17 */
+	VST_HOST_OPCODE_GET_ACTIVE_THREAD = 0x17,
 
 	VST_HOST_OPCODE_18 = 0x18,
 
