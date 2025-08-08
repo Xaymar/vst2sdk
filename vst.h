@@ -163,6 +163,218 @@ struct vst_rect_t {
 	int16_t right;
 };
 
+/** Virtual Key codes.
+ *
+ * Steinberg seems to like reinventing the wheel. What was the problem with just using the platform specific key codes?
+ */
+enum VST_VKEY {
+	VST_VKEY_00 = 0,
+
+	VST_VKEY_01 = 1,
+	VST_VKEY_BACKSPACE = 1,
+
+	VST_VKEY_02 = 2,
+	VST_VKEY_TAB = 2,
+
+	VST_VKEY_03 = 3,
+
+	VST_VKEY_04 = 4,
+	VST_VKEY_RETURN = 4, // The big one left of the arrow keys.
+
+	VST_VKEY_05 = 5,
+	VST_VKEY_PAUSE = 5,
+
+	VST_VKEY_06 = 6,
+	VST_VKEY_ESCAPE = 6,
+
+	VST_VKEY_07 = 7,
+	VST_VKEY_SPACE = 7,
+
+	VST_VKEY_08 = 8,
+
+	VST_VKEY_09 = 9,
+	VST_VKEY_END = 9,
+
+	VST_VKEY_10 = 10,
+	VST_VKEY_HOME = 10,
+
+	VST_VKEY_11 = 11,
+	VST_VKEY_ARROW_LEFT = 11,
+
+	VST_VKEY_12 = 12,
+	VST_VKEY_ARROW_UP = 12,
+
+	VST_VKEY_13 = 13,
+	VST_VKEY_ARROW_RIGHT = 13,
+
+	VST_VKEY_14 = 14,
+	VST_VKEY_ARROW_DOWN = 14,
+
+	VST_VKEY_15 = 15,
+	VST_VKEY_PAGE_UP = 15,
+
+	VST_VKEY_16 = 16,
+	VST_VKEY_PAGE_DOWN = 16,
+
+	VST_VKEY_17 = 17,
+
+	VST_VKEY_18 = 18,
+	VST_VKEY_PRINT = 18,
+
+	VST_VKEY_19 = 19,
+	VST_VKEY_NUMPAD_ENTER = 19,
+
+	VST_VKEY_20 = 20,
+
+	VST_VKEY_21 = 21,
+	VST_VKEY_INSERT = 21,
+
+	VST_VKEY_22 = 22,
+	VST_VKEY_DELETE = 22,
+
+	VST_VKEY_23 = 23,
+
+	VST_VKEY_24 = 24,
+	VST_VKEY_NUMPAD_0 = 24,
+
+	VST_VKEY_25 = 25,
+	VST_VKEY_NUMPAD_1 = 25,
+
+	VST_VKEY_26 = 26,
+	VST_VKEY_NUMPAD_2 = 26,
+
+	VST_VKEY_27 = 27,
+	VST_VKEY_NUMPAD_3 = 27,
+
+	VST_VKEY_28 = 28,
+	VST_VKEY_NUMPAD_4 = 28,
+
+	VST_VKEY_29 = 29,
+	VST_VKEY_NUMPAD_5 = 29,
+
+	VST_VKEY_30 = 30,
+	VST_VKEY_NUMPAD_6 = 30,
+
+	VST_VKEY_31 = 31,
+	VST_VKEY_NUMPAD_7 = 31,
+
+	VST_VKEY_32 = 32,
+	VST_VKEY_NUMPAD_8 = 32,
+
+	VST_VKEY_33 = 33,
+	VST_VKEY_NUMPAD_9 = 33,
+
+	VST_VKEY_34 = 34,
+	VST_VKEY_NUMPAD_MULTIPLY = 34,
+
+	VST_VKEY_35 = 35,
+	VST_VKEY_NUMPAD_ADD = 35,
+
+	VST_VKEY_36 = 36,
+	VST_VKEY_NUMPAD_COMMA_OR_DOT = 36,
+
+	VST_VKEY_37 = 37,
+	VST_VKEY_NUMPAD_SUBTRACT = 37,
+
+	VST_VKEY_38 = 38,
+
+	VST_VKEY_39 = 39,
+	VST_VKEY_NUMPAD_DIVIDE = 39,
+
+	VST_VKEY_40 = 40,
+	VST_VKEY_F1 = 40,
+
+	VST_VKEY_41 = 41,
+	VST_VKEY_F2 = 41,
+
+	VST_VKEY_42 = 42,
+	VST_VKEY_F3 = 42,
+
+	VST_VKEY_43 = 43,
+	VST_VKEY_F4 = 43,
+
+	VST_VKEY_44 = 44,
+	VST_VKEY_F5 = 44,
+
+	VST_VKEY_45 = 45,
+	VST_VKEY_F6 = 45,
+
+	VST_VKEY_46 = 46,
+	VST_VKEY_F7 = 46,
+
+	VST_VKEY_47 = 47,
+	VST_VKEY_F8 = 47,
+
+	VST_VKEY_48 = 48,
+	VST_VKEY_F9 = 48,
+
+	VST_VKEY_49 = 49,
+	VST_VKEY_F10 = 49,
+
+	VST_VKEY_50 = 50,
+	VST_VKEY_F11 = 50,
+
+	VST_VKEY_51 = 51,
+	VST_VKEY_F12 = 51,
+
+	VST_VKEY_52 = 52,
+	VST_VKEY_NUMLOCK = 52,
+
+	VST_VKEY_53 = 53,
+	VST_VKEY_SCROLLLOCK = 53,
+
+	VST_VKEY_54 = 54,
+	VST_VKEY_SHIFT = 54, // Left or Right
+
+	VST_VKEY_55 = 55,
+	VST_VKEY_CONTROL = 55, // Left or Right
+
+	VST_VKEY_56 = 56,
+	VST_VKEY_ALT = 56, // Left or Right
+
+	VST_VKEY_57 = 57,
+	VST_VKEY_58 = 58,
+	VST_VKEY_59 = 59,
+	VST_VKEY_60 = 60,
+	VST_VKEY_61 = 61,
+	VST_VKEY_62 = 62,
+	VST_VKEY_63 = 63,
+	VST_VKEY_64 = 64,
+	VST_VKEY_65 = 65,
+	VST_VKEY_66 = 66,
+	VST_VKEY_67 = 67,
+	VST_VKEY_68 = 68,
+	VST_VKEY_69 = 69,
+};
+
+enum VST_VKEY_MODIFIER {
+	/** One of the shift keys is held down. */
+	VST_VKEY_MODIFIER_1ls0 = 1 << 0,
+	/** @sa VST_VKEY_MODIFIER_1ls0 */
+	VST_VKEY_MODIFIER_SHIFT = 1 << 0,
+
+	/** One of the alt keys is held down. */
+	VST_VKEY_MODIFIER_1ls1 = 1 << 1,
+	/** @sa VST_VKEY_MODIFIER_1ls1 */
+	VST_VKEY_MODIFIER_ALT = 1 << 1,
+
+	/** Control on MacOS, System (Windows Logo) on Windows.
+	 *
+	 * Very funny Steinberg.
+	 */
+	VST_VKEY_MODIFIER_1ls2 = 1 << 2,
+	/** @sa VST_VKEY_MODIFIER_1ls2 */
+	VST_VKEY_MODIFIER_SYSTEM = 1 << 2,
+
+	/** Control on PC, System (Apple Logo) on Mac OS.
+	 *
+	 * I have questions. They're all "Why?!".
+	 */
+	VST_VKEY_MODIFIER_1ls3 = 1 << 3,
+	/** @sa VST_VKEY_MODIFIER_1ls3 */
+	VST_VKEY_MODIFIER_CONTROL = 1 << 3,
+};
+
 //------------------------------------------------------------------------------------------------------------------------
 // VST Parameters
 //------------------------------------------------------------------------------------------------------------------------
@@ -2311,10 +2523,9 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int1 ASCII character that represents the virtual key code.
-	 * @param p_int2 Virtual Key Code
-	 * @param p_float Modifiers being held down (bitfield)
+	 * @param p_int2 See @ref VST_VKEY for the full list.
+	 * @param p_float A bitfield with any of @ref VST_VKEY_MODIFIER.
 	 * @return @ref VST_STATUS_TRUE if we used the input, otherwise @ref VST_STATUS_FALSE
-	 * @todo
 	 */
 	VST_EFFECT_OPCODE_3B = 0x3B,
 	/** @sa VST_EFFECT_OPCODE_3B */
@@ -2324,10 +2535,9 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int1 ASCII character that represents the virtual key code.
-	 * @param p_int2 Virtual Key Code
-	 * @param p_float Modifiers being held down (bitfield)
+	 * @param p_int2 See @ref VST_VKEY for the full list.
+	 * @param p_float A bitfield with any of @ref VST_VKEY_MODIFIER.
 	 * @return @ref VST_STATUS_TRUE if we used the input, otherwise @ref VST_STATUS_FALSE
-	 * @todo
 	 */
 	VST_EFFECT_OPCODE_3C = 0x3C,
 	/** @sa VST_EFFECT_OPCODE_3C */
