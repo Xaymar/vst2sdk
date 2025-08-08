@@ -552,13 +552,14 @@ enum VST_EVENT_TYPE {
 	VST_EVENT_TYPE_02 = 2,
 	VST_EVENT_TYPE_03 = 3,
 	VST_EVENT_TYPE_04 = 4,
+	VST_EVENT_TYPE_05 = 5,
 
 	/** MIDI SysEx Event.
 	 *
 	 * Allows casting @ref vst_event_t to @ref vst_event_midi_sysex_t.
 	 * See: https://blog.landr.com/midi-sysex/
 	 */
-	VST_EVENT_TYPE_MIDI_SYSEX = 5,
+	VST_EVENT_TYPE_MIDI_SYSEX = 6
 };
 
 /** A generic event.
