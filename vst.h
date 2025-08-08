@@ -627,7 +627,7 @@ struct vst_event_t {
  */
 union vst_event_midi_t {
 	/** Shared event structure. */
-	vst_event_t event;
+	struct vst_event_t event;
 
 	struct {
 		/** @private */
@@ -686,7 +686,7 @@ union vst_event_midi_t {
  */
 union vst_event_midi_sysex_t {
 	/** Shared event structure. */
-	vst_event_t event;
+	struct vst_event_t event;
 
 	struct {
 		/** @private */
@@ -732,7 +732,7 @@ struct vst_events_t {
 	 *
 	 * The size of this array is defined by @ref vst_events_t.count.
 	 */
-	vst_event_t** events;
+	struct vst_event_t** events;
 };
 
 //------------------------------------------------------------------------------------------------------------------------
