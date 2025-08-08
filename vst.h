@@ -938,7 +938,16 @@ enum VST_HOST_OPCODE {
 	/** Crash the host if p_ptr isn't nullptr. */
 	VST_HOST_OPCODE_28 = 0x28,
 
+	/** Retrieve the directory of the effect that emitted this.
+	 * The returned value seems to be unchanged for container plug-ins.
+	 *
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @return (Windows) A zero-terminated char buffer of unknown size.
+	 * @return (MacOS) A valid FSSpec structure.
+	 */
 	VST_HOST_OPCODE_29 = 0x29,
+	/** @sa VST_HOST_OPCODE_29 */
+	VST_HOST_OPCODE_GET_EFFECT_DIRECTORY = 0x29,
 
 	/** Refresh everything related to the effect that called this.
 	 * This includes things like parameters, programs, banks, windows, files, meters, streams, sample rate, block size,
@@ -1829,6 +1838,8 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_21                   = 0x21,
 	/** @sa VST_EFFECT_OPCODE_21 */
 	VST_EFFECT_OPCODE_INPUT_GET_PROPERTIES = 0x21,
+	/** @sa VST_EFFECT_OPCODE_21 */
+	VST_EFFECT_OPCODE_INPUT_STREAM_GET_PROPERTIES = 0x21,
 
 	/** Retrieve properties for the given output index.
 	 *
@@ -1840,6 +1851,8 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_22                    = 0x22,
 	/** @sa VST_EFFECT_OPCODE_22 */
 	VST_EFFECT_OPCODE_OUTPUT_GET_PROPERTIES = 0x22,
+	/** @sa VST_EFFECT_OPCODE_22 */
+	VST_EFFECT_OPCODE_OUTPUT_STREAM_GET_PROPERTIES = 0x22,
 
 	/** Retrieve category of this effect.
 	 *
