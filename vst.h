@@ -2359,15 +2359,15 @@ enum VST_EFFECT_OPCODE {
 
 	/** Host wants to change the speaker arrangement.
 	 *
-	 * @note (VST 2.0+) Available from VST 2.0 onwards.
-	 * @param p_int2 Pointer to a @ref vst_speaker_arrangement_t for the input.
-	 * @param p_ptr Pointer to a @ref vst_speaker_arrangement_t for the output.
-	 * @return @ref VST_STATUS_TRUE if we accept the new arrangement, @ref VST_STATUS_FALSE if we don't in which case
-	 *         the host is required to ask for the speaker arrangement via @ref VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
-	 *         and may retry this op-code with different values.
 	 * @sa vst_effect_t.num_inputs
 	 * @sa vst_effect_t.num_outputs
 	 * @sa VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @param p_int2 Pointer to a @ref vst_speaker_arrangement_t structure.
+	 * @param p_ptr Pointer to a @ref vst_speaker_arrangement_t structure.
+	 * @return @ref VST_STATUS_TRUE if we accept the new arrangement, @ref VST_STATUS_FALSE if we don't in which case
+	 *         the host is required to ask for the speaker arrangement via @ref VST_EFFECT_OPCODE_GET_SPEAKER_ARRANGEMENT
+	 *         and may retry this op-code with different values.
 	 */
 	VST_EFFECT_OPCODE_2A                      = 0x2A,
 	/** @sa VST_EFFECT_OPCODE_2A */
@@ -2646,8 +2646,8 @@ enum VST_EFFECT_OPCODE {
 	/** Host wants to know the current speaker arrangement.
 	 *
 	 * @note (VST 2.3+) Available from VST 2.3 onwards.
-	 * @param p_int2 Pointer to @ref vst_speaker_arrangement_t for the input.
-	 * @param p_ptr Pointer to @ref vst_speaker_arrangement_t for the output.
+	 * @param p_int2 Pointer to a @ref vst_speaker_arrangement_t pointer.
+	 * @param p_ptr Pointer to a @ref vst_speaker_arrangement_t pointer.
 	 * @return @ref VST_STATUS_TRUE if we were successful, otherwise @ref VST_STATUS_FALSE.
 	 */
 	VST_EFFECT_OPCODE_45                      = 0x45,
