@@ -1645,7 +1645,14 @@ enum VST_EFFECT_CATEGORY {
 	/** @sa VST_EFFECT_CATEGORY_06 */
 	VST_EFFECT_CATEGORY_DELAY_OR_ECHO = 0x06,
 
+	/** External Processing.
+	 * This VST effect is an interface to an external device and requires special handling.
+	 *
+	 * @todo What does this actually support? Is it even still supported?
+	 */
 	VST_EFFECT_CATEGORY_07            = 0x07,
+	/** @sa VST_EFFECT_CATEGORY_07 */
+	VST_EFFECT_CATEGORY_EXTERNAL = 0x07,
 
 	/** Restoration
 	 * Examples: Noise Filtering, Upsamplers, ...
