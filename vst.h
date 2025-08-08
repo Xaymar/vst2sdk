@@ -33,7 +33,6 @@
 #pragma pack(push, 8)
 
 #ifdef __cplusplus
-#include <cinttypes>
 extern "C" {
 #else
 #include <inttypes.h>
@@ -46,8 +45,11 @@ extern "C" {
 #define VST_FUNCTION_INTERFACE __cdecl
 
 /** Maximum number of channels/streams/inputs/outputs supported by VST 2.x
+ * Couldn't find any audio editing software which would attempt to add more channels.
+ *
+ * @todo Is 32 channels really the maximum?
  */
-#define VST_MAX_CHANNELS 32 // Couldn't find any audio editing software which would attempt to add more channels.
+#define VST_MAX_CHANNELS 32
 
 /** Convert four numbers into a FourCC
  */
@@ -337,6 +339,10 @@ struct vst_parameter_properties_t {
 // VST Input Microphones/Output Speakers
 //------------------------------------------------------------------------------------------------------------------------
 
+/** Default speaker types.
+ *
+ * @todo Are there more?
+ */
 enum VST_SPEAKER_TYPE {
 	// Default Types
 	VST_SPEAKER_TYPE_MONO       = 0,
@@ -439,6 +445,10 @@ struct vst_speaker_properties_t {
 	uint8_t _reserved[28]; // Reserved for future expansions?
 };
 
+/** Known default speaker arrangements.
+ *
+ * @todo There's got to be a lot more right?
+ */
 enum VST_SPEAKER_ARRANGEMENT_TYPE {
 	/** Custom speaker arrangement.
 	 *
@@ -819,18 +829,23 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_03 */
 	VST_HOST_OPCODE_KEEPALIVE_OR_IDLE = 0x03,
 
+	/** @todo */
 	VST_HOST_OPCODE_04 = 0x04,
 
 	//--------------------------------------------------------------------------------
 	// VST 2.x starts here.
 	//--------------------------------------------------------------------------------
 
+	/** @todo */
 	VST_HOST_OPCODE_05 = 0x05,
 
+	/** @todo */
 	VST_HOST_OPCODE_06 = 0x06,
 
+	/** @todo */
 	VST_HOST_OPCODE_07 = 0x07,
 
+	/** @todo */
 	VST_HOST_OPCODE_08 = 0x08,
 
 	/** Send events from plug-in to host.
@@ -852,10 +867,13 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_09 */
 	VST_HOST_OPCODE_EVENT = 0x09,
 
+	/** @todo */
 	VST_HOST_OPCODE_0A = 0x0A,
 
+	/** @todo */
 	VST_HOST_OPCODE_0B = 0x0B,
 
+	/** @todo */
 	VST_HOST_OPCODE_0C = 0x0C,
 
 	/** Notify the host that numInputs/numOutputs/delay/numParams has changed.
@@ -872,6 +890,7 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_0D */
 	VST_HOST_OPCODE_IO_MODIFIED = 0x0D,
 
+	/** @todo */
 	VST_HOST_OPCODE_0E = 0x0E,
 
 	/** Request that the host changes the size of the containing window.
@@ -957,6 +976,7 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_15 */
 	VST_HOST_OPCODE_OUTPUT_STREAM_GET_ATTACHED_EFFECT = 0x15,
 
+	/** @todo */
 	VST_HOST_OPCODE_16 = 0x16,
 
 	/** Which thread is the host currently processing this call from?
@@ -970,18 +990,25 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_17 */
 	VST_HOST_OPCODE_GET_ACTIVE_THREAD = 0x17,
 
+	/** @todo */
 	VST_HOST_OPCODE_18 = 0x18,
 
+	/** @todo */
 	VST_HOST_OPCODE_19 = 0x19,
 
+	/** @todo */
 	VST_HOST_OPCODE_1A = 0x1A,
 
+	/** @todo */
 	VST_HOST_OPCODE_1B = 0x1B,
 
+	/** @todo */
 	VST_HOST_OPCODE_1C = 0x1C,
 
+	/** @todo */
 	VST_HOST_OPCODE_1D = 0x1D,
 
+	/** @todo */
 	VST_HOST_OPCODE_1E = 0x1E,
 
 	/** Retrieve the hosts output speaker arrangement.
@@ -1032,6 +1059,7 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_23 */
 	VST_HOST_OPCODE_CUSTOM = 0x23,
 
+	/** @todo */
 	VST_HOST_OPCODE_24 = 0x24,
 
 	/** Check if the host supports a certain feature.
@@ -1051,10 +1079,14 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_26 */
 	VST_HOST_OPCODE_LANGUAGE = 0x26,
 
-	/** Crash the host if p_ptr isn't nullptr. */
+	/** Crash the host if p_ptr isn't nullptr.
+	 * @todo
+	 */
 	VST_HOST_OPCODE_27 = 0x27,
 
-	/** Crash the host if p_ptr isn't nullptr. */
+	/** Crash the host if p_ptr isn't nullptr.
+	 * @todo
+	 */
 	VST_HOST_OPCODE_28 = 0x28,
 
 	/** Retrieve the directory of the effect that emitted this.
@@ -1110,17 +1142,23 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_2C */
 	VST_HOST_OPCODE_PARAM_UNLOCK = 0x2C,
 
-	/** Crash the host depending on what p_ptr is pointing at. */
+	/** Crash the host depending on what p_ptr is pointing at.
+	 * @todo
+	 */
 	VST_HOST_OPCODE_2D = 0x2D,
 
 	//--------------------------------------------------------------------------------
 	// VST 2.2
 	//--------------------------------------------------------------------------------
 
-	/** Crash the host depending on what p_ptr is pointing at. */
+	/** Crash the host depending on what p_ptr is pointing at.
+	 * @todo
+	 */
 	VST_HOST_OPCODE_2E = 0x2E,
 
-	/** Crash the host depending on what p_ptr is pointing at. */
+	/** Crash the host depending on what p_ptr is pointing at.
+	 * @todo
+	 */
 	VST_HOST_OPCODE_2F = 0x2F,
 
 	/**
@@ -1132,6 +1170,7 @@ enum VST_HOST_OPCODE {
 	 * @note (VST 2.2+) Available from VST 2.2 onwards.
 	 * @deprecated (VST 2.4+) Deprecated from VST 2.4 onwards.
 	 * @param p_ptr A pointer to something
+	 * @todo
 	 */
 	VST_HOST_OPCODE_30 = 0x30,
 
@@ -1156,10 +1195,10 @@ enum VST_HOST_OPCODE {
 	/** @sa VST_HOST_OPCODE_31 */
 	VST_HOST_OPCODE_INPUT_GET_SPEAKER_ARRANGEMENT = 0x31,
 
-	// Highest number of known OPCODE.
+	/** @private Highest known OPCODE. */
 	VST_HOST_OPCODE_MAX,
 
-	// Pad to force 32-bit number.
+	/** @private Force as 32-bit unsigned integer in compatible compilers. */
 	_VST_HOST_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
@@ -1692,6 +1731,7 @@ enum VST_EFFECT_OPCODE {
 	/**
 	 *
 	 * @deprecated: (VST 2.3+) Not used in VST 2.3 or later.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_09 = 0x09,
 
@@ -1934,6 +1974,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_1C = 0x1C,
 
@@ -1941,6 +1982,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @sa VST_EFFECT_OPCODE_05
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_1D = 0x1D,
 
@@ -1948,6 +1990,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_1E = 0x1E,
 
@@ -1955,6 +1998,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_1F = 0x1F,
 
@@ -1962,6 +2006,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_20 = 0x20,
 
@@ -2006,6 +2051,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_24 = 0x24,
 
@@ -2013,6 +2059,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_25 = 0x25,
 
@@ -2020,6 +2067,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_26 = 0x26,
 
@@ -2027,6 +2075,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_27 = 0x27,
 
@@ -2034,6 +2083,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_28 = 0x28,
 
@@ -2041,6 +2091,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Seen in plug-ins with @ref VST_EFFECT_CATEGORY_OFFLINE.
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_29 = 0x29,
 
@@ -2061,8 +2112,7 @@ enum VST_EFFECT_OPCODE {
 	VST_EFFECT_OPCODE_SET_SPEAKER_ARRANGEMENT = 0x2A,
 
 	/**
-	 *
-	 *
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_2B = 0x2B,
 
@@ -2187,6 +2237,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_36 = 0x36,
 
@@ -2195,6 +2246,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_37 = 0x37,
 
@@ -2215,6 +2267,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @deprecated (VST 2.4) Invalid in all VST 2.4 and later hosts.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_39                       = 0x39,
 
@@ -2239,6 +2292,7 @@ enum VST_EFFECT_OPCODE {
 	 * @param p_int2 Virtual Key Code
 	 * @param p_float Modifiers being held down (bitfield)
 	 * @return @ref VST_STATUS_TRUE if we used the input, otherwise @ref VST_STATUS_FALSE
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_3B = 0x3B,
 	/** @sa VST_EFFECT_OPCODE_3B */
@@ -2251,6 +2305,7 @@ enum VST_EFFECT_OPCODE {
 	 * @param p_int2 Virtual Key Code
 	 * @param p_float Modifiers being held down (bitfield)
 	 * @return @ref VST_STATUS_TRUE if we used the input, otherwise @ref VST_STATUS_FALSE
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_3C = 0x3C,
 	/** @sa VST_EFFECT_OPCODE_3C */
@@ -2260,6 +2315,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
 	 * @param p_int2 A value between 0 and 2.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_3D = 0x3D,
 
@@ -2267,6 +2323,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Midi related
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_3E = 0x3E,
 
@@ -2274,6 +2331,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Midi related
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_3F = 0x3F,
 
@@ -2281,6 +2339,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Midi related
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_40 = 0x40,
 
@@ -2288,6 +2347,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Midi related
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_41 = 0x41,
 
@@ -2295,6 +2355,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 * Midi related
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_42 = 0x42,
 
@@ -2368,6 +2429,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.3+) Available from VST 2.3 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_49 = 0x49,
 
@@ -2377,6 +2439,7 @@ enum VST_EFFECT_OPCODE {
 	 * @sa VST_EFFECT_CATEGORY_SPATIAL
 	 * @param p_int2 Unknown meaning.
 	 * @param p_float Unknown meaning, usually 1.0
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_4A = 0x4A,
 
@@ -2387,6 +2450,7 @@ enum VST_EFFECT_OPCODE {
 	 * @param p_ptr Unknown structured data.
 	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data,
 	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_4B = 0x4B,
 	/** @sa VST_EFFECT_OPCODE_4B */
@@ -2399,6 +2463,7 @@ enum VST_EFFECT_OPCODE {
 	 * @param p_ptr Unknown structured data.
 	 * @return @ref VST_STATUS_NO if we can't load the data, @ref VST_STATUS_YES if we can load the data,
 	 *         @ref VST_STATUS_UNKNOWN if this isn't supported.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_4C = 0x4C,
 	/** @sa VST_EFFECT_OPCODE_4C */
@@ -2412,6 +2477,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.4+) Available from VST 2.4 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_4D = 0x4D,
 
@@ -2419,6 +2485,7 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.4+) Available from VST 2.4 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_4E = 0x4E,
 
@@ -2426,13 +2493,14 @@ enum VST_EFFECT_OPCODE {
 	 *
 	 *
 	 * @note (VST 2.4+) Available from VST 2.4 onwards.
+	 * @todo
 	 */
 	VST_EFFECT_OPCODE_4F = 0x4F,
 
-	/** @private */
+	/** @private Highest known OPCODE. */
 	VST_EFFECT_OPCODE_MAX,
 
-	/** @private */
+	/** @private Force as 32-bit unsigned integer in compatible compilers. */
 	_VST_EFFECT_OPCODE_PAD = 0xFFFFFFFFul,
 };
 
@@ -2683,7 +2751,10 @@ struct vst_effect_t {
 	 */
 	int32_t flags;
 
+	/** @todo */
 	void* _unknown_00; // Must be zero when created. Reserved for host?
+
+	/** @todo */
 	void* _unknown_01; // Must be zero when created. Reserved for host?
 
 	/** Initial delay before processing of samples can actually begin in Samples.
@@ -2695,7 +2766,10 @@ struct vst_effect_t {
 	 */
 	int32_t delay;
 
+	/** @todo */
 	int32_t _unknown_02; // Unknown int32_t values.
+
+	/** @todo */
 	int32_t _unknown_03;
 
 	/** Ratio of Input to Output production
