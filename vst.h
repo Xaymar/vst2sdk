@@ -540,20 +540,167 @@ struct vst_stream_properties_t {
 // VST Events
 //------------------------------------------------------------------------------------------------------------------------
 
+/** Available event types.
+ *
+ * Seems like we can implement our own events for smooth automation and similar.
+ */
+enum VST_EVENT_TYPE {
+	/** Invalid event.
+	 *
+	 * Crashes the host or plug-in if used.
+	 */
+	VST_EVENT_TYPE_00 = 0,
+	/** @sa VST_EVENT_TYPE_00 */
+	VST_EVENT_TYPE_INVALID = 0,
+
+	/** MIDI Event.
+	 *
+	 * Allows casting @ref vst_event_t to @ref vst_event_midi_t.
+	 */
+	VST_EVENT_TYPE_01 = 1,
+	/** @sa VST_EVENT_TYPE_01 */
+	VST_EVENT_TYPE_MIDI = 1,
+
+	VST_EVENT_TYPE_02 = 2,
+	VST_EVENT_TYPE_03 = 3,
+	VST_EVENT_TYPE_04 = 4,
+
+	/** MIDI SysEx Event.
+	 *
+	 * Allows casting @ref vst_event_t to @ref vst_event_midi_sysex_t.
+	 * See: https://blog.landr.com/midi-sysex/
+	 */
+	VST_EVENT_TYPE_MIDI_SYSEX = 5,
+};
+
 /** A generic event.
  *
+ * @sa vst_events_t
  * @sa vst_host_supports_t.sendVstEvents
  * @sa vst_host_supports_t.receiveVstEvents
+ * @sa vst_effect_supports_t.sendVstEvents
+ * @sa vst_effect_supports_t.receiveVstEvents
+ * @sa VST_EFFECT_OPCODE_EVENT
+ * @sa VST_HOST_OPCODE_EVENT
  */
 struct vst_event_t {
-	int32_t _unknown_00;
-	int32_t _unknown_01;
-	int32_t _unknown_02;
-	int32_t _unknown_03;
-	int32_t _unknown_04; // Always zero or uninitialized.
-	int32_t _unknown_05; // Always zero or uninitialized.
-	int32_t _unknown_06; // Always zero or uninitialized.
-	int32_t _unknown_07; // Always zero or uninitialized.
+	/** What event type was triggered?
+	 * Any of @ref VST_EVENT_TYPE
+	 */
+	int32_t type;
+
+	/** Content size in bytes.
+	 *
+	 * The size is calculated excluding @ref type and @ref size.
+	 * @code{.c}
+	 *   vst_event_t myevent;
+	 *   myevent.size = sizeof(vst_event_t) - sizeof(vst_event_t.type) - sizeof(vst_event_t.size);
+	 * @endcode
+	 */
+	int32_t size;
+
+	/** Offset of the event relative to some position.
+	 *
+	 * @todo What position is this relative to?
+	 */
+	int32_t offset;
+
+	/** @private Set by the event itself. */
+	int32_t _pad_00[5];
+};
+
+/** A MIDI event.
+ *
+ * @sa VST_EVENT_TYPE_MIDI
+ * @sa vst_host_supports_t.sendVstMidiEvents
+ * @sa vst_host_supports_t.receiveVstMidiEvents
+ * @sa vst_host_supports_t.sendVstMidiEventFlagIsRealtime
+ * @sa vst_effect_supports_t.sendVstMidiEvents
+ * @sa vst_effect_supports_t.receiveVstMidiEvents
+ */
+union vst_event_midi_t {
+	/** Shared event structure. */
+	vst_event_t event;
+
+	struct {
+		/** @private */
+		int32_t _pad_00[3];
+
+		/** Is this note played in real time (played live)?
+		 * Can only ever be 0 (sequencer) or 1 (live).
+		 *
+		 * @todo Can this be 1 in VST 2.3 and earlier or only 2.4?
+		 * @sa vst_host_supports_t.sendVstMidiEventFlagIsRealtime
+		 */
+		int32_t is_real_time;
+
+		/** Note Length (in samples/frames) of the played note if available.
+		 */
+		int32_t length;
+
+		/** Some kind of offset (in samples/frames).
+		 */
+		int32_t offset;
+
+		/** Zero terminated array containing up to 3 bytes of MIDI information.
+		 *
+		 * @note @ref data[3] is always zero.
+		 */
+		char data[4];
+
+		/** Tune (in cents) for anything that isn't the default scale.
+		 *
+		 * Range: -64 to 63
+		 */
+		int8_t tune;
+
+		/** Note velocity.
+		 *
+		 * Range: 0 to 127
+		 * @todo Are negative values possible?
+		 */
+		int8_t velocity;
+
+		/** @private */
+		char _pad[2]; // Padding
+	} midi;
+};
+
+/** A MIDI SysEx event.
+ *
+ * See: https://blog.landr.com/midi-sysex/
+ *
+ * @sa VST_EVENT_TYPE_MIDI_SYSEX
+ * @sa vst_host_supports_t.sendVstMidiEvents
+ * @sa vst_host_supports_t.receiveVstMidiEvents
+ * @sa vst_host_supports_t.sendVstMidiEventFlagIsRealtime
+ * @sa vst_effect_supports_t.sendVstMidiEvents
+ * @sa vst_effect_supports_t.receiveVstMidiEvents
+ */
+union vst_event_midi_sysex_t {
+	/** Shared event structure. */
+	vst_event_t event;
+
+	struct {
+		/** @private */
+		int32_t _pad_00[4];
+
+		/** Size (in bytes) of the SysEx event.
+		 */
+		int32_t size;
+
+		/** @private Must be zero. */
+		intptr_t _pad_01;
+
+		/** Zero terminated buffer of size @ref size.
+		 *
+		 * Format is specific to the MIDI device that is used.
+		 */
+		char* data;
+
+		/** @private Must be zero. */
+		intptr_t _pad_02;
+	} sysex;
 };
 
 /** A collection of events.
@@ -687,6 +834,8 @@ enum VST_HOST_OPCODE {
 	 * @sa vst_events_t
 	 * @sa vst_effect_supports_t.sendVstEvents
 	 * @sa vst_host_supports_t.receiveVstEvents
+	 * @sa vst_effect_supports_t.sendVstMidiEvents
+	 * @sa vst_host_supports_t.receiveVstMidiEvents
 	 * @sa VST_EFFECT_OPCODE_EVENT
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_ptr A valid pointer to a @ref vst_events_t structure.
@@ -940,11 +1089,11 @@ enum VST_HOST_OPCODE {
 	VST_HOST_OPCODE_PARAM_LOCK = 0x2B,
 
 	/** Notify host that parameter is no longer being edited.
-	 * "Unlocks" the parameter for further editing in compatible hosts. Remember to call the @ref VST_HOST_PARAM_UPDATE
+	 * "Unlocks" the parameter for further editing in compatible hosts. Remember to call the @ref VST_HOST_OPCODE_PARAM_UPDATE
 	 * op-code afterwards so that the host knows it needs to update its automation data.
 	 *
 	 * @note (VST 2.1+) Available from VST 2.1 onwards.
-	 * @sa VST_HOST_PARAM_UPDATE
+	 * @sa VST_HOST_OPCODE_PARAM_UPDATE
 	 * @param p_int1 Parameter index.
 	 */
 	VST_HOST_OPCODE_2C = 0x2C,
@@ -1069,8 +1218,34 @@ struct vst_host_supports_t {
 	 */
 	const char* receiveVstEvents;
 
+	/** Host can send MIDI events to plug-in.
+	 *
+	 * @sa vst_effect_supports_t.receiveVstMidiEvents
+	 * @sa VST_EFFECT_OPCODE_EVENT
+	 * @sa vst_effect_midi_t
+	 * @sa vst_effect_midi_sysex_t
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* sendVstMidiEvent;
+
+	/** Host can receive MIDI events from plug-in.
+	 *
+	 * @sa vst_effect_supports_t.sendVstMidiEvents
+	 * @sa VST_HOST_OPCODE_EVENT
+	 * @sa vst_effect_midi_t
+	 * @sa vst_effect_midi_sysex_t
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* receiveVstMidiEvent;
+
+	/** Host can send real time (live) MIDI events to plug-in.
+	 *
+	 * @sa vst_host_supports_t.sendVstMidiEvent
+	 * @sa vst_effect_supports_t.receiveVstMidiEvents
+	 * @sa VST_EFFECT_OPCODE_EVENT
+	 * @sa vst_effect_midi_t
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* sendVstMidiEventFlagIsRealtime;
 
 	const char* sendVstTimeInfo;
@@ -1716,6 +1891,8 @@ enum VST_EFFECT_OPCODE {
 	 * @sa vst_events_t
 	 * @sa vst_host_supports_t.sendVstEvents
 	 * @sa vst_effect_supports_t.receiveVstEvents
+	 * @sa vst_host_supports_t.sendVstMidiEvents
+	 * @sa vst_effect_supports_t.receiveVstMidiEvents
 	 * @sa VST_HOST_OPCODE_EVENT
 	 * @note (VST 2.0+) Available from VST 2.0 onwards.
 	 * @param p_ptr A valid pointer to a @ref vst_events_t structure.
@@ -2290,8 +2467,26 @@ struct vst_effect_supports_t {
 	 */
 	const char* receiveVstEvents;
 
+	/** Host can send MIDI events to plug-in.
+	 *
+	 * @sa vst_effect_supports_t.receiveVstMidiEvents
+	 * @sa VST_EFFECT_OPCODE_EVENT
+	 * @sa vst_effect_midi_t
+	 * @sa vst_effect_midi_sysex_t
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* sendVstMidiEvent;
+
+	/** Plug-in can receive MIDI events from host.
+	 *
+	 * @sa vst_host_supports_t.sendVstMidiEvents
+	 * @sa VST_HOST_OPCODE_EVENT
+	 * @sa vst_effect_midi_t
+	 * @sa vst_effect_midi_sysex_t
+	 * @note (VST 2.0+) Available from VST 2.0 onwards.
+	 */
 	const char* receiveVstMidiEvent;
+
 	const char* midiProgramNames; // VST 2.1 or later.
 	const char* receiveVstTimeInfo;
 	const char* offline;
