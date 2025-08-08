@@ -1,6 +1,15 @@
 # About the Project
 This is a completely "clean room" untainted reverse engineered "SDK" for the VST 2.x interface. It was reverse engineered from binaries where no license restricting the reverse engineering was attached, or where the legal system explicitly allowed reverse engineering for the purpose of interoperability.
 
+## At a glance
+- Full reimplementation of the VST 2.x SDK.
+- Header-only, so no code/object dependencies!
+- Written for C99 / C++20 with (optional) backwards support down to C89 / C++98.
+- Documentation available [online](https://xaymar.github.io/vst2sdk) _and_ offline with clean JavaDoc comments.
+- Liberally licensed so it is usable in commercial products.
+  - Technically as clean room as it can legally get, but ask a lawyer first anyway.
+  - I don't provide licenses to Steinberg VsT, their logos, or anything.
+
 ## As seen in
 [DISTRHO Plugin Framework](https://github.com/DISTRHO/DPF), [StompTuner](https://github.com/brummer10/StompTuner), [DF Zita Rev1](https://github.com/SpotlightKid/dfzitarev1), [TonPlugIns](https://github.com/Vhonowslend/TonPlugIns), [ToneTwistPlugs](https://github.com/brummer10/ToneTwistPlugs), [DF JPverb](https://github.com/SpotlightKid/dfjpverb), [CChorus](https://github.com/SpotlightKid/cchorus), [Dynation](https://github.com/vertver/Dynation) and likely more.
 
