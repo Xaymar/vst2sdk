@@ -551,7 +551,13 @@ enum VST_EVENT_TYPE {
 
 	VST_EVENT_TYPE_02 = 2,
 	VST_EVENT_TYPE_03 = 3,
+
+	/** @todo Seems to be related to parameter automation in some hosts. Structure varies by host, only the first section (vst_event_t) is identical.
+	 */
 	VST_EVENT_TYPE_04 = 4,
+
+	/** @todo Seems to be related to switch parameter automation in some hosts. Structure varies by host, only the first section (vst_event_t) is identical.
+	 */
 	VST_EVENT_TYPE_05 = 5,
 
 	/** MIDI SysEx Event.
