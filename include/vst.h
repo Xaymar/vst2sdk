@@ -24,7 +24,6 @@
 /* Protect against double inclusion in practically every compiler available. */
 #pragma once
 #ifndef VST2SDK_VST_H
-/** @private */
 #define VST2SDK_VST_H
 
 /* The VST 2.x alignment appears to be 8 for both 32 and 64-bit. This alignment is ignored by some earlier Windows
