@@ -2796,12 +2796,21 @@ struct vst_effect_supports_t {
 	 */
 	const char* receiveVstMidiEvent;
 
+	/** Plug-in wants to use @ref VST_HOST_OPCODE_EDITOR_RESIZE.
+	 * Only necessary for legacy host compatibility.
+	 *
+	 * @sa vst_host_supports_t.sizeWindow
+	 * @note (VST 2.1+) Available from VST 2.1 onwards.
+	 * @deprecated (VST 2.4+) Deprecated from VST 2.4 onwards as the same check already exists on the host side.
+	 * @return @ref VST_STATUS_TRUE if you want to use @ref VST_HOST_OPCODE_EDITOR_RESIZE, otherwise @ref VST_STATUS_FALSE.
+	 */
+	const char* conformsToWindowRules;
+
 	const char* midiProgramNames; // VST 2.1 or later.
 	const char* receiveVstTimeInfo;
 	const char* offline;
 	// The following were only found in VST 2.3 plug-ins
 	const char* plugAsChannelInsert;
-	const char* conformsToWindowRules; // Mac OS only, invalid in VST 2.4. Seems related to vst_host_supports.sizeWindow
 	const char* plugAsSend;
 	const char* mixDryWet;
 	const char* noRealTime;
@@ -2823,11 +2832,11 @@ struct vst_effect_supports_t {
 	.receiveVstEvents = "receiveVstEvents",
 	.sendVstMidiEvent = "sendVstMidiEvent",
 	.receiveVstMidiEvent = "receiveVstMidiEvent",
+	.conformsToWindowRules = "conformsToWindowRules",
 	.midiProgramNames = "midiProgramNames",
 	.receiveVstTimeInfo = "receiveVstTimeInfo",
 	.offline = "offline",
 	.plugAsChannelInsert = "plugAsChannelInsert",
-	.conformsToWindowRules = "conformsToWindowRules",
 	.plugAsSend = "plugAsSend",
 	.mixDryWet = "mixDryWet",
 	.noRealTime = "noRealTime",
