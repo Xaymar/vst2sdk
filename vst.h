@@ -407,6 +407,8 @@ enum VST_SPEAKER_TYPE {
 	_VST_SPEAKER_TYPE_PAD = 0xFFFFFFFFul,
 };
 
+/** Speaker properties.
+ */
 struct vst_speaker_properties_t {
 	/** Azimuth in Radians
 	 * Range: -PI (Left) through 0.0 (Right) to PI (Left)
@@ -499,10 +501,25 @@ enum VST_SPEAKER_ARRANGEMENT_TYPE {
 	_VST_SPEAKER_ARRANGEMENT_TYPE_PAD = 0xFFFFFFFFul,
 };
 
+/** Speaker arrangement definition.
+ */
 struct vst_speaker_arrangement_t {
-	int32_t type; // See VST_SPEAKER_ARRANGEMENT_TYPE
+	/** Any of @ref VST_SPEAKER_ARRANGEMENT_TYPE.
+	 *
+	 */
+	int32_t type;
+
+	/** Number of channels used in @ref speakers.
+	 *
+	 * Appears to be limited to @ref VST_MAX_CHANNELS.
+	 */
 	int32_t channels; // Number of channels in this arrangement.
-	struct vst_speaker_properties_t speakers[VST_MAX_CHANNELS]; // Array of speaker properties, actual size defined by channels.
+
+	/** Array of @ref vst_speaker_properties_t with size @ref channels.
+	 *
+	 * @note This is defined as @ref VST_MAX_CHANNELS as there's currently no host that supports more than that.
+	 */
+	struct vst_speaker_properties_t speakers[VST_MAX_CHANNELS];
 };
 
 //------------------------------------------------------------------------------------------------------------------------
