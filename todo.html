@@ -94,8 +94,16 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt>Global <a class="el" href="vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca28bcfd43d8494d6c1a1bf22b180b6ef4">VST_HOST_OPCODE_2F</a>  </dt>
-<dd><a class="anchor" id="_todo000001"></a>Figure out what p_ptr is. </dd>
+<dt>Global <a class="el" href="unionvst__event__midi__t.html#a1fc64acb525a4e450e43ac9ed9917b29">vst_event_midi_t::is_real_time</a>  </dt>
+<dd><a class="anchor" id="_todo000004"></a>Can this be 1 in VST 2.3 and earlier or only 2.4?  </dd>
+<dt>Global <a class="el" href="unionvst__event__midi__t.html#ad07b399584ef3db7a29decbee67c36a9">vst_event_midi_t::velocity</a>  </dt>
+<dd><a class="anchor" id="_todo000005"></a>Are negative values possible?  </dd>
+<dt>Global <a class="el" href="structvst__event__t.html#a5409ce4236e5de3f33be066972171643">vst_event_t::offset</a>  </dt>
+<dd><a class="anchor" id="_todo000003"></a>What position is this relative to?  </dd>
+<dt>Global <a class="el" href="vst_8h.html#a06cdf00c4eb074ac3677408d259616bfa78fa609095b383828ad54ebb78cf5d86">VST_EVENT_TYPE_04</a>  </dt>
+<dd><a class="anchor" id="_todo000001"></a>Seems to be related to parameter automation in some hosts. Structure varies by host, only the first section (<a class="el" href="structvst__event__t.html" title="A generic event.">vst_event_t</a>) is identical. </dd>
+<dt>Global <a class="el" href="vst_8h.html#a06cdf00c4eb074ac3677408d259616bfa131440b1fc22300ead4786da590c1329">VST_EVENT_TYPE_05</a>  </dt>
+<dd><a class="anchor" id="_todo000002"></a>Seems to be related to switch parameter automation in some hosts. Structure varies by host, only the first section (<a class="el" href="structvst__event__t.html" title="A generic event.">vst_event_t</a>) is identical.</dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -103,7 +111,7 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 7 2025 22:26:22 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Aug 17 2025 23:59:12 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

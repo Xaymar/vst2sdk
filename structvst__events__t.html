@@ -106,8 +106,6 @@ Data Fields</h2></td></tr>
 <tr class="memitem:adac191ea48fc446e920fb242d96c3efd" id="r_adac191ea48fc446e920fb242d96c3efd"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__events__t.html#adac191ea48fc446e920fb242d96c3efd">count</a></td></tr>
 <tr class="memdesc:adac191ea48fc446e920fb242d96c3efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of events stored in <a class="el" href="structvst__events__t.html#a0f52389d0a5ffae5f10be0e1742a4925">vst_events_t::events</a>.  <br /></td></tr>
 <tr class="separator:adac191ea48fc446e920fb242d96c3efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fa1362edfa20687d3d57341ebc2c37c" id="r_a7fa1362edfa20687d3d57341ebc2c37c"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__events__t.html#a7fa1362edfa20687d3d57341ebc2c37c">_unknown_00</a></td></tr>
-<tr class="separator:a7fa1362edfa20687d3d57341ebc2c37c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f52389d0a5ffae5f10be0e1742a4925" id="r_a0f52389d0a5ffae5f10be0e1742a4925"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structvst__event__t.html">vst_event_t</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__events__t.html#a0f52389d0a5ffae5f10be0e1742a4925">events</a></td></tr>
 <tr class="memdesc:a0f52389d0a5ffae5f10be0e1742a4925"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array of pointers to valid <a class="el" href="structvst__event__t.html">vst_event_t</a> structures.  <br /></td></tr>
 <tr class="separator:a0f52389d0a5ffae5f10be0e1742a4925"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,32 +118,16 @@ Data Fields</h2></td></tr>
 <dd>
 <a class="el" href="structvst__host__supports__t.html#aa373ce1fbc010668609eceb8b5b8d380" title="Host can receive events from plug-in.">vst_host_supports_t.receiveVstEvents</a> </dd>
 <dd>
-<a class="el" href="structvst__effect__supports__t.html#a6a4bc33d77e38c2a6dcb2338f80adbcd">vst_effect_supports_t.sendVstEvents</a> </dd>
+<a class="el" href="structvst__effect__supports__t.html#a6a4bc33d77e38c2a6dcb2338f80adbcd" title="Plug-in can send events to host.">vst_effect_supports_t.sendVstEvents</a> </dd>
 <dd>
-<a class="el" href="structvst__effect__supports__t.html#a9b59e445c1974d4936b04a38aed6d9c8">vst_effect_supports_t.receiveVstEvents</a> </dd>
+<a class="el" href="structvst__effect__supports__t.html#a9b59e445c1974d4936b04a38aed6d9c8" title="Plug-in can receive events from host.">vst_effect_supports_t.receiveVstEvents</a> </dd>
 <dd>
 <a class="el" href="vst_8h.html#abfb1cdba3c236829cb63d4196f33d696a9f3b153f7398c429a3fc6d64e2fed9a6">VST_EFFECT_OPCODE_EVENT</a> </dd>
 <dd>
 <a class="el" href="vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca088c2539d52fbb2469a3bca15fd73b52">VST_HOST_OPCODE_EVENT</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00569">569</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00711">711</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a7fa1362edfa20687d3d57341ebc2c37c" name="a7fa1362edfa20687d3d57341ebc2c37c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fa1362edfa20687d3d57341ebc2c37c">&#9670;&#160;</a></span>_unknown_00</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t vst_events_t::_unknown_00</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00574">574</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
-
-</div>
-</div>
 <a id="adac191ea48fc446e920fb242d96c3efd" name="adac191ea48fc446e920fb242d96c3efd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adac191ea48fc446e920fb242d96c3efd">&#9670;&#160;</a></span>count</h2>
 
@@ -160,7 +142,7 @@ Data Fields</h2></td></tr>
 
 <p>Number of events stored in <a class="el" href="structvst__events__t.html#a0f52389d0a5ffae5f10be0e1742a4925">vst_events_t::events</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00572">572</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00714">714</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -179,7 +161,7 @@ Data Fields</h2></td></tr>
 <p>An array of pointers to valid <a class="el" href="structvst__event__t.html">vst_event_t</a> structures. </p>
 <p>The size of this array is defined by <a class="el" href="structvst__events__t.html#adac191ea48fc446e920fb242d96c3efd">vst_events_t::count</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00580">580</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00723">723</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -192,7 +174,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structvst__events__t.html">vst_events_t</a></li>
-    <li class="footer">Generated on Thu Aug 7 2025 22:26:22 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Aug 17 2025 23:59:12 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
