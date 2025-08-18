@@ -1,7 +1,5 @@
 var structvst__parameter__properties__t =
 [
-    [ "_reserved", "structvst__parameter__properties__t.html#a0979487731dfdc09f40df4a65c403a97", null ],
-    [ "_unknown_00", "structvst__parameter__properties__t.html#ad5cfe12a6ec0e20578728cd92d64a473", null ],
     [ "category", "structvst__parameter__properties__t.html#a63e39667345b6e1fff1a966d16940323", null ],
     [ "category_label", "structvst__parameter__properties__t.html#a4b2fbabc3c1d3bd6a33242df7d32d026", null ],
     [ "flags", "structvst__parameter__properties__t.html#a536d12f74400069aa4dfaec620b47bdd", null ],

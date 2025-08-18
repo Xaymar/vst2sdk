@@ -129,7 +129,7 @@ Data Fields</h2></td></tr>
 <dd>
 <a class="el" href="vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca088c2539d52fbb2469a3bca15fd73b52">VST_HOST_OPCODE_EVENT</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00836">836</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00855">855</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a5409ce4236e5de3f33be066972171643" name="a5409ce4236e5de3f33be066972171643"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5409ce4236e5de3f33be066972171643">&#9670;&#160;</a></span>offset</h2>
@@ -146,7 +146,7 @@ Data Fields</h2></td></tr>
 <p>Offset of the event relative to some position. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>What position is this relative to? </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00856">856</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00875">875</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -165,11 +165,11 @@ Data Fields</h2></td></tr>
 <p>Content size in bytes. </p>
 <p>The size is calculated excluding <a class="el" href="structvst__event__t.html#a3260509d68d4e9328ba7f69d48b8c77a">type</a> and <a class="el" href="structvst__event__t.html#a636047a7d1be3154bad83ce187ecf6e5">size</a>. </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structvst__event__t.html">vst_event_t</a> myevent;</div>
 <div class="line">myevent.<a class="code hl_variable" href="structvst__event__t.html#a636047a7d1be3154bad83ce187ecf6e5">size</a> = <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structvst__event__t.html">vst_event_t</a>) - <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structvst__event__t.html">vst_event_t</a>.<a class="code hl_variable" href="structvst__event__t.html#a3260509d68d4e9328ba7f69d48b8c77a">type</a>) - <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structvst__event__t.html">vst_event_t</a>.<a class="code hl_variable" href="structvst__event__t.html#a636047a7d1be3154bad83ce187ecf6e5">size</a>);</div>
-<div class="ttc" id="astructvst__event__t_html"><div class="ttname"><a href="structvst__event__t.html">vst_event_t</a></div><div class="ttdoc">A generic event.</div><div class="ttdef"><b>Definition</b> <a href="vst_8h_source.html#l00836">vst.h:836</a></div></div>
-<div class="ttc" id="astructvst__event__t_html_a3260509d68d4e9328ba7f69d48b8c77a"><div class="ttname"><a href="structvst__event__t.html#a3260509d68d4e9328ba7f69d48b8c77a">vst_event_t::type</a></div><div class="ttdeci">int32_t type</div><div class="ttdoc">What event type was triggered? Any of VST_EVENT_TYPE.</div><div class="ttdef"><b>Definition</b> <a href="vst_8h_source.html#l00840">vst.h:840</a></div></div>
-<div class="ttc" id="astructvst__event__t_html_a636047a7d1be3154bad83ce187ecf6e5"><div class="ttname"><a href="structvst__event__t.html#a636047a7d1be3154bad83ce187ecf6e5">vst_event_t::size</a></div><div class="ttdeci">int32_t size</div><div class="ttdoc">Content size in bytes.</div><div class="ttdef"><b>Definition</b> <a href="vst_8h_source.html#l00850">vst.h:850</a></div></div>
+<div class="ttc" id="astructvst__event__t_html"><div class="ttname"><a href="structvst__event__t.html">vst_event_t</a></div><div class="ttdoc">A generic event.</div><div class="ttdef"><b>Definition</b> <a href="vst_8h_source.html#l00855">vst.h:855</a></div></div>
+<div class="ttc" id="astructvst__event__t_html_a3260509d68d4e9328ba7f69d48b8c77a"><div class="ttname"><a href="structvst__event__t.html#a3260509d68d4e9328ba7f69d48b8c77a">vst_event_t::type</a></div><div class="ttdeci">int32_t type</div><div class="ttdoc">What event type was triggered? Any of VST_EVENT_TYPE.</div><div class="ttdef"><b>Definition</b> <a href="vst_8h_source.html#l00859">vst.h:859</a></div></div>
+<div class="ttc" id="astructvst__event__t_html_a636047a7d1be3154bad83ce187ecf6e5"><div class="ttname"><a href="structvst__event__t.html#a636047a7d1be3154bad83ce187ecf6e5">vst_event_t::size</a></div><div class="ttdeci">int32_t size</div><div class="ttdoc">Content size in bytes.</div><div class="ttdef"><b>Definition</b> <a href="vst_8h_source.html#l00869">vst.h:869</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00850">850</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00869">869</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -187,7 +187,7 @@ Data Fields</h2></td></tr>
 
 <p>What event type was triggered? Any of <a class="el" href="vst_8h.html#a06cdf00c4eb074ac3677408d259616bf">VST_EVENT_TYPE</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00840">840</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00859">859</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -200,7 +200,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structvst__event__t.html">vst_event_t</a></li>
-    <li class="footer">Generated on Mon Aug 18 2025 00:50:32 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Aug 18 2025 01:19:02 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

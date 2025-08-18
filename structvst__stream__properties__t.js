@@ -1,6 +1,5 @@
 var structvst__stream__properties__t =
 [
-    [ "_reserved", "structvst__stream__properties__t.html#ac110bfbb4b679136b9bd71a9931711fd", null ],
     [ "flags", "structvst__stream__properties__t.html#a4ab6cf9b0753323882cc2971b08371e0", null ],
     [ "label", "structvst__stream__properties__t.html#a8f40ce5f9021b92721ce50d2483b5542", null ],
     [ "name", "structvst__stream__properties__t.html#aa3d1bc4ce4e7a31faf644c8e6ffaa66e", null ],
