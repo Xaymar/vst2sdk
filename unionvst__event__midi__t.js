@@ -1,7 +1,7 @@
 var unionvst__event__midi__t =
 [
     [ "data", "unionvst__event__midi__t.html#a159a77d33d4c4fbb44de6fee703c3638", null ],
-    [ "event", "unionvst__event__midi__t.html#a36846b695d194dd31e891e2ade47d960", null ],
+    [ "event", "unionvst__event__midi__t.html#a937d5beed209e62ebee41b1cf27cdfde", null ],
     [ "is_real_time", "unionvst__event__midi__t.html#a1fc64acb525a4e450e43ac9ed9917b29", null ],
     [ "length", "unionvst__event__midi__t.html#a4f7d1625338bb9658c1ad7413b145551", null ],
     [ "midi", "unionvst__event__midi__t.html#a92cddbcbdd815479224485fe2dd3aea2", null ],

@@ -96,20 +96,27 @@ $(document).ready(function(){initNavTree('structvst__speaker__arrangement__t.htm
 </div><!--header-->
 <div class="contents">
 
+<p>Speaker arrangement definition.  
+ <a href="structvst__speaker__arrangement__t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="vst_8h_source.html">vst.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:aaf4f173077234d8734179739d9407f69" id="r_aaf4f173077234d8734179739d9407f69"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__speaker__arrangement__t.html#aaf4f173077234d8734179739d9407f69">type</a></td></tr>
+<tr class="memdesc:aaf4f173077234d8734179739d9407f69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Any of <a class="el" href="vst_8h.html#a06137577f2888a09174c03320eedb9f8">VST_SPEAKER_ARRANGEMENT_TYPE</a>.  <br /></td></tr>
 <tr class="separator:aaf4f173077234d8734179739d9407f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35e592b21f8755d39f6a233e469f26cc" id="r_a35e592b21f8755d39f6a233e469f26cc"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__speaker__arrangement__t.html#a35e592b21f8755d39f6a233e469f26cc">channels</a></td></tr>
+<tr class="memdesc:a35e592b21f8755d39f6a233e469f26cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of channels used in <a class="el" href="structvst__speaker__arrangement__t.html#a2a9c59d0a4d556e8db4f1d62a778a86e">speakers</a>.  <br /></td></tr>
 <tr class="separator:a35e592b21f8755d39f6a233e469f26cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a9c59d0a4d556e8db4f1d62a778a86e" id="r_a2a9c59d0a4d556e8db4f1d62a778a86e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structvst__speaker__properties__t.html">vst_speaker_properties_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__speaker__arrangement__t.html#a2a9c59d0a4d556e8db4f1d62a778a86e">speakers</a> [<a class="el" href="vst_8h.html#a159930143b669088b88b43a54cf91eaf">VST_MAX_CHANNELS</a>]</td></tr>
+<tr class="memdesc:a2a9c59d0a4d556e8db4f1d62a778a86e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of <a class="el" href="structvst__speaker__properties__t.html">vst_speaker_properties_t</a> with size <a class="el" href="structvst__speaker__arrangement__t.html#a35e592b21f8755d39f6a233e469f26cc">channels</a>.  <br /></td></tr>
 <tr class="separator:a2a9c59d0a4d556e8db4f1d62a778a86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00479">479</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<div class="textblock"><p>Speaker arrangement definition. </p>
+
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00717">717</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a35e592b21f8755d39f6a233e469f26cc" name="a35e592b21f8755d39f6a233e469f26cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35e592b21f8755d39f6a233e469f26cc">&#9670;&#160;</a></span>channels</h2>
@@ -123,7 +130,10 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00481">481</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p>Number of channels used in <a class="el" href="structvst__speaker__arrangement__t.html#a2a9c59d0a4d556e8db4f1d62a778a86e">speakers</a>. </p>
+<p>Appears to be limited to <a class="el" href="vst_8h.html#a159930143b669088b88b43a54cf91eaf">VST_MAX_CHANNELS</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00727">727</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -139,7 +149,10 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00482">482</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p>Array of <a class="el" href="structvst__speaker__properties__t.html">vst_speaker_properties_t</a> with size <a class="el" href="structvst__speaker__arrangement__t.html#a35e592b21f8755d39f6a233e469f26cc">channels</a>. </p>
+<dl class="section note"><dt>Note</dt><dd>This is defined as <a class="el" href="vst_8h.html#a159930143b669088b88b43a54cf91eaf">VST_MAX_CHANNELS</a> as there's currently no host that supports more than that. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00733">733</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -155,12 +168,14 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00480">480</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p>Any of <a class="el" href="vst_8h.html#a06137577f2888a09174c03320eedb9f8">VST_SPEAKER_ARRANGEMENT_TYPE</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00721">721</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="vst_8h_source.html">vst.h</a></li>
+<li>include/<a class="el" href="vst_8h_source.html">vst.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -168,7 +183,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structvst__speaker__arrangement__t.html">vst_speaker_arrangement_t</a></li>
-    <li class="footer">Generated on Sun Aug 17 2025 23:59:12 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Aug 18 2025 00:22:20 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

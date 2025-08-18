@@ -118,6 +118,9 @@ Data Fields</h2></td></tr>
 <tr class="memitem:ad98657dfee97ce13c47df387433b19c4" id="r_ad98657dfee97ce13c47df387433b19c4"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#ad98657dfee97ce13c47df387433b19c4">receiveVstMidiEvent</a></td></tr>
 <tr class="memdesc:ad98657dfee97ce13c47df387433b19c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plug-in can receive MIDI events from host.  <br /></td></tr>
 <tr class="separator:ad98657dfee97ce13c47df387433b19c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8086cec9d9f331bc742bbfeb35de8ac8" id="r_a8086cec9d9f331bc742bbfeb35de8ac8"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#a8086cec9d9f331bc742bbfeb35de8ac8">conformsToWindowRules</a></td></tr>
+<tr class="memdesc:a8086cec9d9f331bc742bbfeb35de8ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plug-in wants to use <a class="el" href="vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca27604441d441b65f71f9260b8e9def3f">VST_HOST_OPCODE_EDITOR_RESIZE</a>.  <br /></td></tr>
+<tr class="separator:a8086cec9d9f331bc742bbfeb35de8ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4593812b68452c9fb9cd9cda6ba2f2a" id="r_ad4593812b68452c9fb9cd9cda6ba2f2a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#ad4593812b68452c9fb9cd9cda6ba2f2a">midiProgramNames</a></td></tr>
 <tr class="separator:ad4593812b68452c9fb9cd9cda6ba2f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f75a06664aecd16b53c90e0dfe263c7" id="r_a9f75a06664aecd16b53c90e0dfe263c7"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#a9f75a06664aecd16b53c90e0dfe263c7">receiveVstTimeInfo</a></td></tr>
@@ -126,8 +129,6 @@ Data Fields</h2></td></tr>
 <tr class="separator:ae4546cdb70d2d73d66b5fe2cc74ac409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19f3b10dc37634c74ba652eb29dd8c9c" id="r_a19f3b10dc37634c74ba652eb29dd8c9c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#a19f3b10dc37634c74ba652eb29dd8c9c">plugAsChannelInsert</a></td></tr>
 <tr class="separator:a19f3b10dc37634c74ba652eb29dd8c9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8086cec9d9f331bc742bbfeb35de8ac8" id="r_a8086cec9d9f331bc742bbfeb35de8ac8"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#a8086cec9d9f331bc742bbfeb35de8ac8">conformsToWindowRules</a></td></tr>
-<tr class="separator:a8086cec9d9f331bc742bbfeb35de8ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca1220ffa3c9a1efd7f810dad53e7b22" id="r_aca1220ffa3c9a1efd7f810dad53e7b22"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#aca1220ffa3c9a1efd7f810dad53e7b22">plugAsSend</a></td></tr>
 <tr class="separator:aca1220ffa3c9a1efd7f810dad53e7b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85726da73c22aa6bb437ef00cf4847d0" id="r_a85726da73c22aa6bb437ef00cf4847d0"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvst__effect__supports__t.html#a85726da73c22aa6bb437ef00cf4847d0">mixDryWet</a></td></tr>
@@ -164,7 +165,7 @@ Data Fields</h2></td></tr>
 <p>Provided as <code>char* p_ptr</code> in the VST_EFFECT_OPCODE_SUPPORTS op code.</p>
 <p>Harvested via strings command and just checking what plug-ins actually responded to. </p>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02230">2230</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02722">2722</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a369545653d354e1a37dbd43f4c61fbf2" name="a369545653d354e1a37dbd43f4c61fbf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a369545653d354e1a37dbd43f4c61fbf2">&#9670;&#160;</a></span>_1in1out</h2>
@@ -178,7 +179,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02288">2288</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02789">2789</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -194,7 +195,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02289">2289</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02790">2790</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -210,7 +211,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02290">2290</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02791">2791</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -226,7 +227,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02291">2291</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02792">2792</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -242,7 +243,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02292">2292</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02793">2793</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -258,7 +259,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02293">2293</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02794">2794</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -274,7 +275,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02294">2294</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02795">2795</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -290,7 +291,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02295">2295</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02796">2796</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -306,7 +307,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02296">2296</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02797">2797</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -322,7 +323,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02297">2297</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02798">2798</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -343,7 +344,7 @@ Data Fields</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>VST 2.3 or later only. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>VST_STATUS_TRUE if we support this, otherwise VST_STATUS_FALSE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02239">2239</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02731">2731</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -359,7 +360,14 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02282">2282</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p>Plug-in wants to use <a class="el" href="vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca27604441d441b65f71f9260b8e9def3f">VST_HOST_OPCODE_EDITOR_RESIZE</a>. </p>
+<p>Only necessary for legacy host compatibility.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structvst__host__supports__t.html#a8b33f813bb3a9c7de15daa462176c14b" title="Can we request that the host changes the editor window size?">vst_host_supports_t.sizeWindow</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>(VST 2.1+) Available from VST 2.1 onwards. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000018">Deprecated:</a></b></dt><dd>(VST 2.4+) Deprecated from VST 2.4 onwards as the same check already exists on the host side. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="vst_8h.html#a33f0d71a677d6226e9b5f00c706803b3a903485468aa301f9225bc9432ccc6f04">VST_STATUS_TRUE</a> if you want to use <a class="el" href="vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca27604441d441b65f71f9260b8e9def3f">VST_HOST_OPCODE_EDITOR_RESIZE</a>, otherwise <a class="el" href="vst_8h.html#a33f0d71a677d6226e9b5f00c706803b3ab0df086ec2933a9a5e62e327a4a9f09b">VST_STATUS_FALSE</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02777">2777</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +383,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02287">2287</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02788">2788</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -391,7 +399,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02277">2277</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02779">2779</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -407,7 +415,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02284">2284</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02785">2785</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -423,7 +431,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02286">2286</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02787">2787</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -439,7 +447,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02285">2285</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02786">2786</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -455,7 +463,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02279">2279</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02781">2781</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -471,7 +479,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02281">2281</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02783">2783</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -487,7 +495,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02283">2283</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02784">2784</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -504,12 +512,12 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Plug-in can receive events from host. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structvst__host__supports__t.html#a4cf927ab8060c5afc39c4940e8d3b4aa" title="Host can send events to plug-in.">vst_host_supports_t.sendVstEvents</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structvst__host__supports__t.html#a4cf927ab8060c5afc39c4940e8d3b4aa">vst_host_supports_t.sendVstEvents</a> </dd>
 <dd>
 <a class="el" href="vst_8h.html#abfb1cdba3c236829cb63d4196f33d696a9f3b153f7398c429a3fc6d64e2fed9a6">VST_EFFECT_OPCODE_EVENT</a> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>(VST 2.0+) Available from VST 2.0 onwards. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02255">2255</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02747">2747</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -535,7 +543,7 @@ vst_effect_midi_t </dd>
 vst_effect_midi_sysex_t </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>(VST 2.0+) Available from VST 2.0 onwards. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02275">2275</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02767">2767</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -551,7 +559,7 @@ vst_effect_midi_sysex_t </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02278">2278</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02780">2780</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -573,7 +581,7 @@ vst_effect_midi_sysex_t </dd></dl>
 <a class="el" href="vst_8h.html#a223eb6814e8e03b7f89687280db8b8eca088c2539d52fbb2469a3bca15fd73b52">VST_HOST_OPCODE_EVENT</a> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>(VST 2.0+) Available from VST 2.0 onwards. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02247">2247</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02739">2739</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -599,12 +607,12 @@ vst_effect_midi_t </dd>
 vst_effect_midi_sysex_t </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>(VST 2.0+) Available from VST 2.0 onwards. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02265">2265</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l02757">2757</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="vst_8h_source.html">vst.h</a></li>
+<li>include/<a class="el" href="vst_8h_source.html">vst.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -612,7 +620,7 @@ vst_effect_midi_sysex_t </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structvst__effect__supports__t.html">vst_effect_supports_t</a></li>
-    <li class="footer">Generated on Sun Aug 17 2025 23:59:12 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Aug 18 2025 00:22:20 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

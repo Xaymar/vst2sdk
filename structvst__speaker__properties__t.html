@@ -96,6 +96,9 @@ $(document).ready(function(){initNavTree('structvst__speaker__properties__t.html
 </div><!--header-->
 <div class="contents">
 
+<p>Speaker properties.  
+ <a href="structvst__speaker__properties__t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="vst_8h_source.html">vst.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -121,8 +124,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:af92d5e12067e8d6970853dda58ed935c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00391">391</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<div class="textblock"><p>Speaker properties. </p>
+
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00623">623</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="af92d5e12067e8d6970853dda58ed935c" name="af92d5e12067e8d6970853dda58ed935c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af92d5e12067e8d6970853dda58ed935c">&#9670;&#160;</a></span>_reserved</h2>
@@ -136,7 +140,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00431">431</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00663">663</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -152,7 +156,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00413">413</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00645">645</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -171,7 +175,7 @@ Data Fields</h2></td></tr>
 <p>Altitude in Radians Range: -PI/2 (Bottom) to PI/2 (Top) </p>
 <dl class="section note"><dt>Note</dt><dd>Must be 10.0 if this is a LFE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00404">404</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00636">636</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -190,7 +194,7 @@ Data Fields</h2></td></tr>
 <p>Azimuth in Radians Range: -PI (Left) through 0.0 (Right) to PI (Left) </p>
 <dl class="section note"><dt>Note</dt><dd>Must be 10.0 if this is a LFE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00397">397</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00629">629</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -209,7 +213,7 @@ Data Fields</h2></td></tr>
 <p>Distance in Meters range: 0 to +-Infinity. </p>
 <dl class="section note"><dt>Note</dt><dd>Must be 0.0 if this is a LFE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00411">411</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00643">643</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -228,7 +232,7 @@ Data Fields</h2></td></tr>
 <p>Human readable name for this speaker. </p>
 <p>Some hosts will behave weird if you use "L", "R", "C", "Ls", "Rs", "Lc", "Rc", "LFE", "Lfe", "Sl", "Sr", "Cs", and other 2 to 3 letter short codes. Best not to use those if you like your plug-in in a not-crashy state. </p>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00420">420</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00652">652</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
@@ -248,12 +252,12 @@ Data Fields</h2></td></tr>
 <p>See VST_SPEAKER_TYPE</p>
 <p>If the above is one of those short codes some host seems to overwrite this with their own. Memory safety is optional apparently. </p>
 
-<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00429">429</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vst_8h_source.html#l00661">661</a> of file <a class="el" href="vst_8h_source.html">vst.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="vst_8h_source.html">vst.h</a></li>
+<li>include/<a class="el" href="vst_8h_source.html">vst.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -261,7 +265,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structvst__speaker__properties__t.html">vst_speaker_properties_t</a></li>
-    <li class="footer">Generated on Sun Aug 17 2025 23:59:12 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Mon Aug 18 2025 00:22:20 for VST2SDK by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

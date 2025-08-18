@@ -7,5 +7,6 @@ var searchData=
   ['midiprogramnames_4',['midiProgramNames',['../structvst__effect__supports__t.html#ad4593812b68452c9fb9cd9cda6ba2f2a',1,'vst_effect_supports_t']]],
   ['min_5fvalue_5fi32_5',['min_value_i32',['../structvst__parameter__properties__t.html#ad471b50780abc9105eba9ac9ed561e52',1,'vst_parameter_properties_t']]],
   ['mixdrywet_6',['mixDryWet',['../structvst__effect__supports__t.html#a85726da73c22aa6bb437ef00cf4847d0',1,'vst_effect_supports_t']]],
-  ['multipass_7',['multipass',['../structvst__effect__supports__t.html#ad04d57a10924025ade25e361b9fb6a6c',1,'vst_effect_supports_t']]]
+  ['multipass_7',['multipass',['../structvst__effect__supports__t.html#ad04d57a10924025ade25e361b9fb6a6c',1,'vst_effect_supports_t']]],
+  ['my_20own_20product_8',['Is this legal? Can I use this in my own product?',['../index.html#autotoc_md4',1,'']]]
 ];
