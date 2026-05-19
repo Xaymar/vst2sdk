@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Files">
+      <UniqueIdentifier>{db44cb57-969f-434c-87a5-220744a535c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EmptyVst.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vstmain.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EmptyVst.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\vstbase.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\vst.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
