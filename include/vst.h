@@ -1584,7 +1584,7 @@ struct vst_host_supports_t {
  * @param p_str Zero terminated string or null on call.
  * @return ?
  */
-typedef intptr_t (VST_FUNCTION_INTERFACE *vst_host_callback_t)(struct vst_effect_t* plugin, int32_t opcode, int32_t p_int1, int64_t p_int2, const char* p_str, float p_float);
+typedef intptr_t (VST_FUNCTION_INTERFACE *vst_host_callback_t)(struct vst_effect_t* plugin, int32_t opcode, int32_t p_int1, intptr_t p_int2, const char* p_str, float p_float);
 
 //------------------------------------------------------------------------------------------------------------------------
 // VST Plug-in/Effect related Things
