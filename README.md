@@ -1,3 +1,6 @@
+Note from Beklemeto:
+Tested to work under visual studio for x86 and x64. Added a sample project.
+
 # About the Project
 This is a completely "clean room" untainted reverse engineered "SDK" for the VST 2.x interface. It was reverse engineered from binaries where no license restricting the reverse engineering was attached, or where the legal system explicitly allowed reverse engineering for the purpose of interoperability.
 
